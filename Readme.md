@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
 * Студент: [Арсений Берзин](https://up.htmlacademy.ru/react/8/user/1250553).
-* Наставник: `Неизвестно`.
+* Наставник: [Владислав Зубко](https://htmlacademy.ru/profile/whatislove).
 
 ---
 
