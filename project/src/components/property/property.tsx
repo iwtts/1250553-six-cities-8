@@ -1,4 +1,4 @@
-export default function Property(): JSX.Element {
+function Property(): JSX.Element {
   return (
     <div className="page">
       <header className="header">
@@ -332,3 +332,4 @@ export default function Property(): JSX.Element {
   );
 }
 
+export default Property;

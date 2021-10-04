@@ -1,4 +1,4 @@
-export default function Favorites(): JSX.Element {
+function Favorites(): JSX.Element {
   return (
     <div className="page">
       <header className="header">
@@ -163,3 +163,5 @@ export default function Favorites(): JSX.Element {
     </div>
   );
 }
+
+export default Favorites;

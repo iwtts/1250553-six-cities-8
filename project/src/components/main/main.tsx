@@ -4,7 +4,7 @@ type MainProps = {
   cardsAmount: number;
 }
 
-export default function Main({cardsAmount}: MainProps): JSX.Element {
+function Main({cardsAmount}: MainProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -94,7 +94,7 @@ export default function Main({cardsAmount}: MainProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {new Array(cardsAmount).fill(<Card />)}
+                {new Array(cardsAmount).fill(undefined).map((card, i) => <Card key={card + i.toString()}/>)}
               </div>
             </section>
             <div className="cities__right-section">
@@ -106,3 +106,5 @@ export default function Main({cardsAmount}: MainProps): JSX.Element {
     </div>
   );
 }
+
+export default Main;

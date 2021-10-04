@@ -4,7 +4,7 @@ import App from './components/app/app';
 
 const Setting ={
   CARDS_AMOUNT: 5,
-};
+} as const;
 
 ReactDOM.render(
   <React.StrictMode>
