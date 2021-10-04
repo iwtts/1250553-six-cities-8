@@ -1,6 +1,10 @@
 import Main from '../main/main';
 
-export default function App(): JSX.Element {
-  return <Main />;
+type AppProps = {
+  cardsAmount: number;
+}
+
+export default function App({cardsAmount}: AppProps): JSX.Element {
+  return <Main cardsAmount = {cardsAmount} />;
 }
 

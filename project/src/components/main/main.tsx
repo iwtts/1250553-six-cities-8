@@ -1,6 +1,10 @@
 import Card from '../card/card';
 
-export default function Main(): JSX.Element {
+type MainProps = {
+  cardsAmount: number;
+}
+
+export default function Main({cardsAmount}: MainProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -73,7 +77,7 @@ export default function Main(): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">312 places to stay in Amsterdam</b>
+              <b className="places__found">{cardsAmount} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -90,7 +94,7 @@ export default function Main(): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {new Array(5).fill(<Card />)}
+                {new Array(cardsAmount).fill(<Card />)}
               </div>
             </section>
             <div className="cities__right-section">
