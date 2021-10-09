@@ -1,12 +1,14 @@
-export enum AppRoute {
+enum AppRoute {
   Main = '/',
   SignIn  = '/login',
   Favorites = '/favorites',
   Room = '/offer/:id'
 }
 
-export enum AuthStatus {
+enum AuthStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
+
+export { AppRoute, AuthStatus };
