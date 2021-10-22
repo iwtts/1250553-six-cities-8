@@ -8,11 +8,14 @@ import NotFound from '../not-found/not-found';
 import Property from '../property/property';
 import PrivateRoute from '../private-route/private-route';
 
+import { Offer } from '../../types/offer';
+
 type AppProps = {
   cardsAmount: number;
+  offers: Offer[];
 }
 
-function App({cardsAmount}: AppProps): JSX.Element {
+function App({cardsAmount, offers}: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
