@@ -1,4 +1,5 @@
 import { Offer } from '../types/offer';
+import { OfferType } from '../const';
 
 const offers: Offer[] = [
   {
@@ -33,7 +34,7 @@ const offers: Offer[] = [
     price: 120,
     rating: 4.8,
     title: 'Beautiful & luxurious studio at great location',
-    type: 'apartment',
+    type: OfferType.apartment,
   },
   {
     id: 2,
@@ -67,7 +68,7 @@ const offers: Offer[] = [
     price: 100,
     rating: 4.4,
     title: 'The predicate calculus generates and provides a typical dualism',
-    type: 'room',
+    type: OfferType.room,
   },
   {
     id: 3,
@@ -89,7 +90,7 @@ const offers: Offer[] = [
       name: 'Max',
     },
     images: ['./img/apartment-02.jpg', './img/apartment-03.jpg'],
-    isFavorite: true,
+    isFavorite: false,
     isPremium: true,
     location: {
       latitude: 50.85033238462341,
@@ -101,7 +102,7 @@ const offers: Offer[] = [
     price: 190,
     rating: 4.9,
     title: 'The law of the outside world is not so obvious',
-    type: 'house',
+    type: OfferType.house,
   },
   {
     id: 4,
@@ -135,7 +136,7 @@ const offers: Offer[] = [
     price: 130,
     rating: 4.1,
     title: 'Art meaningfully emphasizes the deductive method',
-    type: 'hotel',
+    type: OfferType.hotel,
   },
 ];
 
