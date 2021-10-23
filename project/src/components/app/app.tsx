@@ -22,6 +22,7 @@ function App({cardsAmount, offers}: AppProps): JSX.Element {
         <Route exact path={AppRoute.Main}>
           <Main
             cardsAmount={cardsAmount}
+            offers={offers}
           />
         </Route>
         <Route exact path={AppRoute.SignIn}>
