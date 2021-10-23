@@ -35,7 +35,7 @@ function App({cardsAmount, offers}: AppProps): JSX.Element {
           authStatus={AuthStatus.Auth}
         >
         </PrivateRoute>
-        <Route exact path={AppRoute.Room}>
+        <Route exact path={`${AppRoute.Room}/:id`}>
           <Property />
         </Route>
         <Route>

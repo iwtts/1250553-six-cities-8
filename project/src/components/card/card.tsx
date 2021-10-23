@@ -1,11 +1,13 @@
+import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
+import { AppRoute } from '../../const';
 
 type CardProps = {
   offer: Offer;
 }
 
 function Card(props: CardProps): JSX.Element {
-  const {isPremium, previewImage, price, isFavorite, rating, title, type} = props.offer;
+  const {isPremium, previewImage, price, isFavorite, rating, title, type, id} = props.offer;
 
   const renderPremiumMark = () => {
     if (isPremium) {
@@ -29,9 +31,9 @@ function Card(props: CardProps): JSX.Element {
     <article className="cities__place-card place-card">
       {renderPremiumMark()}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image" />
-        </a>
+        <Link to={`${AppRoute.Room}/${id}`}>
+          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -53,7 +55,9 @@ function Card(props: CardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{title}</a>
+          <Link to={`${AppRoute.Room}/${id}`}>
+            {title}
+          </Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
