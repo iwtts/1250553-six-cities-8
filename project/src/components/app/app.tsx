@@ -31,8 +31,8 @@ function App({cardsAmount, offers}: AppProps): JSX.Element {
         <PrivateRoute
           exact
           path={AppRoute.Favorites}
-          render={() => <Favourites />}
-          authStatus={AuthStatus.NoAuth}
+          render={() => <Favourites offers={offers} />}
+          authStatus={AuthStatus.Auth}
         >
         </PrivateRoute>
         <Route exact path={AppRoute.Room}>
