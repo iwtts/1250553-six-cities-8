@@ -4,6 +4,8 @@ import { AppRoute } from '../../const';
 
 type CardProps = {
   offer: Offer;
+  onMouseEnter: () => void,
+  onMouseLeave: () => void,
 }
 
 function Card(props: CardProps): JSX.Element {
@@ -28,7 +30,7 @@ function Card(props: CardProps): JSX.Element {
   const renderRatingStars = () =>  <span style={{width: `${rating * 20}%`}}></span>;
 
   return (
-    <article className="cities__place-card place-card">
+    <article className="cities__place-card place-card" onMouseEnter={() => props.onMouseEnter()} onMouseLeave={() => props.onMouseLeave()}>
       {renderPremiumMark()}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={`${AppRoute.Room}/${id}`}>
