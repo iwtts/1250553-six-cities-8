@@ -2,7 +2,7 @@ enum AppRoute {
   Main = '/',
   SignIn  = '/login',
   Favorites = '/favorites',
-  Room = '/offer/:id'
+  Room = '/offer'
 }
 
 enum AuthStatus {
@@ -11,4 +11,13 @@ enum AuthStatus {
   Unknown = 'UNKNOWN',
 }
 
-export { AppRoute, AuthStatus };
+enum OfferType {
+  Apartment = 'Apartment',
+  Room = 'Private Room',
+  House = 'House',
+  Hotel = 'Hotel',
+}
+
+const minReviewLength = 50;
+
+export { AppRoute, AuthStatus, OfferType, minReviewLength };

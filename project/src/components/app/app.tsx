@@ -8,17 +8,21 @@ import NotFound from '../not-found/not-found';
 import Property from '../property/property';
 import PrivateRoute from '../private-route/private-route';
 
+import { Offer } from '../../types/offer';
+
 type AppProps = {
   cardsAmount: number;
+  offers: Offer[];
 }
 
-function App({cardsAmount}: AppProps): JSX.Element {
+function App({cardsAmount, offers}: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
           <Main
             cardsAmount={cardsAmount}
+            offers={offers}
           />
         </Route>
         <Route exact path={AppRoute.SignIn}>
@@ -27,11 +31,11 @@ function App({cardsAmount}: AppProps): JSX.Element {
         <PrivateRoute
           exact
           path={AppRoute.Favorites}
-          render={() => <Favourites />}
-          authStatus={AuthStatus.NoAuth}
+          render={() => <Favourites offers={offers} />}
+          authStatus={AuthStatus.Auth}
         >
         </PrivateRoute>
-        <Route exact path={AppRoute.Room}>
+        <Route exact path={`${AppRoute.Room}/:id`}>
           <Property />
         </Route>
         <Route>
