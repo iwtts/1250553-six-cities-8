@@ -8,12 +8,19 @@ type CardsListProps = {
 }
 
 function CardsList({offers}: CardsListProps): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [activeCardId, setActiveCardId] = useState<number | null>(null);
+  const [, setActiveCardId] = useState<number | null>(null);
+
+  const handleMouseEnter = (id: number) => {
+    setActiveCardId(id);
+  };
+
+  const handleMouseLeave = () => {
+    setActiveCardId(null);
+  };
 
   return (
     <div className="cities__places-list places__list tabs__content">
-      {offers.map((offer) => <Card offer={offer} key={offer.id}  onMouseEnter={() => setActiveCardId(offer.id)} onMouseLeave={() => setActiveCardId(null)}/>)}
+      {offers.map((offer) => <Card offer={offer} key={offer.id}  onMouseEnter={() => handleMouseEnter(offer.id)} onMouseLeave={() => handleMouseLeave}/>)}
     </div>
   );
 }

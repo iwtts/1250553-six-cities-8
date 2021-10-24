@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { AppRoute } from '../../const';
+import { getRatingStarsWidth } from '../../utils';
 
 type CardProps = {
   offer: Offer;
@@ -27,7 +28,6 @@ function Card(props: CardProps): JSX.Element {
     }
     return 'place-card__bookmark-button button';
   };
-  const renderRatingStars = () =>  <span style={{width: `${rating * 20}%`}}></span>;
 
   return (
     <article className="cities__place-card place-card" onMouseEnter={() => props.onMouseEnter()} onMouseLeave={() => props.onMouseLeave()}>
@@ -52,7 +52,7 @@ function Card(props: CardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            {renderRatingStars()}
+            <span style={{width: getRatingStarsWidth(rating)}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

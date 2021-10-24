@@ -12,10 +12,12 @@ enum AuthStatus {
 }
 
 enum OfferType {
-  apartment = 'Apartment',
-  room = 'Private Room',
-  house = 'House',
-  hotel = 'Hotel',
+  Apartment = 'Apartment',
+  Room = 'Private Room',
+  House = 'House',
+  Hotel = 'Hotel',
 }
 
-export { AppRoute, AuthStatus, OfferType };
+const minReviewLength = 50;
+
+export { AppRoute, AuthStatus, OfferType, minReviewLength };

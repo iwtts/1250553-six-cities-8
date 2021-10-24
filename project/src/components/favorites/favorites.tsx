@@ -25,7 +25,9 @@ function Favorites({offers}: FavoritesProps): JSX.Element {
                   </div>
                 </div>
                 <div className="favorites__places">
-                  {offers.map((offer) => offer.isFavorite ? <FavoritesCard offer={offer} key={offer.id}/> : null)}
+                  {offers
+                    .filter((offer) => offer.isFavorite)
+                    .map((offer) => <FavoritesCard offer={offer} key={offer.id} />)}
                 </div>
               </li>
             </ul>

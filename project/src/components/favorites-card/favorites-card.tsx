@@ -1,4 +1,5 @@
 import { Offer } from '../../types/offer';
+import { getRatingStarsWidth } from '../../utils';
 
 type FavoritesCardProps = {
   offer: Offer;
@@ -7,8 +8,6 @@ type FavoritesCardProps = {
 function FavoritesCard(props: FavoritesCardProps): JSX.Element {
   const offer = props.offer;
   const {previewImage, price, rating, title, type} = offer;
-
-  const renderRatingStars = () =>  <span style={{width: `${rating * 20}%`}}></span>;
 
   return (
     <article className="favorites__card place-card">
@@ -32,7 +31,7 @@ function FavoritesCard(props: FavoritesCardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            {renderRatingStars()}
+            <span style={{width: getRatingStarsWidth(rating)}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

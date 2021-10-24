@@ -1,3 +1,5 @@
+import { OfferType } from '../const';
+
 type Offer = {
   bedrooms: number,
   city: {
@@ -30,7 +32,7 @@ type Offer = {
   price: number,
   rating: number,
   title: string,
-  type: string,
+  type: OfferType,
 }
 
 export type { Offer };

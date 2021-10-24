@@ -34,7 +34,7 @@ const offers: Offer[] = [
     price: 120,
     rating: 4.8,
     title: 'Beautiful & luxurious studio at great location',
-    type: OfferType.apartment,
+    type: OfferType.Apartment,
   },
   {
     id: 2,
@@ -68,7 +68,7 @@ const offers: Offer[] = [
     price: 100,
     rating: 4.4,
     title: 'The predicate calculus generates and provides a typical dualism',
-    type: OfferType.room,
+    type: OfferType.Room,
   },
   {
     id: 3,
@@ -102,7 +102,7 @@ const offers: Offer[] = [
     price: 190,
     rating: 4.9,
     title: 'The law of the outside world is not so obvious',
-    type: OfferType.house,
+    type: OfferType.House,
   },
   {
     id: 4,
@@ -136,7 +136,7 @@ const offers: Offer[] = [
     price: 130,
     rating: 4.1,
     title: 'Art meaningfully emphasizes the deductive method',
-    type: OfferType.hotel,
+    type: OfferType.Hotel,
   },
 ];
 
