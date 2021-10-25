@@ -25,8 +25,8 @@ const offers: Offer[] = [
     isFavorite: false,
     isPremium: false,
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
       zoom: 8,
     },
     maxAdults: 4,
@@ -41,11 +41,11 @@ const offers: Offer[] = [
     bedrooms: 1,
     city: {
       location: {
-        latitude: 48.856600,
-        longitude: 2.352200,
+        latitude: 52.370216,
+        longitude: 4.895168,
         zoom: 10,
       },
-      name: 'Paris',
+      name: 'Amsterdam',
     },
     description: 'The main highway runs from north to south from Shkoder through Durres to Vlora, after turning the kandym enlightens the thermal spring.',
     goods: ['Heating', 'Cable TV', 'Washing machine', 'Coffee machine'],
@@ -59,8 +59,8 @@ const offers: Offer[] = [
     isFavorite: true,
     isPremium: false,
     location: {
-      latitude: 48.85663413456321,
-      longitude: 2.35221214543123,
+      latitude: 52.369553943508,
+      longitude: 4.85309666406198,
       zoom: 8,
     },
     maxAdults: 2,
@@ -75,11 +75,11 @@ const offers: Offer[] = [
     bedrooms: 5,
     city: {
       location: {
-        latitude: 50.850300,
-        longitude: 4.351700,
+        latitude: 52.370216,
+        longitude: 4.895168,
         zoom: 10,
       },
-      name: 'Brussels',
+      name: 'Amsterdam',
     },
     description: 'A priori, hedonism infers genius by denying the obvious. Common sense, therefore, comprehends the tense gravitational paradox.',
     goods: ['Heating', 'Kitchen', 'Cable TV', 'Washing machine', 'Coffee machine', 'Dishwasher'],
@@ -93,8 +93,8 @@ const offers: Offer[] = [
     isFavorite: false,
     isPremium: true,
     location: {
-      latitude: 50.85033238462341,
-      longitude: 4.35174726389289,
+      latitude: 52.3909553943508,
+      longitude: 4.929309666406198,
       zoom: 8,
     },
     maxAdults: 9,
@@ -109,11 +109,11 @@ const offers: Offer[] = [
     bedrooms: 2,
     city: {
       location: {
-        latitude: 53.551100,
-        longitude: 9.993700,
+        latitude: 52.370216,
+        longitude: 4.895168,
         zoom: 10,
       },
-      name: 'Hamburg',
+      name: 'Amsterdam',
     },
     description: 'The sign, therefore, inductively comprehends typical structuralism. The predicate calculus discredits conflict philosophically.',
     goods: ['Heating', 'Cable TV', 'Coffee machine'],
@@ -127,8 +127,8 @@ const offers: Offer[] = [
     isFavorite: true,
     isPremium: false,
     location: {
-      latitude: 53.55116553272318,
-      longitude: 9.99371324151235,
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198,
       zoom: 8,
     },
     maxAdults: 4,
