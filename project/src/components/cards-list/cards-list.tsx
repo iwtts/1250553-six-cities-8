@@ -5,16 +5,20 @@ import Card from '../card/card';
 
 type CardsListProps = {
   offers: Offer[];
+  onOfferMouseEnter: (offerId: number) => void;
+  onOfferMouseLeave: () => void;
 }
 
-function CardsList({offers}: CardsListProps): JSX.Element {
+function CardsList({offers, onOfferMouseEnter,  onOfferMouseLeave}: CardsListProps): JSX.Element {
   const [, setActiveCardId] = useState<number | null>(null);
 
-  const handleMouseEnter = (id: number) => {
-    setActiveCardId(id);
+  const handleMouseEnter = (offerId: number) => {
+    onOfferMouseEnter(offerId);
+    setActiveCardId(offerId);
   };
 
   const handleMouseLeave = () => {
+    onOfferMouseLeave();
     setActiveCardId(null);
   };
 

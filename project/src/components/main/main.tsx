@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Header from '../header/header';
 import CardsList from '../cards-list/cards-list';
 
@@ -9,6 +11,17 @@ type MainProps = {
 }
 
 function Main({cardsAmount, offers}: MainProps): JSX.Element {
+  const [, setSelectedOffer] = useState<Offer | undefined>(undefined);
+
+  const onOfferMouseEnter = (offerId: number) => {
+    const currentPoint = offers.find((offer) => offer.id === offerId);
+    setSelectedOffer(currentPoint);
+  };
+
+  const onOfferMouseLeave = () => {
+    setSelectedOffer(undefined);
+  };
+
   return (
     <div className="page page--gray page--main">
       <Header />
@@ -70,7 +83,7 @@ function Main({cardsAmount, offers}: MainProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <CardsList offers={offers}/>
+              <CardsList offers={offers} onOfferMouseEnter={onOfferMouseEnter} onOfferMouseLeave={onOfferMouseLeave}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>

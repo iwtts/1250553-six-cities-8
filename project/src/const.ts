@@ -1,3 +1,5 @@
+const MIN_REVIEW_LENGTH = 50;
+
 enum AppRoute {
   Main = '/',
   SignIn  = '/login',
@@ -18,6 +20,4 @@ enum OfferType {
   Hotel = 'Hotel',
 }
 
-const minReviewLength = 50;
-
-export { AppRoute, AuthStatus, OfferType, minReviewLength };
+export { AppRoute, AuthStatus, OfferType, MIN_REVIEW_LENGTH };
