@@ -2,16 +2,16 @@ import { useEffect, useRef} from 'react';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
 import { Icon, Marker } from 'leaflet';
-import { Offer } from '../../types/offer';
+import { Location } from '../../types/offer';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 
 type Point = {
   title: string,
-  location: Offer['location'],
+  location: Location,
 }
 
 type MapProps = {
-  cityLocation: Offer['city']['location'],
+  cityLocation: Location,
   points: Point[],
   selectedPoint: Point | undefined;
 }
