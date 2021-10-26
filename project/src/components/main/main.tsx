@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import Header from '../header/header';
 import CardsList from '../cards-list/cards-list';
+import Map from '../map/map';
 
 import { Offer } from '../../types/offer';
 
@@ -11,7 +12,7 @@ type MainProps = {
 }
 
 function Main({cardsAmount, offers}: MainProps): JSX.Element {
-  const [, setSelectedOffer] = useState<Offer | undefined>(undefined);
+  const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
 
   const onOfferMouseEnter = (offerId: number) => {
     const currentPoint = offers.find((offer) => offer.id === offerId);
@@ -21,6 +22,8 @@ function Main({cardsAmount, offers}: MainProps): JSX.Element {
   const onOfferMouseLeave = () => {
     setSelectedOffer(undefined);
   };
+
+  const city = offers[0].city;
 
   return (
     <div className="page page--gray page--main">
@@ -86,7 +89,9 @@ function Main({cardsAmount, offers}: MainProps): JSX.Element {
               <CardsList offers={offers} onOfferMouseEnter={onOfferMouseEnter} onOfferMouseLeave={onOfferMouseLeave}/>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map cityLocation={city.location} points={offers.map((offer) => ({title: offer.title, location: offer.location}))} selectedPoint={selectedOffer} />
+              </section>
             </div>
           </div>
         </div>
