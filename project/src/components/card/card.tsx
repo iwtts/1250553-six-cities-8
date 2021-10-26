@@ -12,16 +12,6 @@ type CardProps = {
 function Card(props: CardProps): JSX.Element {
   const {isPremium, previewImage, price, isFavorite, rating, title, type, id} = props.offer;
 
-  const renderPremiumMark = () => {
-    if (isPremium) {
-      return (
-        <div className="place-card__mark">
-          <span>Premium</span>
-        </div>
-      );
-    }
-  };
-
   const getBookmarkButtonClassName = () => {
     if (isFavorite) {
       return 'place-card__bookmark-button place-card__bookmark-button--active button button';
@@ -31,7 +21,10 @@ function Card(props: CardProps): JSX.Element {
 
   return (
     <article className="cities__place-card place-card" onMouseEnter={() => props.onMouseEnter()} onMouseLeave={() => props.onMouseLeave()}>
-      {renderPremiumMark()}
+      {isPremium &&
+        <div className="place-card__mark">
+          <span>Premium</span>
+        </div>}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={`${AppRoute.Room}/${id}`}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
@@ -52,7 +45,7 @@ function Card(props: CardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: getRatingStarsWidth(rating)}}></span>
+            <span style={{width: `${getRatingStarsWidth(rating)}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

@@ -1,15 +1,19 @@
 import { OfferType } from '../const';
 
+type Location = {
+  latitude: number,
+  longitude: number,
+  zoom: number,
+}
+
+type City = {
+  location: Location,
+  name: string,
+}
+
 type Offer = {
   bedrooms: number,
-  city: {
-    location: {
-      latitude: number,
-      longitude: number,
-      zoom: number,
-    },
-    name: string,
-  },
+  city: City,
   description: string,
   goods: string[],
   host: {
@@ -22,11 +26,7 @@ type Offer = {
   images: string[],
   isFavorite: boolean,
   isPremium: boolean,
-  location: {
-    latitude: number,
-    longitude: number,
-    zoom: number,
-  },
+  location: Location,
   maxAdults: number,
   previewImage: string,
   price: number,
@@ -35,4 +35,4 @@ type Offer = {
   type: OfferType,
 }
 
-export type { Offer };
+export type { Offer, Location };
