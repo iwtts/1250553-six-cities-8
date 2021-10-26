@@ -9,13 +9,15 @@ import Property from '../property/property';
 import PrivateRoute from '../private-route/private-route';
 
 import { Offer } from '../../types/offer';
+import { Review } from '../../types/review';
 
 type AppProps = {
   cardsAmount: number;
   offers: Offer[];
+  reviews: Review[];
 }
 
-function App({cardsAmount, offers}: AppProps): JSX.Element {
+function App({cardsAmount, offers, reviews}: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
@@ -36,7 +38,7 @@ function App({cardsAmount, offers}: AppProps): JSX.Element {
         >
         </PrivateRoute>
         <Route exact path={`${AppRoute.Room}/:id`}>
-          <Property />
+          <Property reviews={reviews} />
         </Route>
         <Route>
           <NotFound />
