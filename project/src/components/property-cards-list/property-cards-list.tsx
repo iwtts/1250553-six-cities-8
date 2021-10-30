@@ -1,4 +1,5 @@
 import { Offer } from '../../types/offer';
+import { CardType } from '../../const';
 
 import Card from '../card/card';
 
@@ -18,6 +19,7 @@ function PropertyCardsList({offers, onOfferMouseEnter,  onOfferMouseLeave}: Prop
           <Card
             key={offer.id}
             offer={offer}
+            type = {CardType.Property}
             onMouseEnter={() => onOfferMouseEnter(offer)}
             onMouseLeave={() => onOfferMouseLeave}
           />))}

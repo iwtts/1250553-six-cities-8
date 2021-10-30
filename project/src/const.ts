@@ -19,6 +19,11 @@ enum AuthStatus {
   Unknown = 'UNKNOWN',
 }
 
+enum CardType {
+  Main,
+  Property,
+}
+
 enum OfferType {
   Apartment = 'Apartment',
   Room = 'Private Room',
@@ -26,4 +31,13 @@ enum OfferType {
   Hotel = 'Hotel',
 }
 
-export { AppRoute, AuthStatus, OfferType, MIN_REVIEW_LENGTH, URL_MARKER_CURRENT, URL_MARKER_DEFAULT, OFFERS_NEARBY_AMOUNT };
+export {
+  MIN_REVIEW_LENGTH,
+  URL_MARKER_CURRENT,
+  URL_MARKER_DEFAULT,
+  OFFERS_NEARBY_AMOUNT,
+  AppRoute,
+  AuthStatus,
+  CardType,
+  OfferType
+};

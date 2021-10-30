@@ -1,4 +1,5 @@
 import { Offer } from '../../types/offer';
+import { CardType } from '../../const';
 
 import Card from '../card/card';
 
@@ -11,7 +12,7 @@ type CardsListProps = {
 function CardsList({offers, onOfferMouseEnter,  onOfferMouseLeave}: CardsListProps): JSX.Element {
   return (
     <div className="cities__places-list places__list tabs__content">
-      {offers.map((offer) => <Card offer={offer} key={offer.id}  onMouseEnter={() => onOfferMouseEnter(offer)} onMouseLeave={() => onOfferMouseLeave}/>)}
+      {offers.map((offer) => <Card offer={offer} type={CardType.Main} key={offer.id}  onMouseEnter={() => onOfferMouseEnter(offer)} onMouseLeave={() => onOfferMouseLeave}/>)}
     </div>
   );
 }
