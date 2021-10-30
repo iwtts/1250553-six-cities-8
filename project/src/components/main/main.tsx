@@ -14,13 +14,11 @@ type MainProps = {
 function Main({cardsAmount, offers}: MainProps): JSX.Element {
   const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
 
-  const onOfferMouseEnter = (offer: Offer | undefined) => {
-    const currentPoint = offers.find((a) => a === offer);
+  const handleOfferMouseEnter = (offer: Offer | undefined) => {
     setSelectedOffer(offer);
-    setSelectedOffer(currentPoint);
   };
 
-  const onOfferMouseLeave = () => {
+  const handleOfferMouseLeave = () => {
     setSelectedOffer(undefined);
   };
 
@@ -89,8 +87,8 @@ function Main({cardsAmount, offers}: MainProps): JSX.Element {
               </form>
               <CardsList
                 offers={offers}
-                onOfferMouseEnter={onOfferMouseEnter}
-                onOfferMouseLeave={onOfferMouseLeave}
+                onOfferMouseEnter={handleOfferMouseEnter}
+                onOfferMouseLeave={handleOfferMouseLeave}
               />
             </section>
             <div className="cities__right-section">

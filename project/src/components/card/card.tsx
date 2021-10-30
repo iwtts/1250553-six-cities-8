@@ -1,13 +1,28 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
-import { AppRoute } from '../../const';
+import { AppRoute, CardType } from '../../const';
 import { getRatingStarsWidth } from '../../utils';
 
 type CardProps = {
   offer: Offer;
+  type: CardType;
   onMouseEnter: () => void,
   onMouseLeave: () => void,
 }
+
+const getArticleClassName = (type: CardType): string => {
+  if (type === CardType.Property) {
+    return 'near-places__card place-card';
+  }
+  return 'cities__place-card place-card';
+};
+
+const getImageWrapperClassName = (type: CardType): string => {
+  if (type === CardType.Property) {
+    return 'near-places__image-wrapper place-card__image-wrapper';
+  }
+  return 'cities__image-wrapper place-card__image-wrapper';
+};
 
 function Card(props: CardProps): JSX.Element {
   const {isPremium, previewImage, price, isFavorite, rating, title, type, id} = props.offer;
@@ -20,12 +35,12 @@ function Card(props: CardProps): JSX.Element {
   };
 
   return (
-    <article className="cities__place-card place-card" onMouseEnter={() => props.onMouseEnter()} onMouseLeave={() => props.onMouseLeave()}>
+    <article className={getArticleClassName(props.type)} onMouseEnter={() => props.onMouseEnter()} onMouseLeave={() => props.onMouseLeave()}>
       {isPremium &&
         <div className="place-card__mark">
           <span>Premium</span>
         </div>}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={getImageWrapperClassName(props.type)}>
         <Link to={`${AppRoute.Room}/${id}`}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
         </Link>
