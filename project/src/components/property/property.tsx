@@ -1,14 +1,26 @@
+import { useState } from 'react';
+
 import Header from '../header/header';
 import ReviewsList from '../reviews-list/reviews-list';
 import ReviewForm from '../review-form/review-form';
+import Map from '../map/map';
 
+import { Offer } from '../../types/offer';
 import { Review } from '../../types/review';
 
+import { NEAR_PLACES_AMOUNT } from '../../const';
+
 type PropertyProps = {
+  offers: Offer[];
   reviews: Review[];
 }
 
-function Property({reviews}: PropertyProps): JSX.Element {
+function Property({offers, reviews}: PropertyProps): JSX.Element {
+  const [selectedOffer] = useState<Offer | undefined>(undefined);
+  const city = offers[0].city;
+
+  const nearestPlaces = offers.slice(0, NEAR_PLACES_AMOUNT);
+
   return (
     <div className="page">
       <Header />
@@ -137,7 +149,13 @@ function Property({reviews}: PropertyProps): JSX.Element {
               </section>
             </div>
           </div>
-          <section className="property__map map"></section>
+          <section className="property__map map">
+            <Map
+              cityLocation={city.location}
+              points={nearestPlaces.map((offer) => ({title: offer.title, location: offer.location}))}
+              selectedPoint={selectedOffer}
+            />
+          </section>
         </section>
         <div className="container">
           <section className="near-places places">

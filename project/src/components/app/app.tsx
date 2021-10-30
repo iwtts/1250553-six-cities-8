@@ -38,7 +38,10 @@ function App({cardsAmount, offers, reviews}: AppProps): JSX.Element {
         >
         </PrivateRoute>
         <Route exact path={`${AppRoute.Room}/:id`}>
-          <Property reviews={reviews} />
+          <Property
+            offers={offers}
+            reviews={reviews}
+          />
         </Route>
         <Route>
           <NotFound />
