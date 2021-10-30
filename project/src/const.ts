@@ -4,7 +4,7 @@ const URL_MARKER_DEFAULT = './img/pin.svg';
 
 const URL_MARKER_CURRENT = './img/pin-active.svg';
 
-const NEAR_PLACES_AMOUNT = 3;
+const OFFERS_NEARBY_AMOUNT = 3;
 
 enum AppRoute {
   Main = '/',
@@ -26,4 +26,4 @@ enum OfferType {
   Hotel = 'Hotel',
 }
 
-export { AppRoute, AuthStatus, OfferType, MIN_REVIEW_LENGTH, URL_MARKER_CURRENT, URL_MARKER_DEFAULT, NEAR_PLACES_AMOUNT };
+export { AppRoute, AuthStatus, OfferType, MIN_REVIEW_LENGTH, URL_MARKER_CURRENT, URL_MARKER_DEFAULT, OFFERS_NEARBY_AMOUNT };
