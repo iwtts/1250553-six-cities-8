@@ -31,6 +31,11 @@ enum OfferType {
   Hotel = 'Hotel',
 }
 
+enum ActionType {
+  SetCity = 'app/set-city',
+  SetOffers = 'app/set-offers-by-city',
+}
+
 export {
   MIN_REVIEW_LENGTH,
   URL_MARKER_CURRENT,
@@ -39,5 +44,6 @@ export {
   AppRoute,
   AuthStatus,
   CardType,
-  OfferType
+  OfferType,
+  ActionType
 };
