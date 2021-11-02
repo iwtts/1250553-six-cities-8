@@ -14,7 +14,7 @@ type SetOffersAction = {
 type Actions = SetCityAction | SetOffersAction;
 
 export type {
-    SetCityAction,
-    SetOffersAction,
-    Actions,
-}
+  SetCityAction,
+  SetOffersAction,
+  Actions
+};

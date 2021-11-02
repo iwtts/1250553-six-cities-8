@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { Dispatch, useState } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+
 
 import Header from '../header/header';
 import ReviewsList from '../reviews-list/reviews-list';
@@ -6,17 +8,35 @@ import ReviewForm from '../review-form/review-form';
 import Map from '../map/map';
 import PropertyCardsList from '../property-cards-list/property-cards-list';
 
+import { State } from '../../types/state';
+import { Actions } from '../../types/action';
+import { setCity } from '../../store/actions';
 import { Offer } from '../../types/offer';
 import { Review } from '../../types/review';
 
 import { OFFERS_NEARBY_AMOUNT } from '../../const';
 
-type PropertyProps = {
-  offers: Offer[];
-  reviews: Review[];
+const mapStateToProps = ({cityOffers, currentCity}: State) => ({
+  offers: cityOffers,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
+  onCityChange(city: string) {
+    dispatch(setCity(city));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropertyScreenProps = {
+  reviews: Review[],
 }
 
-function Property({offers, reviews}: PropertyProps): JSX.Element {
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type ConnectedComponentProps = PropsFromRedux & PropertyScreenProps;
+
+function Property({offers, reviews}: ConnectedComponentProps): JSX.Element {
   const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
   const city = offers[0].city;
   const offersNearby = offers.slice(0, OFFERS_NEARBY_AMOUNT);
@@ -177,4 +197,5 @@ function Property({offers, reviews}: PropertyProps): JSX.Element {
   );
 }
 
-export default Property;
+export { Property };
+export default connector(Property);

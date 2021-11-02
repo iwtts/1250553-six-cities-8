@@ -1,4 +1,8 @@
+import { useEffect } from 'react';
+import { Dispatch } from 'react';
+import { connect, ConnectedProps}  from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
 import { AppRoute, AuthStatus } from '../../const';
 
 import Main from '../main/main';
@@ -9,23 +13,32 @@ import Property from '../property/property';
 import PrivateRoute from '../private-route/private-route';
 
 import { Offer } from '../../types/offer';
-import { Review } from '../../types/review';
+import { Actions } from '../../types/action';
+import { setOfferList } from '../../store/actions';
 
-type AppProps = {
-  cardsAmount: number;
-  offers: Offer[];
-  reviews: Review[];
-}
+import { offers as mockOffers } from '../../mocks/offers';
+import { reviews } from '../../mocks/reviews';
 
-function App({cardsAmount, offers, reviews}: AppProps): JSX.Element {
+type PropsFromRedux = ConnectedProps<typeof connector>
+type ConnectedComponentProps = PropsFromRedux;
+
+const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
+  offersLoaded(offers: Offer[]) {
+    dispatch(setOfferList(offers));
+  },
+});
+
+const connector = connect(null, mapDispatchToProps);
+
+function App(props: ConnectedComponentProps): JSX.Element {
+  useEffect(() => {
+    props.offersLoaded(mockOffers);
+  });
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <Main
-            cardsAmount={cardsAmount}
-            offers={offers}
-          />
+          <Main />
         </Route>
         <Route exact path={AppRoute.SignIn}>
           <Login />
@@ -33,15 +46,12 @@ function App({cardsAmount, offers, reviews}: AppProps): JSX.Element {
         <PrivateRoute
           exact
           path={AppRoute.Favorites}
-          render={() => <Favourites offers={offers} />}
+          render={() => <Favourites />}
           authStatus={AuthStatus.Auth}
         >
         </PrivateRoute>
         <Route exact path={`${AppRoute.Room}/:id`}>
-          <Property
-            offers={offers}
-            reviews={reviews}
-          />
+          <Property reviews={reviews}/>
         </Route>
         <Route>
           <NotFound />
@@ -51,4 +61,6 @@ function App({cardsAmount, offers, reviews}: AppProps): JSX.Element {
   );
 }
 
-export default App;
+export {App};
+export default connector(App);
+

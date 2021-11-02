@@ -1,19 +1,38 @@
-import { useState } from 'react';
+import { Dispatch, useState } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 
 import Header from '../header/header';
 import Navigation from '../navigation/navigation';
 import CardsList from '../cards-list/cards-list';
 import Map from '../map/map';
 
+import { setCity} from '../../store/actions';
+
+import { CITIES } from '../../const';
+
 import { Offer } from '../../types/offer';
+import { State } from '../../types/state';
+import { Actions } from '../../types/action';
 
-type MainProps = {
-  cardsAmount: number;
-  offers: Offer[];
-}
+const mapStateToProps = ({offers, currentCity}: State) => ({
+  offers: offers,
+  currentCity,
+});
 
-function Main({cardsAmount, offers}: MainProps): JSX.Element {
+const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
+  onCityChange(city: string) {
+    dispatch(setCity(city));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function Main(props: PropsFromRedux): JSX.Element {
+  const { currentCity, offers } = props;
   const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
+  const city = Object.values(CITIES).find((item) =>  item.name === currentCity);
 
   const handleOfferMouseEnter = (offer: Offer | undefined) => {
     setSelectedOffer(offer);
@@ -22,8 +41,6 @@ function Main({cardsAmount, offers}: MainProps): JSX.Element {
   const handleOfferMouseLeave = () => {
     setSelectedOffer(undefined);
   };
-
-  const city = offers[0].city;
 
   return (
     <div className="page page--gray page--main">
@@ -37,7 +54,7 @@ function Main({cardsAmount, offers}: MainProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{cardsAmount} places to stay in Amsterdam</b>
+              <b className="places__found">{offers.length} places to stay in {currentCity}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -62,7 +79,7 @@ function Main({cardsAmount, offers}: MainProps): JSX.Element {
             <div className="cities__right-section">
               <section className="cities__map map">
                 <Map
-                  cityLocation={city.location}
+                  cityLocation={city ? city.location : CITIES.Paris.location}
                   points={offers.map((offer) => ({title: offer.title, location: offer.location}))}
                   selectedPoint={selectedOffer}
                 />
@@ -75,4 +92,5 @@ function Main({cardsAmount, offers}: MainProps): JSX.Element {
   );
 }
 
-export default Main;
+export { Main };
+export default connector(Main);

@@ -1,8 +1,9 @@
 import { Offer } from '../types/offer';
 
 type State = {
-  city: string,
   offers: Offer[];
+  cityOffers: Offer[];
+  currentCity: string,
 };
 
 export type { State };

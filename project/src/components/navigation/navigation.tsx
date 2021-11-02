@@ -12,11 +12,11 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux & NavigationCityProps;
 
 type NavigationCityProps = {
-  city: string,
+  // city: string,
 }
 
-const mapStateToProps = ({city}: State) => ({
-  city,
+const mapStateToProps = ({currentCity}: State) => ({
+  currentCity,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
@@ -28,24 +28,26 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 function Navigation(props: ConnectedComponentProps): JSX.Element {
-  const {onCityChange, city} = props;
+  const {onCityChange, currentCity} = props;
 
   return (
     <section className="locations container">
       <ul className="locations__list tabs__list">
-        {CITIES.map((item) => (
-          <li key={item} className="locations__item">
-            <Link
-              className={`locations__item-link tabs__item ${item === city && 'tabs__item--active'}`}
-              to="/"
-              onClick={(evt) => {
-                evt.preventDefault();
-                onCityChange(item);
-              }}
-            >
-              <span>{item}</span>
-            </Link>
-          </li>))}
+        {Object.values(CITIES)
+          .map((item) => item.name)
+          .map((item) => (
+            <li key={item} className="locations__item">
+              <Link
+                className={`locations__item-link tabs__item ${item === currentCity && 'tabs__item--active'}`}
+                to="/"
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  onCityChange(item);
+                }}
+              >
+                <span>{item}</span>
+              </Link>
+            </li>))}
       </ul>
     </section>
   );
