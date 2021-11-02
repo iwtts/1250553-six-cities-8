@@ -6,6 +6,15 @@ const URL_MARKER_CURRENT = './img/pin-active.svg';
 
 const OFFERS_NEARBY_AMOUNT = 3;
 
+const CITIES = [
+  'Paris',
+  'Cologne',
+  'Brussels',
+  'Amsterdam',
+  'Hamburg',
+  'Dusseldorf',
+];
+
 enum AppRoute {
   Main = '/',
   SignIn  = '/login',
@@ -41,6 +50,7 @@ export {
   URL_MARKER_CURRENT,
   URL_MARKER_DEFAULT,
   OFFERS_NEARBY_AMOUNT,
+  CITIES,
   AppRoute,
   AuthStatus,
   CardType,
