@@ -23,7 +23,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>
 type ConnectedComponentProps = PropsFromRedux;
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  offersLoaded(offers: Offer[]) {
+  onOffersLoaded(offers: Offer[]) {
     dispatch(setOfferList(offers));
   },
 });
@@ -32,8 +32,9 @@ const connector = connect(null, mapDispatchToProps);
 
 function App(props: ConnectedComponentProps): JSX.Element {
   useEffect(() => {
-    props.offersLoaded(mockOffers);
+    props.onOffersLoaded(mockOffers);
   });
+
   return (
     <BrowserRouter>
       <Switch>

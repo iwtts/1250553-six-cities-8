@@ -26,7 +26,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 function Favorites(props: PropsFromRedux): JSX.Element {
-  const offers = props.offers;
+  const { offers } = props;
 
   return (
     <div className="page">
