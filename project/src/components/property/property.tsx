@@ -37,16 +37,16 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux & PropertyScreenProps;
 
 function Property({offers, reviews}: ConnectedComponentProps): JSX.Element {
-  const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
+  const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
   const city = offers[0].city;
   const offersNearby = offers.slice(0, OFFERS_NEARBY_AMOUNT);
 
-  const handleOfferMouseEnter = (offer: Offer | undefined) => {
+  const handleOfferMouseEnter = (offer: Offer | null) => {
     setSelectedOffer(offer);
   };
 
   const handleOfferMouseLeave = () => {
-    setSelectedOffer(undefined);
+    setSelectedOffer(null);
   };
 
   return (
@@ -57,22 +57,22 @@ function Property({offers, reviews}: ConnectedComponentProps): JSX.Element {
           <div className="property__gallery-container container">
             <div className="property__gallery">
               <div className="property__image-wrapper">
-                <img className="property__image" src="img/room.jpg" alt="Photo studio" />
+                <img className="property__image" src="img/room.jpg" alt="Studio" />
               </div>
               <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Photo studio" />
+                <img className="property__image" src="img/apartment-01.jpg" alt="Studio" />
               </div>
               <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-02.jpg" alt="Photo studio" />
+                <img className="property__image" src="img/apartment-02.jpg" alt="Studio" />
               </div>
               <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-03.jpg" alt="Photo studio" />
+                <img className="property__image" src="img/apartment-03.jpg" alt="Studio" />
               </div>
               <div className="property__image-wrapper">
-                <img className="property__image" src="img/studio-01.jpg" alt="Photo studio" />
+                <img className="property__image" src="img/studio-01.jpg" alt="Studio" />
               </div>
               <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Photo studio" />
+                <img className="property__image" src="img/apartment-01.jpg" alt="Studio" />
               </div>
             </div>
           </div>

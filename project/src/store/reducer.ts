@@ -31,7 +31,7 @@ const reducer = (state: State = initialState, action: Actions): State => {
         currentSortType: action.payload.currentSortType,
       };
     }
-    default:{
+    default: {
       return state;
     }
   }

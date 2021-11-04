@@ -18,10 +18,10 @@ import { Actions } from '../../types/action';
 const getSortedOffers = (currentSortType: string, offers: Offer[]) => {
   switch(currentSortType){
     case SortType.PriceIncrease: {
-      return offers.slice().sort((offerA: { price: number; }, offerB: { price: number; }) => offerB.price - offerA.price);
+      return offers.slice().sort((offerA: { price: number; }, offerB: { price: number; }) => offerA.price - offerB.price);
     }
     case SortType.PriceDecrease: {
-      return offers.slice().sort((offerA: { price: number; }, offerB: { price: number; }) => offerA.price - offerB.price);
+      return offers.slice().sort((offerA: { price: number; }, offerB: { price: number; }) => offerB.price - offerA.price);
     }
     case SortType.TopRatedFirst: {
       return offers.slice().sort((offerA: { rating: number; }, offerB: { rating: number; }) => offerB.rating - offerA.rating);
@@ -50,17 +50,17 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function Main(props: PropsFromRedux): JSX.Element {
   const { currentCity, currentSortType, offers } = props;
-  const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
+  const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
   const city = Object.values(CITIES).find((item) =>  item.name === currentCity);
-  const currentOffers = offers.filter((offer: Offer) => offer.city.name === currentCity);
   const sortedOffers = getSortedOffers(currentSortType, offers);
+  const currentOffers = sortedOffers.filter((offer: Offer) => offer.city.name === currentCity);
 
-  const handleOfferMouseEnter = (offer: Offer | undefined) => {
+  const handleOfferMouseEnter = (offer: Offer | null) => {
     setSelectedOffer(offer);
   };
 
   const handleOfferMouseLeave = () => {
-    setSelectedOffer(undefined);
+    setSelectedOffer(null);
   };
 
   return (
@@ -78,7 +78,7 @@ function Main(props: PropsFromRedux): JSX.Element {
               <b className="places__found">{currentOffers.length} places to stay in {currentCity}</b>
               <Sort />
               <CardsList
-                offers={sortedOffers}
+                offers={currentOffers}
                 onOfferMouseEnter={handleOfferMouseEnter}
                 onOfferMouseLeave={handleOfferMouseLeave}
               />
