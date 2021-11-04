@@ -33,7 +33,7 @@ const connector = connect(null, mapDispatchToProps);
 function App(props: ConnectedComponentProps): JSX.Element {
   useEffect(() => {
     props.onOffersLoaded(mockOffers);
-  });
+  }, [props]);
 
   return (
     <BrowserRouter>

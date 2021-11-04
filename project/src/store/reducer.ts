@@ -19,11 +19,12 @@ const reducer = (state: State = initialState, action: Actions): State => {
         cityOffers: state.offers.filter((offer) => offer.city.name === action.payload),
       };
     }
-    case ActionType.SetOffers:
+    case ActionType.SetOffers: {
       return {...state,
         offers: action.payload,
         cityOffers: action.payload.filter((offer) => offer.city.name === state.currentCity),
       };
+    }
     default:
       return state;
   }
