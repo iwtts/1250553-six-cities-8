@@ -12,11 +12,7 @@ import { CITIES } from '../../const';
 import { AppRoute } from '../../const';
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux & NavigationCityProps;
-
-type NavigationCityProps = {
-  // city: string,
-}
+type ConnectedComponentProps = PropsFromRedux ;
 
 const mapStateToProps = ({currentCity}: State) => ({
   currentCity,
@@ -33,6 +29,11 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 function Navigation(props: ConnectedComponentProps): JSX.Element {
   const {onCityChange, currentCity} = props;
 
+  const handleNavigationItemClick = (evt: React.MouseEvent<HTMLAnchorElement>, city: string) => {
+    evt.preventDefault();
+    onCityChange(city);
+  };
+
   return (
     <section className="locations container">
       <ul className="locations__list tabs__list">
@@ -42,10 +43,7 @@ function Navigation(props: ConnectedComponentProps): JSX.Element {
               <Link
                 className={clsx('locations__item-link', 'tabs__item', item === currentCity && 'tabs__item--active')}
                 to={AppRoute.Main}
-                onClick={(evt) => {
-                  evt.preventDefault();
-                  onCityChange(item);
-                }}
+                onClick={(evt) => handleNavigationItemClick(evt, item)}
               >
                 <span>{item}</span>
               </Link>

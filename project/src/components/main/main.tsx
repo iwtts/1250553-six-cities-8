@@ -33,6 +33,7 @@ function Main(props: PropsFromRedux): JSX.Element {
   const { currentCity, offers } = props;
   const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
   const city = Object.values(CITIES).find((item) =>  item.name === currentCity);
+  const currentOffers = offers.filter((offer: Offer) => offer.city.name === currentCity);
 
   const handleOfferMouseEnter = (offer: Offer | undefined) => {
     setSelectedOffer(offer);
@@ -54,7 +55,7 @@ function Main(props: PropsFromRedux): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offers.length} places to stay in {currentCity}</b>
+              <b className="places__found">{currentOffers.length} places to stay in {currentCity}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -71,7 +72,7 @@ function Main(props: PropsFromRedux): JSX.Element {
                 </ul>
               </form>
               <CardsList
-                offers={offers}
+                offers={currentOffers}
                 onOfferMouseEnter={handleOfferMouseEnter}
                 onOfferMouseLeave={handleOfferMouseLeave}
               />
@@ -80,7 +81,7 @@ function Main(props: PropsFromRedux): JSX.Element {
               <section className="cities__map map">
                 <Map
                   cityLocation={city ? city.location : CITIES.Paris.location}
-                  points={offers.map((offer) => ({title: offer.title, location: offer.location}))}
+                  points={currentOffers.map((offer) => ({title: offer.title, location: offer.location}))}
                   selectedPoint={selectedOffer}
                 />
               </section>
