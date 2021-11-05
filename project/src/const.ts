@@ -85,6 +85,13 @@ enum OfferType {
 enum ActionType {
   SetCity = 'app/set-city',
   SetOffers = 'app/set-offers-by-city',
+  ChangeSortType = 'sort/change-sort-type',
+}
+enum SortType {
+  Popular = 'Popular',
+  TopRatedFirst = 'Top rated first',
+  PriceIncrease = 'Price: low to high',
+  PriceDecrease = 'Price: high to low',
 }
 
 export {
@@ -97,5 +104,6 @@ export {
   AuthStatus,
   CardType,
   OfferType,
-  ActionType
+  ActionType,
+  SortType
 };

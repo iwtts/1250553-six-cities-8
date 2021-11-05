@@ -1,5 +1,5 @@
 import { Offer } from './offer';
-import { ActionType } from '../const';
+import { ActionType, SortType } from '../const';
 
 type SetCityAction = {
   type: ActionType.SetCity;
@@ -11,10 +11,18 @@ type SetOffersAction = {
   payload: Offer[];
 }
 
-type Actions = SetCityAction | SetOffersAction;
+type ChangeSortTypeAction = {
+  type: ActionType.ChangeSortType;
+  payload: {
+    currentSortType: SortType,
+  },
+}
+
+type Actions = SetCityAction | SetOffersAction | ChangeSortTypeAction;
 
 export type {
   SetCityAction,
   SetOffersAction,
+  ChangeSortTypeAction,
   Actions
 };
