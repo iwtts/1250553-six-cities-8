@@ -5,6 +5,8 @@ import { changeSortType } from '../../store/actions';
 import { State } from '../../types/state';
 import { Actions } from '../../types/action';
 
+import SortItem from '../sort-item/sort-item';
+
 const mapStateToProps = ({currentSortType}: State) => ({
   currentSortType,
 });
@@ -56,16 +58,12 @@ function Sort({currentSortType, onSortTypeChange}: PropsFromRedux): JSX.Element 
             handleSortingOptionClick(sortType);
           };
           return (
-            <li
+            <SortItem
               key={sortType}
-              className={`places__option ${sortType === currentSortType
-                ? 'places__option--active'
-                : ''}`}
+              sortType={sortType}
+              currentSortType={currentSortType}
               onClick={handleClick}
-              tabIndex={0}
-            >
-              {sortType}
-            </li>
+            />
           );
         })}
       </ul>

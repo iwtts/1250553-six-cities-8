@@ -1,8 +1,9 @@
 import { Offer } from './types/offer';
+import { DataOffer } from './types/data';
 
 const getRatingStarsWidth = (rating: number): number => rating * 20;
 
-const adaptOfferDataToClient = (data: any): Offer => ({
+const adaptOfferDataToClient = (data: DataOffer): Offer => ({
   bedrooms: data['bedrooms'],
   city: {
     name: data['city']['name'],
@@ -34,7 +35,7 @@ const adaptOfferDataToClient = (data: any): Offer => ({
   price: data['price'],
   rating: data['rating'],
   title: data['title'],
-  type: data['room'],
+  type: data['type'],
 });
 
 export { getRatingStarsWidth, adaptOfferDataToClient };

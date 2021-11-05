@@ -8,7 +8,6 @@ import Main from '../main/main';
 import Favourites from '../favorites/favorites';
 import Login from '../login/login';
 import NotFound from '../not-found/not-found';
-// import Property from '../property/property';
 import PrivateRoute from '../private-route/private-route';
 
 import { State } from '../../types/state';
@@ -47,7 +46,6 @@ function App({isDataLoaded}: ConnectedComponentProps): JSX.Element {
         >
         </PrivateRoute>
         <Route exact path={`${AppRoute.Room}/:id`}>
-          {/* <Property/> */}
         </Route>
         <Route>
           <NotFound />
