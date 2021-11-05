@@ -20,40 +20,54 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function Sort({currentSortType, onSortTypeChange}: PropsFromRedux): JSX.Element {
-  const [dropdownOpened, setDropdownOpened] = useState<boolean>(false);
+  const [isDropdownOpened, setIsDropdownOpened] = useState<boolean>(false);
   const sortTypes = Object.values(SortType);
 
-  const onSortTypeClick = (sortType: SortType): void => {
+  const handleSortingTypeClick = () => {
+    setIsDropdownOpened(!isDropdownOpened);
+  };
+
+  const handleSortingOptionClick = (sortType: SortType) => {
     if (sortType !== currentSortType) {
       onSortTypeChange(sortType);
     }
-    setDropdownOpened(false);
+    setIsDropdownOpened(false);
   };
 
   return (
     <form className="places__sorting" action="#" method="get">
       <span className="places__sorting-caption">Sort by </span>
-      <span className="places__sorting-type" tabIndex={0} onClick={() => setDropdownOpened(!dropdownOpened)}>
+      <span
+        className="places__sorting-type"
+        tabIndex={0}
+        onClick={handleSortingTypeClick}
+      >
         {currentSortType}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"/>
         </svg>
       </span>
-      <ul className={`places__options places__options--custom ${dropdownOpened
+      <ul className={`places__options places__options--custom ${isDropdownOpened
         ? 'places__options--opened'
         : 'places__options--closed'}`}
       >
-        {sortTypes.map((sortType) => (
-          <li
-            key={sortType}
-            className={`places__option ${sortType === currentSortType
-              ? 'places__option--active'
-              : ''}`}
-            onClick={() => onSortTypeClick(sortType)}
-            tabIndex={0}
-          >{sortType}
-          </li>
-        ))}
+        {sortTypes.map((sortType) => {
+          const handleClick = () => {
+            handleSortingOptionClick(sortType);
+          };
+          return (
+            <li
+              key={sortType}
+              className={`places__option ${sortType === currentSortType
+                ? 'places__option--active'
+                : ''}`}
+              onClick={handleClick}
+              tabIndex={0}
+            >
+              {sortType}
+            </li>
+          );
+        })}
       </ul>
     </form>
   );
