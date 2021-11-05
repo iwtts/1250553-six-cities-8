@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import { AppRoute, AuthStatus } from '../../const';
 
+import Loading from '../loading/loading';
 import Main from '../main/main';
 import Favourites from '../favorites/favorites';
 import Login from '../login/login';
@@ -23,6 +24,11 @@ const mapStateToProps = ({isDataLoaded, offers}: State) => ({
 const connector = connect(mapStateToProps);
 
 function App({isDataLoaded}: ConnectedComponentProps): JSX.Element {
+  if (!isDataLoaded) {
+    return (
+      <Loading />
+    );
+  }
 
   return (
     <BrowserRouter>
