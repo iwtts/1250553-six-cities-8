@@ -1,5 +1,3 @@
-import React, {useEffect} from 'react';
-import { Dispatch } from 'react';
 import { connect, ConnectedProps}  from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
@@ -12,28 +10,19 @@ import NotFound from '../not-found/not-found';
 import Property from '../property/property';
 import PrivateRoute from '../private-route/private-route';
 
-import { Offer } from '../../types/offer';
-import { Actions } from '../../types/action';
-import { setOfferList } from '../../store/actions';
-
-import { offers as mockOffers } from '../../mocks/offers';
-import { reviews } from '../../mocks/reviews';
+import { State } from '../../types/state';
 
 type PropsFromRedux = ConnectedProps<typeof connector>
 type ConnectedComponentProps = PropsFromRedux;
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  onOffersLoaded(offers: Offer[]) {
-    dispatch(setOfferList(offers));
-  },
+const mapStateToProps = ({isDataLoaded, offers}: State) => ({
+  isDataLoaded,
+  offers,
 });
 
-const connector = connect(null, mapDispatchToProps);
+const connector = connect(mapStateToProps);
 
-function App(props: ConnectedComponentProps): JSX.Element {
-  useEffect(() => {
-    props.onOffersLoaded(mockOffers);
-  }, [props]);
+function App({isDataLoaded}: ConnectedComponentProps): JSX.Element {
 
   return (
     <BrowserRouter>
@@ -52,7 +41,7 @@ function App(props: ConnectedComponentProps): JSX.Element {
         >
         </PrivateRoute>
         <Route exact path={`${AppRoute.Room}/:id`}>
-          <Property reviews={reviews}/>
+          <Property/>
         </Route>
         <Route>
           <NotFound />

@@ -9,7 +9,7 @@ enum HttpCode {
   Unauthorized = 401,
 }
 
-export const createAPI = (): AxiosInstance => {
+const createApi = (): AxiosInstance => {
   const api = axios.create({
     baseURL: BACKEND_URL,
     timeout: REQUEST_TIMEOUT,
@@ -43,3 +43,6 @@ export const createAPI = (): AxiosInstance => {
 
   return api;
 };
+
+export { createApi };
+
