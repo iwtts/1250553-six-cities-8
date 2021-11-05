@@ -1,9 +1,8 @@
 import { Dispatch, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
-
 import Header from '../header/header';
-import ReviewsList from '../reviews-list/reviews-list';
+// import ReviewsList from '../reviews-list/reviews-list';
 import ReviewForm from '../review-form/review-form';
 import Map from '../map/map';
 import PropertyCardsList from '../property-cards-list/property-cards-list';
@@ -12,7 +11,6 @@ import { State } from '../../types/state';
 import { Actions } from '../../types/action';
 import { setCity } from '../../store/actions';
 import { Offer } from '../../types/offer';
-import { Review } from '../../types/review';
 
 import { OFFERS_NEARBY_AMOUNT } from '../../const';
 
@@ -28,15 +26,12 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type PropertyScreenProps = {
-  reviews: Review[],
-}
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type ConnectedComponentProps = PropsFromRedux & PropertyScreenProps;
+type ConnectedComponentProps = PropsFromRedux;
 
-function Property({offers, reviews}: ConnectedComponentProps): JSX.Element {
+function Property({offers}: ConnectedComponentProps): JSX.Element {
   const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
   const city = offers[0].city;
   const offersNearby = offers.slice(0, OFFERS_NEARBY_AMOUNT);
@@ -172,7 +167,7 @@ function Property({offers, reviews}: ConnectedComponentProps): JSX.Element {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <ReviewsList reviews={reviews} />
+                {/* <ReviewsList reviews={reviews} /> */}
                 <ReviewForm />
               </section>
             </div>
