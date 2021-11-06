@@ -53,19 +53,14 @@ function Sort({currentSortType, onSortTypeChange}: PropsFromRedux): JSX.Element 
         ? 'places__options--opened'
         : 'places__options--closed'}`}
       >
-        {sortTypes.map((sortType) => {
-          const handleClick = () => {
-            handleSortingOptionClick(sortType);
-          };
-          return (
-            <SortItem
-              key={sortType}
-              sortType={sortType}
-              currentSortType={currentSortType}
-              onClick={handleClick}
-            />
-          );
-        })}
+        {sortTypes.map((sortType) => (
+          <SortItem
+            key={sortType}
+            sortType={sortType}
+            currentSortType={currentSortType}
+            onClick={handleSortingOptionClick}
+          />
+        ))}
       </ul>
     </form>
   );
