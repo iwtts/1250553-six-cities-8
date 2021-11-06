@@ -18,13 +18,13 @@ import { Actions } from '../../types/action';
 const getSortedOffers = (currentSortType: string, offers: Offer[]) => {
   switch(currentSortType){
     case SortType.PriceIncrease: {
-      return offers.slice().sort((offerA: { price: number; }, offerB: { price: number; }) => offerA.price - offerB.price);
+      return offers.slice().sort((offerA, offerB) => offerA.price - offerB.price);
     }
     case SortType.PriceDecrease: {
-      return offers.slice().sort((offerA: { price: number; }, offerB: { price: number; }) => offerB.price - offerA.price);
+      return offers.slice().sort((offerA, offerB) => offerB.price - offerA.price);
     }
     case SortType.TopRatedFirst: {
-      return offers.slice().sort((offerA: { rating: number; }, offerB: { rating: number; }) => offerB.rating - offerA.rating);
+      return offers.slice().sort((offerA, offerB) => offerB.rating - offerA.rating);
     }
     default: {
       return offers;

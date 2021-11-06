@@ -64,6 +64,13 @@ enum AppRoute {
   Room = '/offer'
 }
 
+enum ApiRoute {
+  Offers = '/hotels',
+  Favorite = '/favorite',
+  Login = '/login',
+  Logout = '/logout',
+}
+
 enum AuthStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
@@ -101,6 +108,7 @@ export {
   OFFERS_NEARBY_AMOUNT,
   CITIES,
   AppRoute,
+  ApiRoute,
   AuthStatus,
   CardType,
   OfferType,

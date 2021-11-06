@@ -6,6 +6,7 @@ import { CITIES, SortType } from '../const';
 const CURRENT_CITY = CITIES.Paris.name;
 
 const initialState: State = {
+  isDataLoaded: false,
   currentCity: CURRENT_CITY ,
   cityOffers: [],
   offers: [],
@@ -24,6 +25,7 @@ const reducer = (state: State = initialState, action: Actions): State => {
       return {...state,
         offers: action.payload,
         cityOffers: action.payload.filter((offer) => offer.city.name === state.currentCity),
+        isDataLoaded: true,
       };
     }
     case ActionType.ChangeSortType: {

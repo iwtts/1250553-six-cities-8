@@ -1,3 +1,7 @@
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { AxiosInstance } from 'axios';
+
+import { State } from './state';
 import { Offer } from './offer';
 import { ActionType, SortType } from '../const';
 
@@ -19,10 +23,14 @@ type ChangeSortTypeAction = {
 }
 
 type Actions = SetCityAction | SetOffersAction | ChangeSortTypeAction;
+type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
+type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Actions>;
 
 export type {
   SetCityAction,
   SetOffersAction,
   ChangeSortTypeAction,
-  Actions
+  Actions,
+  ThunkActionResult,
+  ThunkAppDispatch
 };
