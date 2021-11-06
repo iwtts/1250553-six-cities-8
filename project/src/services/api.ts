@@ -9,25 +9,13 @@ enum HttpCode {
   Unauthorized = 401,
 }
 
-const createApi = (): AxiosInstance => {
+type UnauthorizedCallback = () => void;
+
+const createApi = (onUnauthorized: UnauthorizedCallback): AxiosInstance => {
   const api = axios.create({
     baseURL: BACKEND_URL,
     timeout: REQUEST_TIMEOUT,
   });
-
-  api.interceptors.response.use(
-    (response: AxiosResponse) => response,
-
-    (error: AxiosError) => {
-      const {response} = error;
-
-      if (response?.status === HttpCode.Unauthorized) {
-        return false;
-      }
-
-      return Promise.reject(error);
-    },
-  );
 
   api.interceptors.request.use(
     (config: AxiosRequestConfig) => {
@@ -38,6 +26,20 @@ const createApi = (): AxiosInstance => {
       }
 
       return config;
+    },
+  );
+
+  api.interceptors.response.use(
+    (response: AxiosResponse) => response,
+
+    (error: AxiosError) => {
+      const {response} = error;
+
+      if (response?.status === HttpCode.Unauthorized) {
+        return onUnauthorized();
+      }
+
+      return Promise.reject(error);
     },
   );
 

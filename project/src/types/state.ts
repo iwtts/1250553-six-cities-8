@@ -1,7 +1,8 @@
 import { Offer } from '../types/offer';
-import { SortType } from '../const';
+import { SortType, AuthStatus } from '../const';
 
 type State = {
+  authStatus: AuthStatus,
   isDataLoaded: boolean,
   offers: Offer[],
   cityOffers: Offer[],

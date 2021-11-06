@@ -3,7 +3,7 @@ import { AxiosInstance } from 'axios';
 
 import { State } from './state';
 import { Offer } from './offer';
-import { ActionType, SortType } from '../const';
+import { ActionType, SortType, AuthStatus } from '../const';
 
 type SetCityAction = {
   type: ActionType.SetCity;
@@ -22,7 +22,18 @@ type ChangeSortTypeAction = {
   },
 }
 
-type Actions = SetCityAction | SetOffersAction | ChangeSortTypeAction;
+type RequireAuth = {
+  type: ActionType.RequireAuth;
+  payload: {
+    authStatus: AuthStatus,
+  },
+}
+
+type RequireLogout = {
+  type: ActionType.RequireLogout;
+}
+
+type Actions = SetCityAction | SetOffersAction | ChangeSortTypeAction | RequireAuth | RequireLogout;
 type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
 type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Actions>;
 
@@ -30,6 +41,8 @@ export type {
   SetCityAction,
   SetOffersAction,
   ChangeSortTypeAction,
+  RequireAuth,
+  RequireLogout,
   Actions,
   ThunkActionResult,
   ThunkAppDispatch
