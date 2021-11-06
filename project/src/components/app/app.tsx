@@ -45,7 +45,6 @@ function App({authStatus, isDataLoaded}: ConnectedComponentProps): JSX.Element {
           exact
           path={AppRoute.Favorites}
           render={() => <Favourites />}
-          authStatus={AuthStatus.Auth}
         >
         </PrivateRoute>
         <Route exact path={`${AppRoute.Room}/:id`}>
