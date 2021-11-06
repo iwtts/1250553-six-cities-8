@@ -1,6 +1,6 @@
-import { SetCityAction, SetOffersAction, ChangeSortTypeAction, RequireAuth, RequireLogout } from '../types/action';
+import { SetCityAction, SetOffersAction, ChangeSortTypeAction, RequireAuth, RequireLogout, ChangeUser, RedirectToRoute } from '../types/action';
 import { Offer } from '../types/offer';
-import { ActionType, SortType, AuthStatus } from '../const';
+import { ActionType, SortType, AuthStatus, AppRoute } from '../const';
 
 const setCity = (activeCity: string): SetCityAction  => ({
   type: ActionType.SetCity,
@@ -35,4 +35,19 @@ const requireLogout = (): RequireLogout => ({
   type: ActionType.RequireLogout,
 });
 
-export { setCity, setOfferList, changeSortType, loadOffers, requireAuth, requireLogout };
+const changeUser = (login: string): ChangeUser => ({
+  type: ActionType.ChangeUser,
+  payload: {
+    login,
+  },
+});
+
+const redirectToRouter = (url: AppRoute): RedirectToRoute => ({
+  type: ActionType.RedirectToRoute,
+  payload: {
+    url,
+  },
+});
+
+export { setCity, setOfferList, changeSortType, loadOffers, requireAuth, requireLogout, changeUser, redirectToRouter };
+

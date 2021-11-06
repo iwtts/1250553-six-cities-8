@@ -1,5 +1,5 @@
 import { connect, ConnectedProps}  from 'react-redux';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Router as BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Loading from '../loading/loading';
 import Main from '../main/main';
@@ -7,6 +7,7 @@ import Favourites from '../favorites/favorites';
 import Login from '../login/login';
 import NotFound from '../not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
+import browserHistory from '../../browser-history';
 
 import { AppRoute, AuthStatus } from '../../const';
 import { State } from '../../types/state';
@@ -33,7 +34,7 @@ function App({authStatus, isDataLoaded}: ConnectedComponentProps): JSX.Element {
   }
 
   return (
-    <BrowserRouter>
+    <BrowserRouter history={browserHistory}>
       <Switch>
         <Route exact path={AppRoute.Main}>
           <Main />

@@ -8,6 +8,7 @@ type State = {
   cityOffers: Offer[],
   currentCity: string,
   currentSortType: SortType,
+  currentUserEmail: string,
 };
 
 export type { State };

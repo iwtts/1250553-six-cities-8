@@ -1,14 +1,20 @@
 import { useRef, FormEvent } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { loginAction } from '../../store/api-actions';
+import { useHistory } from 'react-router-dom';
+
 import { AuthData } from '../../types/data';
 import { ThunkAppDispatch } from '../../types/action';
+
+import { AppRoute } from '../../const';
+import { changeUser } from '../../store/actions';
+import { loginAction } from '../../store/api-actions';
 
 import Header from '../header/header';
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onSubmit(authData: AuthData) {
     dispatch(loginAction(authData));
+    dispatch(changeUser(authData.login));
   },
 });
 
@@ -19,6 +25,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 function Login({onSubmit}: PropsFromRedux): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
+  const history = useHistory();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -27,12 +34,13 @@ function Login({onSubmit}: PropsFromRedux): JSX.Element {
         login: loginRef.current.value,
         password: passwordRef.current.value,
       });
+      history.push(AppRoute.Main);
     }
   };
 
   return (
     <div className="page page--gray page--login">
-      <Header/>
+      <Header />
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">
@@ -80,5 +88,5 @@ function Login({onSubmit}: PropsFromRedux): JSX.Element {
     </div>
   );
 }
-
-export default Login;
+export default connector(Login);
+export { Login };

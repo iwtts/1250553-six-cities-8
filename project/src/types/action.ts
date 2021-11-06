@@ -33,7 +33,21 @@ type RequireLogout = {
   type: ActionType.RequireLogout;
 }
 
-type Actions = SetCityAction | SetOffersAction | ChangeSortTypeAction | RequireAuth | RequireLogout;
+type ChangeUser = {
+  type: ActionType.ChangeUser;
+  payload: {
+    login: string,
+  },
+}
+
+type RedirectToRoute = {
+  type: ActionType.RedirectToRoute;
+  payload: {
+    url: string,
+  }
+}
+
+type Actions = SetCityAction | SetOffersAction | ChangeSortTypeAction | RequireAuth | RequireLogout | ChangeUser | RedirectToRoute;
 type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
 type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Actions>;
 
@@ -43,6 +57,8 @@ export type {
   ChangeSortTypeAction,
   RequireAuth,
   RequireLogout,
+  ChangeUser,
+  RedirectToRoute,
   Actions,
   ThunkActionResult,
   ThunkAppDispatch

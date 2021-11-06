@@ -12,6 +12,7 @@ const initialState: State = {
   cityOffers: [],
   offers: [],
   currentSortType: SortType.Popular,
+  currentUserEmail: '',
 };
 
 const reducer = (state: State = initialState, action: Actions): State => {
@@ -42,6 +43,11 @@ const reducer = (state: State = initialState, action: Actions): State => {
     case ActionType.RequireLogout: {
       return {...state,
         authStatus: AuthStatus.NoAuth,
+      };
+    }
+    case ActionType.ChangeUser:{
+      return {...state,
+        currentUserEmail: action.payload.login,
       };
     }
     default: {
