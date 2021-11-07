@@ -33,7 +33,7 @@ const getSortedOffers = (currentSortType: string, offers: Offer[]) => {
 };
 
 const mapStateToProps = ({offers, currentCity, currentSortType}: State) => ({
-  offers: offers,
+  offers,
   currentCity,
   currentSortType,
 });
