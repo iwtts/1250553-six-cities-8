@@ -1,3 +1,5 @@
+import { Icon } from 'leaflet';
+
 const MIN_REVIEW_LENGTH = 50;
 
 const URL_MARKER_DEFAULT = './img/pin.svg';
@@ -57,6 +59,18 @@ const CITIES = {
   },
 };
 
+const defaultCustomIcon = new Icon({
+  iconUrl: URL_MARKER_DEFAULT,
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
+
+const currentCustomIcon = new Icon({
+  iconUrl: URL_MARKER_CURRENT,
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
+
 enum AppRoute {
   Main = '/',
   SignIn  = '/login',
@@ -78,6 +92,11 @@ enum AuthStatus {
 }
 
 enum CardType {
+  Main,
+  Property,
+}
+
+enum MapType {
   Main,
   Property,
 }
@@ -109,12 +128,15 @@ export {
   MIN_REVIEW_LENGTH,
   URL_MARKER_CURRENT,
   URL_MARKER_DEFAULT,
+  defaultCustomIcon,
+  currentCustomIcon,
   OFFERS_NEARBY_AMOUNT,
   CITIES,
   AppRoute,
   ApiRoute,
   AuthStatus,
   CardType,
+  MapType,
   OfferType,
   ActionType,
   SortType

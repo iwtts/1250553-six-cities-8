@@ -3,19 +3,22 @@ import { useParams } from 'react-router';
 
 import Header from '../header/header';
 import NotFound from '../not-found/not-found';
+import Map from '../map/map';
 
 import { State } from '../../types/state';
+import { MapType } from '../../const';
 import { getRatingStarsWidth } from '../../utils';
 
-const mapStateToProps = ({ offers }: State) => ({
+const mapStateToProps = ({ offers, dataNearbyOffers }: State) => ({
   offers,
+  dataNearbyOffers,
 });
 
 const connector = connect(mapStateToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function Property({offers}: PropsFromRedux): JSX.Element {
+function Property({offers, dataNearbyOffers}: PropsFromRedux): JSX.Element {
   const {id} = useParams() as {id: string};
   const offer = offers.find((item) => item.id.toString() === id);
 
@@ -24,6 +27,18 @@ function Property({offers}: PropsFromRedux): JSX.Element {
   }
 
   const { isFavorite, images, isPremium, title, rating, type, bedrooms, maxAdults, price, goods, host, description } = offer;
+
+  const nearbyPoints = dataNearbyOffers.map((item) => ({
+    latitude: item.location.latitude,
+    longitude: item.location.longitude,
+    id: item.id,
+  }));
+
+  const currentPoint = {
+    latitude: offer.location.latitude,
+    longitude: offer.location.longitude,
+    id: offer.id,
+  };
 
   const getBookmarkButtonClassName = () => {
     if (isFavorite) {
@@ -130,9 +145,12 @@ function Property({offers}: PropsFromRedux): JSX.Element {
               </section>
             </div>
           </div>
-          <section className="property__map map">
-
-          </section>
+          <Map
+            type={MapType.Property}
+            location={offer.city.location}
+            points={nearbyPoints}
+            currentPoint={currentPoint}
+          />
         </section>
         <div className="container">
 
