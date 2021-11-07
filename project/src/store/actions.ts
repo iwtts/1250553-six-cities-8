@@ -1,8 +1,6 @@
-import { SetCityAction, SetOffersAction, ChangeSortTypeAction, ThunkActionResult } from '../types/action';
+import { SetCityAction, SetOffersAction, ChangeSortTypeAction, RequireAuth, RequireLogout, ChangeUser, RedirectToRoute } from '../types/action';
 import { Offer } from '../types/offer';
-import { DataOffer } from '../types/data';
-import { ActionType, SortType, ApiRoute } from '../const';
-import { adaptOfferDataToClient } from '../utils';
+import { ActionType, SortType, AuthStatus, AppRoute } from '../const';
 
 const setCity = (activeCity: string): SetCityAction  => ({
   type: ActionType.SetCity,
@@ -21,11 +19,35 @@ const changeSortType = (sortType: SortType): ChangeSortTypeAction => ({
   },
 });
 
-const loadOffers = (): ThunkActionResult =>
-  async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get(ApiRoute.Offers);
-    const offers = data.map((item: DataOffer ) => adaptOfferDataToClient(item));
-    dispatch(setOfferList(offers));
-  };
+const loadOffers = (offers: Offer[]): SetOffersAction => ({
+  type: ActionType.SetOffers,
+  payload: offers,
+});
 
-export { setCity, setOfferList, changeSortType, loadOffers };
+const requireAuth = (authStatus: AuthStatus): RequireAuth  => ({
+  type: ActionType.RequireAuth,
+  payload: {
+    authStatus: authStatus,
+  },
+});
+
+const requireLogout = (): RequireLogout => ({
+  type: ActionType.RequireLogout,
+});
+
+const changeUser = (login: string): ChangeUser => ({
+  type: ActionType.ChangeUser,
+  payload: {
+    login,
+  },
+});
+
+const redirectToRouter = (url: AppRoute): RedirectToRoute => ({
+  type: ActionType.RedirectToRoute,
+  payload: {
+    url,
+  },
+});
+
+export { setCity, setOfferList, changeSortType, loadOffers, requireAuth, requireLogout, changeUser, redirectToRouter };
+

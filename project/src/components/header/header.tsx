@@ -1,7 +1,22 @@
+import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
 
-function Header(): JSX.Element {
+import { State } from '../../types/state';
+import { AppRoute, AuthStatus } from '../../const';
+
+import LoggedUserBar from '../header-logged-user-bar/logged-user-bar';
+import NotLoggedUserBar from '../header-not-logged-user-bar/not-logged-user-bar';
+
+
+const mapStateToProps = ({authStatus}: State) => ({
+  authStatus,
+});
+
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function Header({authStatus}: PropsFromRedux): JSX.Element {
   return (
     <header className="header">
       <div className="container">
@@ -13,18 +28,9 @@ function Header(): JSX.Element {
           </div>
           <nav className="header__nav">
             <ul className="header__nav-list">
-              <li className="header__nav-item user">
-                <Link to={AppRoute.Favorites} className="header__nav-link header__nav-link--profile">
-                  <div className="header__avatar-wrapper user__avatar-wrapper">
-                  </div>
-                  <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                </Link>
-              </li>
-              <li className="header__nav-item">
-                <Link to={AppRoute.Main} className="header__nav-link">
-                  <span className="header__signout">Sign out</span>
-                </Link>
-              </li>
+              {authStatus === AuthStatus.Auth
+                ? <LoggedUserBar />
+                : <NotLoggedUserBar />}
             </ul>
           </nav>
         </div>
@@ -33,6 +39,7 @@ function Header(): JSX.Element {
   );
 }
 
-export default Header;
+export { Header };
+export default connector(Header);
 
 

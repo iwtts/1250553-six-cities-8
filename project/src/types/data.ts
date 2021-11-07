@@ -1,5 +1,10 @@
 import { OfferType } from '../const';
 
+type AuthData = {
+  login: string;
+  password: string;
+};
+
 type DataOffer = {
   'bedrooms': number,
   'city': {
@@ -35,4 +40,4 @@ type DataOffer = {
   'type': OfferType
 }
 
-export type { DataOffer };
+export type { AuthData, DataOffer };

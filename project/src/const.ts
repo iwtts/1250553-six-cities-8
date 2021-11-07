@@ -93,6 +93,10 @@ enum ActionType {
   SetCity = 'app/set-city',
   SetOffers = 'app/set-offers-by-city',
   ChangeSortType = 'sort/change-sort-type',
+  RequireAuth = 'user/requireAuthorization',
+  RequireLogout = 'user/requireLogout',
+  ChangeUser = 'user/change-user',
+  RedirectToRoute = 'user/redirect-to-route',
 }
 enum SortType {
   Popular = 'Popular',

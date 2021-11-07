@@ -7,7 +7,7 @@ import Sort from '../sort/sort';
 import CardsList from '../cards-list/cards-list';
 import Map from '../map/map';
 
-import { setCity} from '../../store/actions';
+import { setCity, requireLogout } from '../../store/actions';
 
 import { CITIES, SortType } from '../../const';
 
@@ -42,6 +42,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
   onCityChange(city: string) {
     dispatch(setCity(city));
   },
+  onLogout: () => dispatch(requireLogout()),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
