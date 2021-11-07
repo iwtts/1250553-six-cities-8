@@ -1,5 +1,5 @@
 import { ThunkActionResult } from '../types/action';
-import { loadOffers, requireAuth, changeUser, redirectToRouter } from './actions';
+import { loadOffers, loadNearbyOffers, requireAuth, changeUser, redirectToRouter } from './actions';
 import { saveToken, Token } from '../services/token';
 import { AuthStatus, ApiRoute, AppRoute } from '../const';
 import { adaptOfferDataToClient } from '../utils';
@@ -11,6 +11,14 @@ const loadDataOffers = (): ThunkActionResult =>
     const offers = data.map((item: DataOffer) => adaptOfferDataToClient(item));
     dispatch(loadOffers(offers));
   };
+
+const loadDataNearbyOffers = (id: string): ThunkActionResult => (
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get(`${ ApiRoute.Hotels }/${ id }/nearby`);
+    const offersNearby = data.map((item: DataOffer) => adaptOfferDataToClient(item));
+    dispatch(loadNearbyOffers(offersNearby));
+  }
+);
 
 const checkAuth = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
@@ -29,4 +37,4 @@ const login = ({login: email, password}: AuthData): ThunkActionResult =>
     dispatch(redirectToRouter(AppRoute.Main));
   };
 
-export { loadDataOffers, checkAuth, login };
+export { loadDataOffers, loadDataNearbyOffers, checkAuth, login };

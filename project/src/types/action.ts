@@ -15,6 +15,11 @@ type SetOffers = {
   payload: Offer[];
 }
 
+type SetNearbyOffers = {
+  type: ActionType.SetNearbyOffers;
+  payload: Offer[];
+}
+
 type ChangeSortType = {
   type: ActionType.ChangeSortType;
   payload: {
@@ -47,13 +52,14 @@ type RedirectToRoute = {
   }
 }
 
-type Actions = SetCity | SetOffers | ChangeSortType | RequireAuth | RequireLogout | ChangeUser | RedirectToRoute;
+type Actions = SetCity | SetOffers | SetNearbyOffers | ChangeSortType | RequireAuth | RequireLogout | ChangeUser | RedirectToRoute;
 type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
 type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Actions>;
 
 export type {
   SetCity,
   SetOffers,
+  SetNearbyOffers,
   ChangeSortType,
   RequireAuth,
   RequireLogout,

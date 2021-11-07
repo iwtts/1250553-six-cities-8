@@ -80,6 +80,7 @@ enum AppRoute {
 
 enum ApiRoute {
   Offers = '/hotels',
+  Hotels = '/hotels',
   Favorite = '/favorite',
   Login = '/login',
   Logout = '/logout',
@@ -111,6 +112,7 @@ enum OfferType {
 enum ActionType {
   SetCity = 'app/set-city',
   SetOffers = 'app/set-offers-by-city',
+  SetNearbyOffers = 'app/set-offers-nearby',
   ChangeSortType = 'sort/change-sort-type',
   RequireAuth = 'user/requireAuthorization',
   RequireLogout = 'user/requireLogout',

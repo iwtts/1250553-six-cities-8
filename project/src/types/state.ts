@@ -1,6 +1,5 @@
 import { Offer } from '../types/offer';
 import { SortType, AuthStatus } from '../const';
-import { DataOffer } from './data';
 
 type State = {
   authStatus: AuthStatus,
@@ -8,7 +7,7 @@ type State = {
   offers: Offer[],
   cityOffers: Offer[],
   currentCity: string,
-  dataNearbyOffers: DataOffer[],
+  nearbyOffers: Offer[],
   currentSortType: SortType,
   currentUserEmail: string,
 };

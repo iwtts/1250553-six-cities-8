@@ -11,7 +11,7 @@ const initialState: State = {
   currentCity: CURRENT_CITY ,
   cityOffers: [],
   offers: [],
-  dataNearbyOffers: [],
+  nearbyOffers: [],
   currentSortType: SortType.Popular,
   currentUserEmail: '',
 };

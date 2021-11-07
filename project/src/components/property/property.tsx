@@ -8,17 +8,25 @@ import Map from '../map/map';
 import { State } from '../../types/state';
 import { MapType } from '../../const';
 import { getRatingStarsWidth } from '../../utils';
+import { ThunkAppDispatch } from '../../types/action';
+import { loadDataNearbyOffers } from '../../store/api-actions';
 
-const mapStateToProps = ({ offers, dataNearbyOffers }: State) => ({
+const mapStateToProps = ({ offers, nearbyOffers }: State) => ({
   offers,
-  dataNearbyOffers,
+  nearbyOffers,
 });
 
-const connector = connect(mapStateToProps);
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  getNearbyOffers(id: string) {
+    dispatch(loadDataNearbyOffers(id));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function Property({offers, dataNearbyOffers}: PropsFromRedux): JSX.Element {
+function Property({offers, nearbyOffers, getNearbyOffers}: PropsFromRedux): JSX.Element {
   const {id} = useParams() as {id: string};
   const offer = offers.find((item) => item.id.toString() === id);
 
@@ -28,7 +36,9 @@ function Property({offers, dataNearbyOffers}: PropsFromRedux): JSX.Element {
 
   const { isFavorite, images, isPremium, title, rating, type, bedrooms, maxAdults, price, goods, host, description } = offer;
 
-  const nearbyPoints = dataNearbyOffers.map((item) => ({
+  getNearbyOffers(id);
+
+  const nearbyPoints = nearbyOffers.map((item) => ({
     latitude: item.location.latitude,
     longitude: item.location.longitude,
     id: item.id,
