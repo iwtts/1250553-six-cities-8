@@ -5,17 +5,17 @@ import { State } from './state';
 import { Offer } from './offer';
 import { ActionType, SortType, AuthStatus } from '../const';
 
-type SetCityAction = {
+type SetCity = {
   type: ActionType.SetCity;
   payload: string;
 }
 
-type SetOffersAction = {
+type SetOffers = {
   type: ActionType.SetOffers;
   payload: Offer[];
 }
 
-type ChangeSortTypeAction = {
+type ChangeSortType = {
   type: ActionType.ChangeSortType;
   payload: {
     currentSortType: SortType,
@@ -47,14 +47,14 @@ type RedirectToRoute = {
   }
 }
 
-type Actions = SetCityAction | SetOffersAction | ChangeSortTypeAction | RequireAuth | RequireLogout | ChangeUser | RedirectToRoute;
+type Actions = SetCity | SetOffers | ChangeSortType | RequireAuth | RequireLogout | ChangeUser | RedirectToRoute;
 type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
 type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Actions>;
 
 export type {
-  SetCityAction,
-  SetOffersAction,
-  ChangeSortTypeAction,
+  SetCity,
+  SetOffers,
+  ChangeSortType,
   RequireAuth,
   RequireLogout,
   ChangeUser,

@@ -7,13 +7,13 @@ import { ThunkAppDispatch } from '../../types/action';
 
 import { AppRoute } from '../../const';
 import { changeUser } from '../../store/actions';
-import { loginAction } from '../../store/api-actions';
+import { login } from '../../store/api-actions';
 
 import Header from '../header/header';
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onSubmit(authData: AuthData) {
-    dispatch(loginAction(authData));
+    dispatch(login(authData));
     dispatch(changeUser(authData.login));
   },
 });

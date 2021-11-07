@@ -12,7 +12,7 @@ const loadDataOffers = (): ThunkActionResult =>
     dispatch(loadOffers(offers));
   };
 
-const checkAuthAction = (): ThunkActionResult =>
+const checkAuth = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     await api.get(ApiRoute.Login)
       .then((response): void => {
@@ -21,7 +21,7 @@ const checkAuthAction = (): ThunkActionResult =>
       });
   };
 
-const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
+const login = ({login: email, password}: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     const {data: {token}} = await api.post<{token: Token}>(ApiRoute.Login, {email, password});
     saveToken(token);
@@ -29,4 +29,4 @@ const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
     dispatch(redirectToRouter(AppRoute.Main));
   };
 
-export { loadDataOffers, checkAuthAction, loginAction };
+export { loadDataOffers, checkAuth, login };
