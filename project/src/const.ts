@@ -120,7 +120,9 @@ enum ActionType {
   RequireLogout = 'user/requireLogout',
   ChangeUser = 'user/change-user',
   RedirectToRoute = 'user/redirect-to-route',
+  postReview = 'user/post-review',
 }
+
 enum SortType {
   Popular = 'Popular',
   TopRatedFirst = 'Top rated first',

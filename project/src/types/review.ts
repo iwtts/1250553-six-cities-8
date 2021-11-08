@@ -11,4 +11,9 @@ type Review = {
   },
 }
 
-export type { Review };
+type Comment = {
+  comment: string,
+  rating: string,
+}
+
+export type { Review, Comment };

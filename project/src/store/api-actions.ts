@@ -3,6 +3,7 @@ import { loadOffers, loadNearbyOffers, requireAuth, changeUser, redirectToRouter
 import { saveToken, Token } from '../services/token';
 import { AuthStatus, ApiRoute, AppRoute } from '../const';
 import { adaptOfferDataToClient, adaptReviewDataToClient } from '../utils';
+import { Comment } from '../types/review';
 import { AuthData ,DataOffer, DataReview } from '../types/data';
 
 const loadDataOffers = (): ThunkActionResult =>
@@ -44,4 +45,11 @@ const login = ({login: email, password}: AuthData): ThunkActionResult =>
     dispatch(redirectToRouter(AppRoute.Main));
   };
 
-export { loadDataOffers, loadDataNearbyOffers, checkAuth, login };
+const postReview = ({comment, rating}: Comment, offerId: string): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.post(`${ApiRoute.Reviews}/${offerId}`, {comment: comment, rating});
+    const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
+    dispatch(loadReviews(reviews));
+  };
+
+export { loadDataOffers, loadDataNearbyOffers, checkAuth, login, postReview };

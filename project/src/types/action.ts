@@ -59,7 +59,14 @@ type RedirectToRoute = {
   }
 }
 
-type Actions = SetCity | SetOffers | SetReviews | SetNearbyOffers | ChangeSortType | RequireAuth | RequireLogout | ChangeUser | RedirectToRoute;
+type PostReview = {
+  type: ActionType.postReview;
+  payload: {
+    comment: Comment,
+  }
+}
+
+type Actions = SetCity | SetOffers | SetReviews | SetNearbyOffers | ChangeSortType | RequireAuth | RequireLogout | ChangeUser | RedirectToRoute | PostReview;
 type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
 type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Actions>;
 
@@ -73,6 +80,7 @@ export type {
   RequireLogout,
   ChangeUser,
   RedirectToRoute,
+  PostReview,
   Actions,
   ThunkActionResult,
   ThunkAppDispatch

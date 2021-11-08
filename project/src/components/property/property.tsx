@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 
 import Header from '../header/header';
 import NotFound from '../not-found/not-found';
+import ReviewForm from '../review-form/review-form';
 import Map from '../map/map';
 import CardsList from '../cards-list/cards-list';
 
@@ -11,15 +12,16 @@ import { State } from '../../types/state';
 import { ThunkAppDispatch } from '../../types/action';
 import { Offer } from '../../types/offer';
 
-import { CardType, MapType } from '../../const';
+import { CardType, MapType, AuthStatus } from '../../const';
 import { getRatingStarsWidth } from '../../utils';
 import { loadDataNearbyOffers, loadDataReviews } from '../../store/api-actions';
 import ReviewsList from '../reviews-list/reviews-list';
 
-const mapStateToProps = ({offers, reviews, nearbyOffers}: State) => ({
+const mapStateToProps = ({offers, reviews, nearbyOffers, authStatus}: State) => ({
   offers,
   reviews,
   nearbyOffers,
+  authStatus,
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
@@ -35,7 +37,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function Property({offers, reviews, nearbyOffers, getReviews, getNearbyOffers}: PropsFromRedux): JSX.Element {
+function Property({offers, reviews, nearbyOffers, authStatus, getReviews, getNearbyOffers}: PropsFromRedux): JSX.Element {
   const {id} = useParams() as {id: string};
   const offer = offers.find((item) => item.id.toString() === id);
 
@@ -185,6 +187,8 @@ function Property({offers, reviews, nearbyOffers, getReviews, getNearbyOffers}: 
               </div>
               <section className="property__reviews reviews">
                 <ReviewsList reviews={reviews} />
+                {authStatus === AuthStatus.Auth &&
+                  <ReviewForm offerId={id}/>}
               </section>
             </div>
           </div>
