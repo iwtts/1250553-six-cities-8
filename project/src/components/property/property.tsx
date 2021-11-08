@@ -1,14 +1,18 @@
+import { useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { useParams } from 'react-router';
 
 import Header from '../header/header';
 import NotFound from '../not-found/not-found';
 import Map from '../map/map';
+import CardsList from '../cards-list/cards-list';
 
 import { State } from '../../types/state';
-import { MapType } from '../../const';
-import { getRatingStarsWidth } from '../../utils';
 import { ThunkAppDispatch } from '../../types/action';
+import { Offer } from '../../types/offer';
+
+import { CardType, MapType } from '../../const';
+import { getRatingStarsWidth } from '../../utils';
 import { loadDataNearbyOffers } from '../../store/api-actions';
 
 const mapStateToProps = ({ offers, nearbyOffers }: State) => ({
@@ -30,13 +34,25 @@ function Property({offers, nearbyOffers, getNearbyOffers}: PropsFromRedux): JSX.
   const {id} = useParams() as {id: string};
   const offer = offers.find((item) => item.id.toString() === id);
 
+  const [currentOffer, setSelectedOffer] = useState<Offer | null>(null);
+
+  const handleOfferMouseEnter = (activeOffer: Offer | null) => {
+    setSelectedOffer(activeOffer);
+  };
+
+  const handleOfferMouseLeave = () => {
+    setSelectedOffer(null);
+  };
+
+  useEffect(() => {
+    getNearbyOffers(id);
+  }, [id, getNearbyOffers]);
+
   if (!offer) {
     return <NotFound />;
   }
 
   const { isFavorite, images, isPremium, title, rating, type, bedrooms, maxAdults, price, goods, host, description } = offer;
-
-  getNearbyOffers(id);
 
   const nearbyPoints = nearbyOffers.map((item) => ({
     latitude: item.location.latitude,
@@ -44,11 +60,22 @@ function Property({offers, nearbyOffers, getNearbyOffers}: PropsFromRedux): JSX.
     id: item.id,
   }));
 
-  const currentPoint = {
-    latitude: offer.location.latitude,
-    longitude: offer.location.longitude,
-    id: offer.id,
+  const getCurrentPoint = () => {
+    if (currentOffer) {
+      return {
+        latitude: currentOffer.location.latitude,
+        longitude: currentOffer.location.longitude,
+        id: currentOffer.id,
+      };
+    }
+    return {
+      latitude: offer.location.latitude,
+      longitude: offer.location.longitude,
+      id: offer.id,
+    };
   };
+
+  const currentPoint = getCurrentPoint();
 
   const getBookmarkButtonClassName = () => {
     if (isFavorite) {
@@ -163,7 +190,15 @@ function Property({offers, nearbyOffers, getNearbyOffers}: PropsFromRedux): JSX.
           />
         </section>
         <div className="container">
-
+          <section className="near-places places">
+            <h2 className="near-places__title">Other places in the neighbourhood</h2>
+            <CardsList
+              cardType={CardType.Property}
+              offers={nearbyOffers}
+              onOfferMouseEnter={handleOfferMouseEnter}
+              onOfferMouseLeave={handleOfferMouseLeave}
+            />
+          </section>
         </div>
       </main>
     </div>

@@ -9,7 +9,7 @@ import Map from '../map/map';
 
 import { setCity, requireLogout } from '../../store/actions';
 
-import { CITIES, SortType, MapType } from '../../const';
+import { CITIES, SortType, MapType, CardType } from '../../const';
 
 import { Offer } from '../../types/offer';
 import { State } from '../../types/state';
@@ -95,6 +95,7 @@ function Main(props: PropsFromRedux): JSX.Element {
               <b className="places__found">{currentOffers.length} places to stay in {currentCity}</b>
               <Sort />
               <CardsList
+                cardType={CardType.Main}
                 offers={currentOffers}
                 onOfferMouseEnter={handleOfferMouseEnter}
                 onOfferMouseLeave={handleOfferMouseLeave}

@@ -31,6 +31,12 @@ const reducer = (state: State = initialState, action: Actions): State => {
         isDataLoaded: true,
       };
     }
+    case ActionType.SetNearbyOffers: {
+      return {
+        ...state,
+        nearbyOffers: action.payload,
+      };
+    }
     case ActionType.ChangeSortType: {
       return{...state,
         currentSortType: action.payload.currentSortType,
