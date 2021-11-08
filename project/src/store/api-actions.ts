@@ -1,15 +1,22 @@
 import { ThunkActionResult } from '../types/action';
-import { loadOffers, loadNearbyOffers, requireAuth, changeUser, redirectToRouter } from './actions';
+import { loadOffers, loadNearbyOffers, requireAuth, changeUser, redirectToRouter, loadReviews } from './actions';
 import { saveToken, Token } from '../services/token';
 import { AuthStatus, ApiRoute, AppRoute } from '../const';
-import { adaptOfferDataToClient } from '../utils';
-import { AuthData ,DataOffer } from '../types/data';
+import { adaptOfferDataToClient, adaptReviewDataToClient } from '../utils';
+import { AuthData ,DataOffer, DataReview } from '../types/data';
 
 const loadDataOffers = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const {data} = await api.get(ApiRoute.Offers);
     const offers = data.map((item: DataOffer) => adaptOfferDataToClient(item));
     dispatch(loadOffers(offers));
+  };
+
+export const loadDataReviews = (offerId: string): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get(`${ ApiRoute.Reviews }/${ offerId }`);
+    const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
+    dispatch(loadReviews(reviews));
   };
 
 const loadDataNearbyOffers = (id: string): ThunkActionResult => (

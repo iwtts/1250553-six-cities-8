@@ -1,5 +1,7 @@
-import { SetCity, SetOffers, SetNearbyOffers ,ChangeSortType, RequireAuth, RequireLogout, ChangeUser, RedirectToRoute } from '../types/action';
+import { SetCity, SetOffers, SetReviews, SetNearbyOffers ,ChangeSortType, RequireAuth, RequireLogout, ChangeUser, RedirectToRoute } from '../types/action';
 import { Offer } from '../types/offer';
+import { Review } from '../types/review';
+
 import { ActionType, SortType, AuthStatus, AppRoute } from '../const';
 
 const setCity = (activeCity: string): SetCity  => ({
@@ -22,6 +24,11 @@ const changeSortType = (sortType: SortType): ChangeSortType => ({
 const loadOffers = (offers: Offer[]): SetOffers => ({
   type: ActionType.SetOffers,
   payload: offers,
+});
+
+const loadReviews = (reviews: Review[]): SetReviews => ({
+  type: ActionType.SetReviews,
+  payload: reviews,
 });
 
 const loadNearbyOffers = (nearbyOffers: Offer[]): SetNearbyOffers => ({
@@ -54,5 +61,5 @@ const redirectToRouter = (url: AppRoute): RedirectToRoute => ({
   },
 });
 
-export { setCity, setOfferList, changeSortType, loadOffers, loadNearbyOffers, requireAuth, requireLogout, changeUser, redirectToRouter };
+export { setCity, setOfferList, changeSortType, loadOffers, loadReviews, loadNearbyOffers, requireAuth, requireLogout, changeUser, redirectToRouter };
 

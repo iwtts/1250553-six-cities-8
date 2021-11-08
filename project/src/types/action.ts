@@ -3,6 +3,8 @@ import { AxiosInstance } from 'axios';
 
 import { State } from './state';
 import { Offer } from './offer';
+import { Review } from './review';
+
 import { ActionType, SortType, AuthStatus } from '../const';
 
 type SetCity = {
@@ -13,6 +15,11 @@ type SetCity = {
 type SetOffers = {
   type: ActionType.SetOffers;
   payload: Offer[];
+}
+
+type SetReviews = {
+  type: ActionType.SetReviews;
+  payload: Review[];
 }
 
 type SetNearbyOffers = {
@@ -52,13 +59,14 @@ type RedirectToRoute = {
   }
 }
 
-type Actions = SetCity | SetOffers | SetNearbyOffers | ChangeSortType | RequireAuth | RequireLogout | ChangeUser | RedirectToRoute;
+type Actions = SetCity | SetOffers | SetReviews | SetNearbyOffers | ChangeSortType | RequireAuth | RequireLogout | ChangeUser | RedirectToRoute;
 type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
 type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Actions>;
 
 export type {
   SetCity,
   SetOffers,
+  SetReviews,
   SetNearbyOffers,
   ChangeSortType,
   RequireAuth,

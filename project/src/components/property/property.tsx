@@ -13,14 +13,19 @@ import { Offer } from '../../types/offer';
 
 import { CardType, MapType } from '../../const';
 import { getRatingStarsWidth } from '../../utils';
-import { loadDataNearbyOffers } from '../../store/api-actions';
+import { loadDataNearbyOffers, loadDataReviews } from '../../store/api-actions';
+import ReviewsList from '../reviews-list/reviews-list';
 
-const mapStateToProps = ({ offers, nearbyOffers }: State) => ({
+const mapStateToProps = ({offers, reviews, nearbyOffers}: State) => ({
   offers,
+  reviews,
   nearbyOffers,
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  getReviews(id: string) {
+    dispatch(loadDataReviews(id));
+  },
   getNearbyOffers(id: string) {
     dispatch(loadDataNearbyOffers(id));
   },
@@ -30,7 +35,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function Property({offers, nearbyOffers, getNearbyOffers}: PropsFromRedux): JSX.Element {
+function Property({offers, reviews, nearbyOffers, getReviews, getNearbyOffers}: PropsFromRedux): JSX.Element {
   const {id} = useParams() as {id: string};
   const offer = offers.find((item) => item.id.toString() === id);
 
@@ -46,7 +51,8 @@ function Property({offers, nearbyOffers, getNearbyOffers}: PropsFromRedux): JSX.
 
   useEffect(() => {
     getNearbyOffers(id);
-  }, [id, getNearbyOffers]);
+    getReviews(id);
+  }, [id, getNearbyOffers, getReviews]);
 
   if (!offer) {
     return <NotFound />;
@@ -178,7 +184,7 @@ function Property({offers, nearbyOffers, getNearbyOffers}: PropsFromRedux): JSX.
                 </div>
               </div>
               <section className="property__reviews reviews">
-
+                <ReviewsList reviews={reviews} />
               </section>
             </div>
           </div>

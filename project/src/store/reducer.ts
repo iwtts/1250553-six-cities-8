@@ -11,6 +11,7 @@ const initialState: State = {
   currentCity: CURRENT_CITY ,
   cityOffers: [],
   offers: [],
+  reviews: [],
   nearbyOffers: [],
   currentSortType: SortType.Popular,
   currentUserEmail: '',
@@ -29,6 +30,11 @@ const reducer = (state: State = initialState, action: Actions): State => {
         offers: action.payload,
         cityOffers: action.payload.filter((offer) => offer.city.name === state.currentCity),
         isDataLoaded: true,
+      };
+    }
+    case ActionType.SetReviews: {
+      return {...state,
+        reviews: action.payload,
       };
     }
     case ActionType.SetNearbyOffers: {
