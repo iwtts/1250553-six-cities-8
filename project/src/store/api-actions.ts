@@ -13,7 +13,7 @@ const loadDataOffers = (): ThunkActionResult =>
     dispatch(loadOffers(offers));
   };
 
-export const loadDataReviews = (offerId: string): ThunkActionResult =>
+const loadDataReviews = (offerId: string): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const {data} = await api.get(`${ ApiRoute.Reviews }/${ offerId }`);
     const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
@@ -52,4 +52,4 @@ const postReview = ({comment, rating}: Comment, offerId: string): ThunkActionRes
     dispatch(loadReviews(reviews));
   };
 
-export { loadDataOffers, loadDataNearbyOffers, checkAuth, login, postReview };
+export { loadDataOffers, loadDataReviews, loadDataNearbyOffers, checkAuth, login, postReview };

@@ -20,15 +20,20 @@ const getArticleClassName = (type: CardType): string => {
 function CardsList({cardType, offers, onOfferMouseEnter,  onOfferMouseLeave}: CardsListProps): JSX.Element {
   return (
     <div className={getArticleClassName(cardType)}>
-      {offers.map((offer) => (
-        <Card
-          type={cardType}
-          offer={offer}
-          key={offer.id}
-          onMouseEnter={() => onOfferMouseEnter(offer)}
-          onMouseLeave={() => onOfferMouseLeave}
-        />
-      ))}
+      {offers.map((offer) => {
+        const handleMouseEnter = () => {
+          onOfferMouseEnter(offer);
+        };
+        return (
+          <Card
+            type={cardType}
+            offer={offer}
+            key={offer.id}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={onOfferMouseLeave}
+          />
+        );
+      })}
     </div>
   );
 }
