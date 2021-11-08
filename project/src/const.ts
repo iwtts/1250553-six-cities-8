@@ -1,3 +1,5 @@
+import { Icon } from 'leaflet';
+
 const MIN_REVIEW_LENGTH = 50;
 
 const URL_MARKER_DEFAULT = './img/pin.svg';
@@ -57,6 +59,18 @@ const CITIES = {
   },
 };
 
+const defaultCustomIcon = new Icon({
+  iconUrl: URL_MARKER_DEFAULT,
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
+
+const currentCustomIcon = new Icon({
+  iconUrl: URL_MARKER_CURRENT,
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
+
 enum AppRoute {
   Main = '/',
   SignIn  = '/login',
@@ -66,6 +80,8 @@ enum AppRoute {
 
 enum ApiRoute {
   Offers = '/hotels',
+  Reviews = '/comments',
+  Hotels = '/hotels',
   Favorite = '/favorite',
   Login = '/login',
   Logout = '/logout',
@@ -82,6 +98,11 @@ enum CardType {
   Property,
 }
 
+enum MapType {
+  Main,
+  Property,
+}
+
 enum OfferType {
   Apartment = 'Apartment',
   Room = 'Private Room',
@@ -92,12 +113,16 @@ enum OfferType {
 enum ActionType {
   SetCity = 'app/set-city',
   SetOffers = 'app/set-offers-by-city',
+  SetReviews = 'app/set-reviews',
+  SetNearbyOffers = 'app/set-offers-nearby',
   ChangeSortType = 'sort/change-sort-type',
   RequireAuth = 'user/requireAuthorization',
   RequireLogout = 'user/requireLogout',
   ChangeUser = 'user/change-user',
   RedirectToRoute = 'user/redirect-to-route',
+  postReview = 'user/post-review',
 }
+
 enum SortType {
   Popular = 'Popular',
   TopRatedFirst = 'Top rated first',
@@ -109,12 +134,15 @@ export {
   MIN_REVIEW_LENGTH,
   URL_MARKER_CURRENT,
   URL_MARKER_DEFAULT,
+  defaultCustomIcon,
+  currentCustomIcon,
   OFFERS_NEARBY_AMOUNT,
   CITIES,
   AppRoute,
   ApiRoute,
   AuthStatus,
   CardType,
+  MapType,
   OfferType,
   ActionType,
   SortType

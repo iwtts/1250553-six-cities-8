@@ -9,7 +9,7 @@ import Map from '../map/map';
 
 import { setCity, requireLogout } from '../../store/actions';
 
-import { CITIES, SortType } from '../../const';
+import { CITIES, SortType, MapType, CardType } from '../../const';
 
 import { Offer } from '../../types/offer';
 import { State } from '../../types/state';
@@ -33,7 +33,7 @@ const getSortedOffers = (currentSortType: string, offers: Offer[]) => {
 };
 
 const mapStateToProps = ({offers, currentCity, currentSortType}: State) => ({
-  offers: offers,
+  offers,
   currentCity,
   currentSortType,
 });
@@ -55,6 +55,22 @@ function Main(props: PropsFromRedux): JSX.Element {
   const city = Object.values(CITIES).find((item) =>  item.name === currentCity);
   const sortedOffers = getSortedOffers(currentSortType, offers);
   const currentOffers = sortedOffers.filter((offer: Offer) => offer.city.name === currentCity);
+  const points = currentOffers.map((item) => ({
+    latitude: item.location.latitude,
+    longitude: item.location.longitude,
+    id: item.id,
+  }));
+
+  const getCurrentPoint = () => {
+    if (selectedOffer) {
+      return {
+        latitude: selectedOffer.location.latitude,
+        longitude: selectedOffer.location.longitude,
+        id: selectedOffer.id,
+      };
+    }
+    return null;
+  };
 
   const handleOfferMouseEnter = (offer: Offer | null) => {
     setSelectedOffer(offer);
@@ -79,19 +95,19 @@ function Main(props: PropsFromRedux): JSX.Element {
               <b className="places__found">{currentOffers.length} places to stay in {currentCity}</b>
               <Sort />
               <CardsList
+                cardType={CardType.Main}
                 offers={currentOffers}
                 onOfferMouseEnter={handleOfferMouseEnter}
                 onOfferMouseLeave={handleOfferMouseLeave}
               />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map">
-                <Map
-                  cityLocation={city ? city.location : CITIES.Paris.location}
-                  points={currentOffers.map((offer) => ({title: offer.title, location: offer.location}))}
-                  selectedPoint={selectedOffer}
-                />
-              </section>
+              <Map
+                type={MapType.Main}
+                location={city ? city.location : CITIES.Paris.location}
+                points={points}
+                currentPoint={getCurrentPoint()}
+              />
             </div>
           </div>
         </div>

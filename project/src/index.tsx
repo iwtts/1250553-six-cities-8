@@ -8,7 +8,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { reducer } from './store/reducer';
 import { requireAuth } from './store/actions';
-import { loadDataOffers, checkAuthAction} from './store/api-actions';
+import { loadDataOffers, checkAuth} from './store/api-actions';
 import { createApi } from './services/api';
 import { ThunkAppDispatch } from './types/action';
 import { AuthStatus } from './const';
@@ -24,7 +24,7 @@ const store = createStore(
   ),
 );
 
-(store.dispatch as ThunkAppDispatch)(checkAuthAction());
+(store.dispatch as ThunkAppDispatch)(checkAuth());
 (store.dispatch as ThunkAppDispatch)(loadDataOffers());
 
 ReactDOM.render(

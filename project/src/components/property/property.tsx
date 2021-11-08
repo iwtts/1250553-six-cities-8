@@ -1,52 +1,102 @@
-import { Dispatch, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-
+import { useParams } from 'react-router';
 
 import Header from '../header/header';
-import ReviewsList from '../reviews-list/reviews-list';
+import NotFound from '../not-found/not-found';
 import ReviewForm from '../review-form/review-form';
 import Map from '../map/map';
-import PropertyCardsList from '../property-cards-list/property-cards-list';
+import CardsList from '../cards-list/cards-list';
 
 import { State } from '../../types/state';
-import { Actions } from '../../types/action';
-import { setCity } from '../../store/actions';
+import { ThunkAppDispatch } from '../../types/action';
 import { Offer } from '../../types/offer';
-import { Review } from '../../types/review';
 
-import { OFFERS_NEARBY_AMOUNT } from '../../const';
+import { CardType, MapType, AuthStatus } from '../../const';
+import { getRatingStarsWidth } from '../../utils';
+import { loadDataNearbyOffers, loadDataReviews } from '../../store/api-actions';
+import ReviewsList from '../reviews-list/reviews-list';
 
-const mapStateToProps = ({cityOffers, currentCity}: State) => ({
-  offers: cityOffers,
+const mapStateToProps = ({offers, reviews, nearbyOffers, authStatus}: State) => ({
+  offers,
+  reviews,
+  nearbyOffers,
+  authStatus,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  onCityChange(city: string) {
-    dispatch(setCity(city));
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  getReviews(id: string) {
+    dispatch(loadDataReviews(id));
+  },
+  getNearbyOffers(id: string) {
+    dispatch(loadDataNearbyOffers(id));
   },
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type PropertyScreenProps = {
-  reviews: Review[],
-}
-
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type ConnectedComponentProps = PropsFromRedux & PropertyScreenProps;
+function Property({offers, reviews, nearbyOffers, authStatus, getReviews, getNearbyOffers}: PropsFromRedux): JSX.Element {
+  const {id} = useParams() as {id: string};
+  const offer = offers.find((item) => item.id.toString() === id);
 
-function Property({offers, reviews}: ConnectedComponentProps): JSX.Element {
-  const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
-  const city = offers[0].city;
-  const offersNearby = offers.slice(0, OFFERS_NEARBY_AMOUNT);
+  const [currentOffer, setSelectedOffer] = useState<Offer | null>(null);
 
-  const handleOfferMouseEnter = (offer: Offer | null) => {
-    setSelectedOffer(offer);
+  const handleOfferMouseEnter = (activeOffer: Offer | null) => {
+    setSelectedOffer(activeOffer);
   };
 
   const handleOfferMouseLeave = () => {
     setSelectedOffer(null);
+  };
+
+  useEffect(() => {
+    getNearbyOffers(id);
+    getReviews(id);
+  }, [id, getNearbyOffers, getReviews]);
+
+  if (!offer) {
+    return <NotFound />;
+  }
+
+  const { isFavorite, images, isPremium, title, rating, type, bedrooms, maxAdults, price, goods, host, description } = offer;
+
+  const nearbyPoints = nearbyOffers.map((item) => ({
+    latitude: item.location.latitude,
+    longitude: item.location.longitude,
+    id: item.id,
+  }));
+
+  const getCurrentPoint = () => {
+    if (currentOffer) {
+      return {
+        latitude: currentOffer.location.latitude,
+        longitude: currentOffer.location.longitude,
+        id: currentOffer.id,
+      };
+    }
+    return {
+      latitude: offer.location.latitude,
+      longitude: offer.location.longitude,
+      id: offer.id,
+    };
+  };
+
+  const currentPoint = getCurrentPoint();
+
+  const getBookmarkButtonClassName = () => {
+    if (isFavorite) {
+      return 'property__bookmark-button property__bookmark-button--active button';
+    }
+    return 'property__bookmark-button button';
+  };
+
+  const getHostAvatarWrapperClassName = () => {
+    if (host.isPro) {
+      return 'property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper';
+    }
+    return 'property__avatar-wrapper user__avatar-wrapper';
   };
 
   return (
@@ -56,36 +106,24 @@ function Property({offers, reviews}: ConnectedComponentProps): JSX.Element {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/room.jpg" alt="Studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-02.jpg" alt="Studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-03.jpg" alt="Studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/studio-01.jpg" alt="Studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Studio" />
-              </div>
+              {images.map((image: string) => (
+                <div className="property__image-wrapper" key={image}>
+                  <img className="property__image" src={image} alt="Interior view" />
+                </div>
+              ))}
             </div>
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
-              <div className="property__mark">
-                <span>Premium</span>
-              </div>
+              {isPremium &&
+                <div className="property__mark">
+                  <span>Premium</span>
+                </div>}
               <div className="property__name-wrapper">
                 <h1 className="property__name">
-                Beautiful &amp; luxurious studio at great location
+                  {title}
                 </h1>
-                <button className="property__bookmark-button button" type="button">
+                <button className={getBookmarkButtonClassName()} type="button">
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -94,103 +132,83 @@ function Property({offers, reviews}: ConnectedComponentProps): JSX.Element {
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{width: '80%'}}></span>
+                  <span style={{width: `${getRatingStarsWidth(rating)}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="property__rating-value rating__value">4.8</span>
+                <span className="property__rating-value rating__value">{rating}</span>
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                Apartment
+                  {type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                3 Bedrooms
+                  {bedrooms} Bedrooms
                 </li>
                 <li className="property__feature property__feature--adults">
-                Max 4 adults
+                  Max {maxAdults} adults
                 </li>
               </ul>
               <div className="property__price">
-                <b className="property__price-value">&euro;120</b>
+                <b className="property__price-value">&euro;{price}</b>
                 <span className="property__price-text">&nbsp;night</span>
               </div>
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
-                  <li className="property__inside-item">
-                  Wi-Fi
-                  </li>
-                  <li className="property__inside-item">
-                  Washing machine
-                  </li>
-                  <li className="property__inside-item">
-                  Towels
-                  </li>
-                  <li className="property__inside-item">
-                  Heating
-                  </li>
-                  <li className="property__inside-item">
-                  Coffee machine
-                  </li>
-                  <li className="property__inside-item">
-                  Baby seat
-                  </li>
-                  <li className="property__inside-item">
-                  Kitchen
-                  </li>
-                  <li className="property__inside-item">
-                  Dishwasher
-                  </li>
-                  <li className="property__inside-item">
-                  Cabel TV
-                  </li>
-                  <li className="property__inside-item">
-                  Fridge
-                  </li>
+                  {goods.map((good: string) => (
+                    <li className="property__inside-item" key={good}>
+                      {good}
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="property__host">
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
-                  <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="property__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74" alt="Host avatar" />
+                  <div className={getHostAvatarWrapperClassName()}>
+                    <img className="property__avatar user__avatar" src={host.avatarUrl} width="74" height="74" alt="Host avatar" />
                   </div>
                   <span className="property__user-name">
-                  Angelina
+                    {host.name}
                   </span>
-                  <span className="property__user-status">
-                  Pro
-                  </span>
+                  {host.isPro &&
+                    <span className="property__user-status">
+                      Pro
+                    </span>}
                 </div>
                 <div className="property__description">
                   <p className="property__text">
-                  A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
+                    {title}
                   </p>
                   <p className="property__text">
-                  An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
+                    {description}
                   </p>
                 </div>
               </div>
               <section className="property__reviews reviews">
                 <ReviewsList reviews={reviews} />
-                <ReviewForm />
+                {authStatus === AuthStatus.Auth &&
+                  <ReviewForm offerId={id}/>}
               </section>
             </div>
           </div>
-          <section className="property__map map">
-            <Map
-              cityLocation={city.location}
-              points={offersNearby.map((offer) => ({title: offer.title, location: offer.location}))}
-              selectedPoint={selectedOffer}
-            />
-          </section>
+          <Map
+            type={MapType.Property}
+            location={offer.city.location}
+            points={nearbyPoints}
+            currentPoint={currentPoint}
+          />
         </section>
         <div className="container">
-          <PropertyCardsList
-            offers={offersNearby}
-            onOfferMouseEnter={handleOfferMouseEnter}
-            onOfferMouseLeave={handleOfferMouseLeave}
-          />
+          <section className="near-places places">
+            <h2 className="near-places__title">Other places in the neighbourhood</h2>
+            <CardsList
+              cardType={CardType.Property}
+              offers={nearbyOffers}
+              onOfferMouseEnter={handleOfferMouseEnter}
+              onOfferMouseLeave={handleOfferMouseLeave}
+            />
+          </section>
         </div>
       </main>
     </div>

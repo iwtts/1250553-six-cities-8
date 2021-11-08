@@ -34,8 +34,20 @@ function Card(props: CardProps): JSX.Element {
     return 'place-card__bookmark-button button';
   };
 
+  const handleMouseEnter = () => {
+    props.onMouseEnter();
+  };
+
+  const handleMouseLeave = () => {
+    props.onMouseLeave();
+  };
+
   return (
-    <article className={getArticleClassName(props.type)} onMouseEnter={() => props.onMouseEnter()} onMouseLeave={() => props.onMouseLeave()}>
+    <article
+      className={getArticleClassName(props.type)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       {isPremium &&
         <div className="place-card__mark">
           <span>Premium</span>

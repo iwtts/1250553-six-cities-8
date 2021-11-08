@@ -1,6 +1,6 @@
 type Review = {
   comment: string,
-  date: string,
+  date: Date,
   id: number,
   rating: number,
   user: {
@@ -11,4 +11,9 @@ type Review = {
   },
 }
 
-export type { Review };
+type Comment = {
+  comment: string,
+  rating: string,
+}
+
+export type { Review, Comment };

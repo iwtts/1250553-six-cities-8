@@ -1,57 +1,65 @@
-import { useEffect, useRef} from 'react';
+import { useEffect, useRef } from 'react';
 import 'leaflet/dist/leaflet.css';
+import { Marker } from 'leaflet';
+
 import useMap from '../../hooks/useMap';
-import { Icon, Marker } from 'leaflet';
 import { Location } from '../../types/offer';
-import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
+import { MapType, currentCustomIcon, defaultCustomIcon } from '../../const';
 
 type Point = {
-  title: string,
-  location: Location,
+  latitude: number,
+  longitude: number,
+  id: number,
 }
 
 type MapProps = {
-  cityLocation: Location,
+  type: MapType,
+  location: Location,
   points: Point[],
-  selectedPoint: Point | null;
+  currentPoint: Point | null,
 }
 
-const defaultCustomIcon = new Icon({
-  iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
-});
+const getMapSectionClassName = (type: MapType): string => {
+  if (type === MapType.Property) {
+    return 'property__map map';
+  }
+  return 'cities__map map';
+};
 
-const currentCustomIcon = new Icon({
-  iconUrl: URL_MARKER_CURRENT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
-});
-
-function Map({cityLocation, points, selectedPoint}: MapProps): JSX.Element {
+function Map({type, location, points, currentPoint}: MapProps): JSX.Element {
   const mapRef = useRef(null);
-  const map = useMap(mapRef, cityLocation);
+  const map = useMap(mapRef, location);
 
   useEffect(() => {
     if (map) {
+      const markers: Marker[] = [];
       points.forEach((point) => {
         const marker = new Marker({
-          lat: point.location.latitude,
-          lng: point.location.longitude,
+          lat: point.latitude,
+          lng: point.longitude,
         });
-
-        marker
-          .setIcon(
-            selectedPoint && point.title === selectedPoint.title
-              ? currentCustomIcon
-              : defaultCustomIcon,
-          )
-          .addTo(map);
+        marker.setIcon(defaultCustomIcon).addTo(map);
+        markers.push(marker);
       });
-    }
-  }, [map, points, selectedPoint]);
 
-  return <section className="cities__map map" style={{height: '100%'}} ref={mapRef}/>;
+      if (currentPoint) {
+        const currentMarker = new Marker({
+          lat: currentPoint.latitude,
+          lng: currentPoint.longitude,
+        });
+        currentMarker.setIcon(currentCustomIcon).addTo(map);
+        markers.push(currentMarker);
+      }
+
+      return () => {
+        markers.forEach((marker: Marker) => marker.removeFrom(map));
+      };
+    }
+  },[currentPoint, map, points]);
+
+  return (
+    <section className={getMapSectionClassName(type)} ref={mapRef} />
+  );
 }
 
 export default Map;

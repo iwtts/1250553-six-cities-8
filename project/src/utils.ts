@@ -1,5 +1,6 @@
+import { DataOffer, DataReview } from './types/data';
 import { Offer } from './types/offer';
-import { DataOffer } from './types/data';
+import { Review } from './types/review';
 
 const getRatingStarsWidth = (rating: number): number => rating * 20;
 
@@ -38,4 +39,17 @@ const adaptOfferDataToClient = (data: DataOffer): Offer => ({
   type: data['type'],
 });
 
-export { getRatingStarsWidth, adaptOfferDataToClient };
+const adaptReviewDataToClient = (data: DataReview): Review => ({
+  comment: data['comment'],
+  date: data['date'],
+  id: data['id'],
+  rating: data['rating'],
+  user: {
+    avatarUrl: data['user']['avatar_url'],
+    id: data['user']['id'],
+    isPro: data['user']['is_pro'],
+    name: data['user']['name'],
+  },
+});
+
+export { getRatingStarsWidth, adaptOfferDataToClient, adaptReviewDataToClient };

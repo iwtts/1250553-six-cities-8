@@ -40,4 +40,17 @@ type DataOffer = {
   'type': OfferType
 }
 
-export type { AuthData, DataOffer };
+type DataReview = {
+  'comment': string,
+  'date': Date,
+  'id': number,
+  'rating': number,
+  'user': {
+    'id': number,
+    'name': string,
+    'avatar_url': string,
+    'is_pro': boolean,
+  };
+}
+
+export type { AuthData, DataOffer, DataReview };

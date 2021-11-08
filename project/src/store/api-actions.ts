@@ -1,9 +1,10 @@
 import { ThunkActionResult } from '../types/action';
-import { loadOffers, requireAuth, changeUser, redirectToRouter } from './actions';
+import { loadOffers, loadNearbyOffers, requireAuth, changeUser, redirectToRouter, loadReviews } from './actions';
 import { saveToken, Token } from '../services/token';
 import { AuthStatus, ApiRoute, AppRoute } from '../const';
-import { adaptOfferDataToClient } from '../utils';
-import { AuthData ,DataOffer } from '../types/data';
+import { adaptOfferDataToClient, adaptReviewDataToClient } from '../utils';
+import { Comment } from '../types/review';
+import { AuthData ,DataOffer, DataReview } from '../types/data';
 
 const loadDataOffers = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -12,7 +13,22 @@ const loadDataOffers = (): ThunkActionResult =>
     dispatch(loadOffers(offers));
   };
 
-const checkAuthAction = (): ThunkActionResult =>
+const loadDataReviews = (offerId: string): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get(`${ ApiRoute.Reviews }/${ offerId }`);
+    const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
+    dispatch(loadReviews(reviews));
+  };
+
+const loadDataNearbyOffers = (id: string): ThunkActionResult => (
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get(`${ ApiRoute.Hotels }/${ id }/nearby`);
+    const offersNearby = data.map((item: DataOffer) => adaptOfferDataToClient(item));
+    dispatch(loadNearbyOffers(offersNearby));
+  }
+);
+
+const checkAuth = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     await api.get(ApiRoute.Login)
       .then((response): void => {
@@ -21,7 +37,7 @@ const checkAuthAction = (): ThunkActionResult =>
       });
   };
 
-const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
+const login = ({login: email, password}: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     const {data: {token}} = await api.post<{token: Token}>(ApiRoute.Login, {email, password});
     saveToken(token);
@@ -29,4 +45,11 @@ const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
     dispatch(redirectToRouter(AppRoute.Main));
   };
 
-export { loadDataOffers, checkAuthAction, loginAction };
+const postReview = ({comment, rating}: Comment, offerId: string): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.post(`${ApiRoute.Reviews}/${offerId}`, {comment: comment, rating});
+    const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
+    dispatch(loadReviews(reviews));
+  };
+
+export { loadDataOffers, loadDataReviews, loadDataNearbyOffers, checkAuth, login, postReview };

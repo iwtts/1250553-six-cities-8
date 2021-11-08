@@ -4,15 +4,36 @@ import { CardType } from '../../const';
 import Card from '../card/card';
 
 type CardsListProps = {
+  cardType: CardType;
   offers: Offer[];
   onOfferMouseEnter: (offer: Offer) => void;
   onOfferMouseLeave: () => void;
 }
 
-function CardsList({offers, onOfferMouseEnter,  onOfferMouseLeave}: CardsListProps): JSX.Element {
+const getArticleClassName = (type: CardType): string => {
+  if (type === CardType.Property) {
+    return 'near-places__list places__list';
+  }
+  return 'cities__places-list places__list tabs__content';
+};
+
+function CardsList({cardType, offers, onOfferMouseEnter,  onOfferMouseLeave}: CardsListProps): JSX.Element {
   return (
-    <div className="cities__places-list places__list tabs__content">
-      {offers.map((offer) => <Card offer={offer} type={CardType.Main} key={offer.id}  onMouseEnter={() => onOfferMouseEnter(offer)} onMouseLeave={() => onOfferMouseLeave}/>)}
+    <div className={getArticleClassName(cardType)}>
+      {offers.map((offer) => {
+        const handleMouseEnter = () => {
+          onOfferMouseEnter(offer);
+        };
+        return (
+          <Card
+            type={cardType}
+            offer={offer}
+            key={offer.id}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={onOfferMouseLeave}
+          />
+        );
+      })}
     </div>
   );
 }

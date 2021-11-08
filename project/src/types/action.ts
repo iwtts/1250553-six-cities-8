@@ -3,19 +3,31 @@ import { AxiosInstance } from 'axios';
 
 import { State } from './state';
 import { Offer } from './offer';
+import { Review } from './review';
+
 import { ActionType, SortType, AuthStatus } from '../const';
 
-type SetCityAction = {
+type SetCity = {
   type: ActionType.SetCity;
   payload: string;
 }
 
-type SetOffersAction = {
+type SetOffers = {
   type: ActionType.SetOffers;
   payload: Offer[];
 }
 
-type ChangeSortTypeAction = {
+type SetReviews = {
+  type: ActionType.SetReviews;
+  payload: Review[];
+}
+
+type SetNearbyOffers = {
+  type: ActionType.SetNearbyOffers;
+  payload: Offer[];
+}
+
+type ChangeSortType = {
   type: ActionType.ChangeSortType;
   payload: {
     currentSortType: SortType,
@@ -47,18 +59,28 @@ type RedirectToRoute = {
   }
 }
 
-type Actions = SetCityAction | SetOffersAction | ChangeSortTypeAction | RequireAuth | RequireLogout | ChangeUser | RedirectToRoute;
+type PostReview = {
+  type: ActionType.postReview;
+  payload: {
+    comment: Comment,
+  }
+}
+
+type Actions = SetCity | SetOffers | SetReviews | SetNearbyOffers | ChangeSortType | RequireAuth | RequireLogout | ChangeUser | RedirectToRoute | PostReview;
 type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
 type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Actions>;
 
 export type {
-  SetCityAction,
-  SetOffersAction,
-  ChangeSortTypeAction,
+  SetCity,
+  SetOffers,
+  SetReviews,
+  SetNearbyOffers,
+  ChangeSortType,
   RequireAuth,
   RequireLogout,
   ChangeUser,
   RedirectToRoute,
+  PostReview,
   Actions,
   ThunkActionResult,
   ThunkAppDispatch
