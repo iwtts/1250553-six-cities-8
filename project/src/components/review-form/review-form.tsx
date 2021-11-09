@@ -14,7 +14,7 @@ type ReviewFormProps = {
 }
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  postComment(review: Comment, offerId: string) {
+  onCommentPost(review: Comment, offerId: string) {
     dispatch(postReview(review, offerId));
   },
 });
@@ -24,7 +24,7 @@ const connector = connect(null, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux & ReviewFormProps;
 
-function ReviewForm({offerId, postComment}: ConnectedComponentProps): JSX.Element {
+function ReviewForm({offerId, onCommentPost}: ConnectedComponentProps): JSX.Element {
   const [commentMessage, setComment] = useState('');
   const [rating, setRating] = useState<string>('0');
 
@@ -36,7 +36,7 @@ function ReviewForm({offerId, postComment}: ConnectedComponentProps): JSX.Elemen
 
   const handleFormSubmit = (evt: FormEvent): void => {
     evt.preventDefault();
-    postComment({comment: commentMessage, rating: rating}, offerId);
+    onCommentPost({comment: commentMessage, rating: rating}, offerId);
     setComment('');
     setRating('0');
   };

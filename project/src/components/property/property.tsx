@@ -25,10 +25,10 @@ const mapStateToProps = ({offers, reviews, nearbyOffers, authStatus}: State) => 
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  getReviews(id: string) {
+  onReviewsLoaded(id: string) {
     dispatch(loadDataReviews(id));
   },
-  getNearbyOffers(id: string) {
+  onNearbyOffersLoaded(id: string) {
     dispatch(loadDataNearbyOffers(id));
   },
 });
@@ -37,7 +37,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function Property({offers, reviews, nearbyOffers, authStatus, getReviews, getNearbyOffers}: PropsFromRedux): JSX.Element {
+function Property({offers, reviews, nearbyOffers, authStatus, onReviewsLoaded, onNearbyOffersLoaded}: PropsFromRedux): JSX.Element {
   const {id} = useParams() as {id: string};
   const offer = offers.find((item) => item.id.toString() === id);
 
@@ -52,9 +52,9 @@ function Property({offers, reviews, nearbyOffers, authStatus, getReviews, getNea
   };
 
   useEffect(() => {
-    getNearbyOffers(id);
-    getReviews(id);
-  }, [id, getNearbyOffers, getReviews]);
+    onNearbyOffersLoaded(id);
+    onReviewsLoaded(id);
+  }, [id, onNearbyOffersLoaded, onReviewsLoaded]);
 
   if (!offer) {
     return <NotFound />;
@@ -68,7 +68,7 @@ function Property({offers, reviews, nearbyOffers, authStatus, getReviews, getNea
     id: item.id,
   }));
 
-  const getCurrentPoint = () => {
+  const handleGettingCurrentPoint = () => {
     if (currentOffer) {
       return {
         latitude: currentOffer.location.latitude,
@@ -83,7 +83,7 @@ function Property({offers, reviews, nearbyOffers, authStatus, getReviews, getNea
     };
   };
 
-  const currentPoint = getCurrentPoint();
+  const currentPoint = handleGettingCurrentPoint();
 
   const getBookmarkButtonClassName = () => {
     if (isFavorite) {
