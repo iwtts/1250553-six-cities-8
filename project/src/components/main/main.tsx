@@ -61,7 +61,7 @@ function Main(props: PropsFromRedux): JSX.Element {
     id: item.id,
   }));
 
-  const getCurrentPoint = () => {
+  const handleGettingCurrentPoint = () => {
     if (selectedOffer) {
       return {
         latitude: selectedOffer.location.latitude,
@@ -106,7 +106,7 @@ function Main(props: PropsFromRedux): JSX.Element {
                 type={MapType.Main}
                 location={city ? city.location : CITIES.Paris.location}
                 points={points}
-                currentPoint={getCurrentPoint()}
+                currentPoint={handleGettingCurrentPoint()}
               />
             </div>
           </div>

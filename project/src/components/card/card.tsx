@@ -6,7 +6,7 @@ import { getRatingStarsWidth } from '../../utils';
 type CardProps = {
   offer: Offer;
   type: CardType;
-  onMouseEnter: () => void,
+  onMouseEnter: (offer: Offer) => void,
   onMouseLeave: () => void,
 }
 
@@ -35,7 +35,7 @@ function Card(props: CardProps): JSX.Element {
   };
 
   const handleMouseEnter = () => {
-    props.onMouseEnter();
+    props.onMouseEnter(props.offer);
   };
 
   const handleMouseLeave = () => {
