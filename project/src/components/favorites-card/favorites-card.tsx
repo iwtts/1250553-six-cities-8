@@ -1,5 +1,8 @@
+import { useState } from 'react';
+import { api } from '../..';
+import { ApiRoute, FavoriteStatus } from '../../const';
 import { Offer } from '../../types/offer';
-import { getRatingStarsWidth } from '../../utils';
+import { adaptOfferDataToClient, getRatingStarsWidth } from '../../utils';
 
 type FavoritesCardProps = {
   offer: Offer;
@@ -7,7 +10,21 @@ type FavoritesCardProps = {
 
 function FavoritesCard(props: FavoritesCardProps): JSX.Element {
   const offer = props.offer;
-  const {previewImage, price, rating, title, type} = offer;
+  const {isFavorite, previewImage, price, rating, title, type, id} = offer;
+
+  const [isFavoriteStatus, setIsFavoriteStatus] = useState(isFavorite);
+
+  const handleBookmarkClick = async (offerId: number): Promise<void> => {
+    const favoriteStatus = isFavoriteStatus ? FavoriteStatus.False : FavoriteStatus.True;
+    await api.post(`${ ApiRoute.Favorite }/${ offerId }/${ favoriteStatus }`)
+      .then(({ data }) => {
+        setIsFavoriteStatus(adaptOfferDataToClient(data).isFavorite);
+      });
+  };
+
+  const handleClick = () => {
+    handleBookmarkClick(id);
+  };
 
   return (
     <article className="favorites__card place-card">
@@ -22,7 +39,11 @@ function FavoritesCard(props: FavoritesCardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
+          <button
+            className="place-card__bookmark-button place-card__bookmark-button--active button"
+            type="button"
+            onClick={handleClick}
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

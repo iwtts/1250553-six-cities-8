@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 
@@ -105,4 +105,4 @@ function Card(props: CardProps): JSX.Element {
   );
 }
 
-export default memo(Card);
+export default Card;
