@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
 import Header from '../header/header';
@@ -7,37 +7,25 @@ import NotFound from '../not-found/not-found';
 import ReviewForm from '../review-form/review-form';
 import Map from '../map/map';
 import CardsList from '../cards-list/cards-list';
+import ReviewsList from '../reviews-list/reviews-list';
 
-import { State } from '../../types/state';
-import { ThunkAppDispatch } from '../../types/action';
 import { Offer } from '../../types/offer';
+
+import { getOffers, getNearbyOffers, getReviews } from '../../store/offers/selectors';
+import { getAuthStatus } from '../../store/user/selectors';
 
 import { CardType, MapType, AuthStatus } from '../../const';
 import { getRatingStarsWidth } from '../../utils';
-import { loadDataNearbyOffers, loadDataReviews } from '../../store/api-actions';
-import ReviewsList from '../reviews-list/reviews-list';
+import { loadDataNearbyOffers, loadDataOffers, loadDataReviews } from '../../store/api-actions';
 
-const mapStateToProps = ({offers, reviews, nearbyOffers, authStatus}: State) => ({
-  offers,
-  reviews,
-  nearbyOffers,
-  authStatus,
-});
+function Property(): JSX.Element {
+  const offers = useSelector(getOffers);
+  const reviews = useSelector(getReviews);
+  const nearbyOffers = useSelector(getNearbyOffers);
+  const authStatus =  useSelector(getAuthStatus);
 
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  getReviews(id: string) {
-    dispatch(loadDataReviews(id));
-  },
-  getNearbyOffers(id: string) {
-    dispatch(loadDataNearbyOffers(id));
-  },
-});
+  const dispatch = useDispatch();
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function Property({offers, reviews, nearbyOffers, authStatus, getReviews, getNearbyOffers}: PropsFromRedux): JSX.Element {
   const {id} = useParams() as {id: string};
   const offer = offers.find((item) => item.id.toString() === id);
 
@@ -52,9 +40,10 @@ function Property({offers, reviews, nearbyOffers, authStatus, getReviews, getNea
   };
 
   useEffect(() => {
-    getNearbyOffers(id);
-    getReviews(id);
-  }, [id, getNearbyOffers, getReviews]);
+    dispatch(loadDataOffers);
+    dispatch(loadDataReviews(id));
+    dispatch(loadDataNearbyOffers(id));
+  }, [id, dispatch]);
 
   if (!offer) {
     return <NotFound />;
@@ -68,7 +57,7 @@ function Property({offers, reviews, nearbyOffers, authStatus, getReviews, getNea
     id: item.id,
   }));
 
-  const getCurrentPoint = () => {
+  const handleGettingCurrentPoint = () => {
     if (currentOffer) {
       return {
         latitude: currentOffer.location.latitude,
@@ -83,7 +72,7 @@ function Property({offers, reviews, nearbyOffers, authStatus, getReviews, getNea
     };
   };
 
-  const currentPoint = getCurrentPoint();
+  const currentPoint = handleGettingCurrentPoint();
 
   const getBookmarkButtonClassName = () => {
     if (isFavorite) {
@@ -215,5 +204,4 @@ function Property({offers, reviews, nearbyOffers, authStatus, getReviews, getNea
   );
 }
 
-export { Property };
-export default connector(Property);
+export default Property;

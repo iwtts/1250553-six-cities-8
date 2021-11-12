@@ -1,22 +1,15 @@
-import { connect, ConnectedProps } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { State } from '../../types/state';
+import { getAuthStatus } from '../../store/user/selectors';
 import { AppRoute, AuthStatus } from '../../const';
 
 import LoggedUserBar from '../header-logged-user-bar/logged-user-bar';
 import NotLoggedUserBar from '../header-not-logged-user-bar/not-logged-user-bar';
 
+function Header(): JSX.Element {
+  const authStatus = useSelector(getAuthStatus);
 
-const mapStateToProps = ({authStatus}: State) => ({
-  authStatus,
-});
-
-const connector = connect(mapStateToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function Header({authStatus}: PropsFromRedux): JSX.Element {
   return (
     <header className="header">
       <div className="container">
@@ -39,7 +32,4 @@ function Header({authStatus}: PropsFromRedux): JSX.Element {
   );
 }
 
-export { Header };
-export default connector(Header);
-
-
+export default Header;

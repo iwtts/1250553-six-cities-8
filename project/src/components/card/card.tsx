@@ -1,12 +1,14 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
+
 import { AppRoute, CardType } from '../../const';
 import { getRatingStarsWidth } from '../../utils';
 
 type CardProps = {
   offer: Offer;
   type: CardType;
-  onMouseEnter: () => void,
+  onMouseEnter: (offer: Offer) => void,
   onMouseLeave: () => void,
 }
 
@@ -35,7 +37,7 @@ function Card(props: CardProps): JSX.Element {
   };
 
   const handleMouseEnter = () => {
-    props.onMouseEnter();
+    props.onMouseEnter(props.offer);
   };
 
   const handleMouseLeave = () => {
@@ -87,4 +89,4 @@ function Card(props: CardProps): JSX.Element {
   );
 }
 
-export default Card;
+export default memo(Card);

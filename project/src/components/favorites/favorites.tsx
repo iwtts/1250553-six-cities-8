@@ -1,32 +1,12 @@
-import { Dispatch } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import Header from '../header/header';
 import FavoritesCard from '../favorites-card/favorites-card';
 
+import { getOffers } from '../../store/offers/selectors';
 
-import { setCity } from '../../store/actions';
-
-import { State } from '../../types/state';
-import { Actions } from '../../types/action';
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-const mapStateToProps = ({offers}: State) => ({
-  offers,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  onCityChange(city: string) {
-    dispatch(setCity(city));
-  },
-});
-
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-function Favorites(props: PropsFromRedux): JSX.Element {
-  const { offers } = props;
+function Favorites(): JSX.Element {
+  const offers = useSelector(getOffers);
 
   return (
     <div className="page">
@@ -63,5 +43,4 @@ function Favorites(props: PropsFromRedux): JSX.Element {
   );
 }
 
-export { Favorites };
-export default connector(Favorites);
+export default Favorites;

@@ -1,9 +1,10 @@
 import { Offer } from '../types/offer';
 import { Review } from './review';
 import { SortType, AuthStatus } from '../const';
+import { RootState } from '../store/root-reducer';
 
-type State = {
-  authStatus: AuthStatus,
+type OffersState = {
+  // authStatus: AuthStatus,
   isDataLoaded: boolean,
   offers: Offer[],
   reviews: Review[],
@@ -11,8 +12,15 @@ type State = {
   currentCity: string,
   nearbyOffers: Offer[],
   currentSortType: SortType,
-  currentUserEmail: string,
+  // currentUserEmail: string,
 };
 
-export type { State };
+type UserState = {
+  authStatus: AuthStatus,
+  currentUserEmail: string,
+}
+
+type State = RootState;
+
+export type { OffersState, UserState, State };
 

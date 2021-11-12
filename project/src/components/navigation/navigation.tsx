@@ -1,37 +1,21 @@
 import { Link } from 'react-router-dom';
-import { connect, ConnectedProps } from 'react-redux';
-import { Dispatch } from 'react';
-
+import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
 
-import { Actions } from '../../types/action';
-import { State } from '../../types/state';
-
+import { getCurrentCity } from '../../store/offers/selectors';
 import { setCity } from '../../store/actions';
 import { CITIES } from '../../const';
 import { AppRoute } from '../../const';
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux ;
+function Navigation(): JSX.Element {
+  const currentCity = useSelector(getCurrentCity);
 
-const mapStateToProps = ({currentCity}: State) => ({
-  currentCity,
-});
+  const dispatch = useDispatch();
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  onCityChange(city: string) {
-    dispatch(setCity(city));
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-function Navigation(props: ConnectedComponentProps): JSX.Element {
-  const {onCityChange, currentCity} = props;
-
+  // ПОТОМ ПЕРЕДЕЛАТЬ
   const handleNavigationItemClick = (evt: React.MouseEvent<HTMLAnchorElement>, city: string) => {
     evt.preventDefault();
-    onCityChange(city);
+    dispatch(setCity(city));
   };
 
   return (
@@ -53,5 +37,4 @@ function Navigation(props: ConnectedComponentProps): JSX.Element {
   );
 }
 
-export { Navigation };
-export default connector(Navigation);
+export default Navigation;

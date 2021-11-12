@@ -130,6 +130,11 @@ enum SortType {
   PriceDecrease = 'Price: high to low',
 }
 
+enum NameSpace {
+  Offers = 'OFFERS',
+  User = 'USER',
+}
+
 export {
   MIN_REVIEW_LENGTH,
   URL_MARKER_CURRENT,
@@ -145,5 +150,6 @@ export {
   MapType,
   OfferType,
   ActionType,
-  SortType
+  SortType,
+  NameSpace
 };
