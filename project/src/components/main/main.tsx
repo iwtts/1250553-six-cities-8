@@ -1,5 +1,5 @@
-import { Dispatch, useState } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import Header from '../header/header';
 import Navigation from '../navigation/navigation';
@@ -7,13 +7,11 @@ import Sort from '../sort/sort';
 import CardsList from '../cards-list/cards-list';
 import Map from '../map/map';
 
-import { setCity, requireLogout } from '../../store/actions';
+import { getOffers, getCurrentCity, getCurrentSortType } from '../../store/offers/selectors';
 
 import { CITIES, SortType, MapType, CardType } from '../../const';
 
 import { Offer } from '../../types/offer';
-import { State } from '../../types/state';
-import { Actions } from '../../types/action';
 
 const getSortedOffers = (currentSortType: string, offers: Offer[]) => {
   switch(currentSortType){
@@ -32,34 +30,23 @@ const getSortedOffers = (currentSortType: string, offers: Offer[]) => {
   }
 };
 
-const mapStateToProps = ({offers, currentCity, currentSortType}: State) => ({
-  offers,
-  currentCity,
-  currentSortType,
-});
+function Main(): JSX.Element {
+  const offers = useSelector(getOffers);
+  const currentCity = useSelector(getCurrentCity);
+  const currentSortType = useSelector(getCurrentSortType);
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  onCityChange(city: string) {
-    dispatch(setCity(city));
-  },
-  onLogout: () => dispatch(requireLogout()),
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function Main(props: PropsFromRedux): JSX.Element {
-  const { currentCity, currentSortType, offers } = props;
-  const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
   const city = Object.values(CITIES).find((item) =>  item.name === currentCity);
+  // const { currentCity, currentSortType, offers } = props;
   const sortedOffers = getSortedOffers(currentSortType, offers);
   const currentOffers = sortedOffers.filter((offer: Offer) => offer.city.name === currentCity);
+
   const points = currentOffers.map((item) => ({
     latitude: item.location.latitude,
     longitude: item.location.longitude,
     id: item.id,
   }));
+
+  const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
 
   const handleGettingCurrentPoint = () => {
     if (selectedOffer) {
@@ -116,5 +103,4 @@ function Main(props: PropsFromRedux): JSX.Element {
   );
 }
 
-export { Main };
-export default connector(Main);
+export default Main;

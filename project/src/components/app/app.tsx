@@ -1,4 +1,4 @@
-import { connect, ConnectedProps}  from 'react-redux';
+import { useSelector }  from 'react-redux';
 import { Router as BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Loading from '../loading/loading';
@@ -10,26 +10,16 @@ import NotFound from '../not-found/not-found';
 
 import PrivateRoute from '../private-route/private-route';
 import browserHistory from '../../browser-history';
+import { getAuthStatus } from '../../store/user/selectors';
+import { getLoadingStatus } from '../../store/offers/selectors';
 
 import { AppRoute, AuthStatus } from '../../const';
-import { State } from '../../types/state';
 
-type PropsFromRedux = ConnectedProps<typeof connector>
-type ConnectedComponentProps = PropsFromRedux;
+function App(): JSX.Element {
+  const authStatus = useSelector(getAuthStatus);
+  const isDataLoaded = useSelector(getLoadingStatus);
 
-const isCheckedAuth = (authStatus: AuthStatus): boolean =>
-  authStatus === AuthStatus.Unknown;
-
-const mapStateToProps = ({authStatus, isDataLoaded, offers}: State) => ({
-  authStatus,
-  isDataLoaded,
-  offers,
-});
-
-const connector = connect(mapStateToProps);
-
-function App({authStatus, isDataLoaded}: ConnectedComponentProps): JSX.Element {
-  if (isCheckedAuth(authStatus) || !isDataLoaded) {
+  if (authStatus === AuthStatus.Unknown || !isDataLoaded) {
     return (
       <Loading />
     );
@@ -61,6 +51,4 @@ function App({authStatus, isDataLoaded}: ConnectedComponentProps): JSX.Element {
   );
 }
 
-export {App};
-export default connector(App);
-
+export default App;

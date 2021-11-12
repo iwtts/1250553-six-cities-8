@@ -1,5 +1,7 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
+
 import { AppRoute, CardType } from '../../const';
 import { getRatingStarsWidth } from '../../utils';
 
@@ -87,4 +89,4 @@ function Card(props: CardProps): JSX.Element {
   );
 }
 
-export default Card;
+export default memo(Card);

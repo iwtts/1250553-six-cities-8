@@ -1,8 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-// import { State } from '../../types/state';
-import { ThunkAppDispatch } from '../../types/action';
 import { Comment } from '../../types/review';
 
 import { postReview } from '../../store/api-actions';
@@ -13,22 +11,17 @@ type ReviewFormProps = {
   offerId: string,
 }
 
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onCommentPost(review: Comment, offerId: string) {
-    dispatch(postReview(review, offerId));
-  },
-});
-
-const connector = connect(null, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux & ReviewFormProps;
-
-function ReviewForm({offerId, onCommentPost}: ConnectedComponentProps): JSX.Element {
+function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
   const [commentMessage, setComment] = useState('');
   const [rating, setRating] = useState<string>('0');
 
   const isInvalid = Boolean(rating === '0' || commentMessage.length < MIN_REVIEW_LENGTH);
+
+  const dispatch = useDispatch();
+
+  const onCommentPost = (review: Comment) => {
+    dispatch(postReview(review, offerId));
+  };
 
   const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setRating(evt.target.value);
@@ -36,7 +29,7 @@ function ReviewForm({offerId, onCommentPost}: ConnectedComponentProps): JSX.Elem
 
   const handleFormSubmit = (evt: FormEvent): void => {
     evt.preventDefault();
-    onCommentPost({comment: commentMessage, rating: rating}, offerId);
+    onCommentPost({comment: commentMessage, rating: rating});
     setComment('');
     setRating('0');
   };
@@ -91,5 +84,4 @@ function ReviewForm({offerId, onCommentPost}: ConnectedComponentProps): JSX.Elem
   );
 }
 
-export { ReviewForm };
-export default connector(ReviewForm);
+export default ReviewForm;

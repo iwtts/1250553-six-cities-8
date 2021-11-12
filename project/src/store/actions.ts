@@ -1,65 +1,103 @@
-import { SetCity, SetOffers, SetReviews, SetNearbyOffers ,ChangeSortType, RequireAuth, RequireLogout, ChangeUser, RedirectToRoute } from '../types/action';
+import { createAction } from '@reduxjs/toolkit';
+
 import { Offer } from '../types/offer';
 import { Review } from '../types/review';
 
 import { ActionType, SortType, AuthStatus, AppRoute } from '../const';
 
-const setCity = (activeCity: string): SetCity  => ({
-  type: ActionType.SetCity,
-  payload: activeCity,
-});
+const setCity = createAction(
+  ActionType.SetCity,
+  (currentCity: string) => ({
+    payload: {
+      currentCity: currentCity,
+    },
+  }),
+);
 
-const setOfferList = (offers: Offer[]): SetOffers => ({
-  type: ActionType.SetOffers,
-  payload: offers,
-});
+const setOffersList = createAction(
+  ActionType.SetOffers,
+  (offers: Offer[]) => ({
+    payload: {
+      offers: offers,
+    },
+  }),
+);
 
-const changeSortType = (sortType: SortType): ChangeSortType => ({
-  type: ActionType.ChangeSortType,
-  payload: {
-    currentSortType: sortType,
-  },
-});
+const changeSortType = createAction(
+  ActionType.ChangeSortType,
+  (sortType: SortType) => ({
+    payload: {
+      currentSortType: sortType,
+    },
+  }),
+);
 
-const loadOffers = (offers: Offer[]): SetOffers => ({
-  type: ActionType.SetOffers,
-  payload: offers,
-});
+const loadOffers = createAction(
+  ActionType.SetOffers,
+  (offers: Offer[]) => ({
+    payload: {
+      offers,
+    },
+  }),
+);
 
-const loadReviews = (reviews: Review[]): SetReviews => ({
-  type: ActionType.SetReviews,
-  payload: reviews,
-});
+const loadReviews = createAction(
+  ActionType.SetReviews,
+  (reviews: Review[]) => ({
+    payload: {
+      reviews,
+    },
+  }),
+);
 
-const loadNearbyOffers = (nearbyOffers: Offer[]): SetNearbyOffers => ({
-  type: ActionType.SetNearbyOffers,
-  payload: nearbyOffers,
-});
+const loadNearbyOffers = createAction(
+  ActionType.SetNearbyOffers,
+  (nearbyOffers: Offer[]) => ({
+    payload: {
+      nearbyOffers: nearbyOffers,
+    },
+  }),
+);
 
-const requireAuth = (authStatus: AuthStatus): RequireAuth  => ({
-  type: ActionType.RequireAuth,
-  payload: {
-    authStatus: authStatus,
-  },
-});
+const requireAuth = createAction(
+  ActionType.RequireAuth,
+  (authStatus: AuthStatus) => ({
+    payload: {
+      authStatus: authStatus,
+    },
+  }),
+);
 
-const requireLogout = (): RequireLogout => ({
-  type: ActionType.RequireLogout,
-});
+const requireLogout = createAction(ActionType.RequireLogout);
 
-const changeUser = (login: string): ChangeUser => ({
-  type: ActionType.ChangeUser,
-  payload: {
-    login,
-  },
-});
+const changeUser = createAction(
+  ActionType.ChangeUser,
+  (currentUserEmail: string) => ({
+    payload: {
+      currentUserEmail,
+    },
+  }),
+);
 
-const redirectToRouter = (url: AppRoute): RedirectToRoute => ({
-  type: ActionType.RedirectToRoute,
-  payload: {
-    url,
-  },
-});
+const redirectToRouter = createAction(
+  ActionType.RedirectToRoute,
+  (url: AppRoute) => ({
+    payload: {
+      url,
+    },
+  }),
+);
 
-export { setCity, setOfferList, changeSortType, loadOffers, loadReviews, loadNearbyOffers, requireAuth, requireLogout, changeUser, redirectToRouter };
+export {
+  setCity,
+  setOffersList,
+  changeSortType,
+  loadOffers,
+  loadReviews,
+  loadNearbyOffers,
+  requireAuth,
+  requireLogout,
+  changeUser,
+  redirectToRouter
+};
 

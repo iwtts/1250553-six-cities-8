@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { Marker } from 'leaflet';
 
@@ -62,4 +62,4 @@ function Map({type, location, points, currentPoint}: MapProps): JSX.Element {
   );
 }
 
-export default Map;
+export default memo(Map);
