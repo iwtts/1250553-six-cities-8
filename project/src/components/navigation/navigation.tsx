@@ -12,7 +12,6 @@ function Navigation(): JSX.Element {
 
   const dispatch = useDispatch();
 
-  // ПОТОМ ПЕРЕДЕЛАТЬ
   const handleNavigationItemClick = (evt: React.MouseEvent<HTMLAnchorElement>, city: string) => {
     evt.preventDefault();
     dispatch(setCity(city));

@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import clsx from 'clsx';
 
 import Header from '../header/header';
 import Navigation from '../navigation/navigation';
 import Sort from '../sort/sort';
+import MainEmpty from '../main-empty/main-empty';
 import CardsList from '../cards-list/cards-list';
 import Map from '../map/map';
 
@@ -36,7 +38,6 @@ function Main(): JSX.Element {
   const currentSortType = useSelector(getCurrentSortType);
 
   const city = Object.values(CITIES).find((item) =>  item.name === currentCity);
-  // const { currentCity, currentSortType, offers } = props;
   const sortedOffers = getSortedOffers(currentSortType, offers);
   const currentOffers = sortedOffers.filter((offer: Offer) => offer.city.name === currentCity);
 
@@ -70,33 +71,39 @@ function Main(): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Header />
-      <main className="page__main page__main--index">
+      <main className={clsx('page__main', 'page__main--index', currentOffers.length === 0 && 'page__main--index-empty')}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <Navigation />
         </div>
         <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{currentOffers.length} places to stay in {currentCity}</b>
-              <Sort />
-              <CardsList
-                cardType={CardType.Main}
-                offers={currentOffers}
-                onOfferMouseEnter={handleOfferMouseEnter}
-                onOfferMouseLeave={handleOfferMouseLeave}
-              />
-            </section>
-            <div className="cities__right-section">
-              <Map
-                type={MapType.Main}
-                location={city ? city.location : CITIES.Paris.location}
-                points={points}
-                currentPoint={handleGettingCurrentPoint()}
-              />
-            </div>
-          </div>
+          {
+            currentOffers.length === 0
+              ? <MainEmpty />
+              :(
+                <div className="cities__places-container container">
+                  <section className="cities__places places">
+                    <h2 className="visually-hidden">Places</h2>
+                    <b className="places__found">{currentOffers.length} places to stay in {currentCity}</b>
+                    <Sort />
+                    <CardsList
+                      cardType={CardType.Main}
+                      offers={currentOffers}
+                      onOfferMouseEnter={handleOfferMouseEnter}
+                      onOfferMouseLeave={handleOfferMouseLeave}
+                    />
+                  </section>
+                  <div className="cities__right-section">
+                    <Map
+                      type={MapType.Main}
+                      location={city ? city.location : CITIES.Paris.location}
+                      points={points}
+                      currentPoint={handleGettingCurrentPoint()}
+                    />
+                  </div>
+                </div>
+              )
+          }
         </div>
       </main>
     </div>
