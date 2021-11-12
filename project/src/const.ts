@@ -93,6 +93,11 @@ enum AuthStatus {
   Unknown = 'UNKNOWN',
 }
 
+enum FavoriteStatus {
+  True = '1',
+  False = '0',
+}
+
 enum CardType {
   Main,
   Property,
@@ -146,6 +151,7 @@ export {
   AppRoute,
   ApiRoute,
   AuthStatus,
+  FavoriteStatus,
   CardType,
   MapType,
   OfferType,

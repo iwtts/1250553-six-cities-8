@@ -1,9 +1,10 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 
-import { AppRoute, CardType } from '../../const';
-import { getRatingStarsWidth } from '../../utils';
+import { ApiRoute, AppRoute, CardType, FavoriteStatus } from '../../const';
+import { adaptOfferDataToClient, getRatingStarsWidth } from '../../utils';
+import { api } from '../..';
 
 type CardProps = {
   offer: Offer;
@@ -29,13 +30,6 @@ const getImageWrapperClassName = (type: CardType): string => {
 function Card(props: CardProps): JSX.Element {
   const {isPremium, previewImage, price, isFavorite, rating, title, type, id} = props.offer;
 
-  const getBookmarkButtonClassName = () => {
-    if (isFavorite) {
-      return 'place-card__bookmark-button place-card__bookmark-button--active button button';
-    }
-    return 'place-card__bookmark-button button';
-  };
-
   const handleMouseEnter = () => {
     props.onMouseEnter(props.offer);
   };
@@ -43,6 +37,24 @@ function Card(props: CardProps): JSX.Element {
   const handleMouseLeave = () => {
     props.onMouseLeave();
   };
+
+  const [isFavoriteStatus, setIsFavoriteStatus] = useState(isFavorite);
+
+  const handleBookmarkClick = async (offerId: number): Promise<void> => {
+    const favoriteStatus = isFavoriteStatus ? FavoriteStatus.False : FavoriteStatus.True;
+    await api.post(`${ ApiRoute.Favorite }/${ offerId }/${ favoriteStatus }`)
+      .then(({ data }) => {
+        setIsFavoriteStatus(adaptOfferDataToClient(data).isFavorite);
+      });
+  };
+
+  const handleClick = () => {
+    handleBookmarkClick(id);
+  };
+
+  const getBookmarkButtonClassName = isFavoriteStatus
+    ? 'place-card__bookmark-button place-card__bookmark-button--active button'
+    : 'place-card__bookmark-button button';
 
   return (
     <article
@@ -65,7 +77,11 @@ function Card(props: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={getBookmarkButtonClassName()} type="button">
+          <button
+            className={getBookmarkButtonClassName}
+            type="button"
+            onClick={handleClick}
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
