@@ -1,5 +1,6 @@
 import Header from '../header/header';
 import FavoritesCardsList from '../favorites-cards-list/favorites-cards-list';
+import { CITIES } from '../../const';
 
 function Favorites(): JSX.Element {
   return (
@@ -10,12 +11,7 @@ function Favorites(): JSX.Element {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              <FavoritesCardsList city={'Paris'} />
-              <FavoritesCardsList city={'Cologne'} />
-              <FavoritesCardsList city={'Brussels'} />
-              <FavoritesCardsList city={'Amsterdam'} />
-              <FavoritesCardsList city={'Hamburg'} />
-              <FavoritesCardsList city={'Dusseldorf'} />
+              {Object.values(CITIES).map((item) => (<FavoritesCardsList key={item.name} city={item.name} />))}
             </ul>
           </section>
         </div>
