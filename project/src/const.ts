@@ -120,6 +120,7 @@ enum ActionType {
   SetOffers = 'app/set-offers-by-city',
   SetReviews = 'app/set-reviews',
   SetNearbyOffers = 'app/set-offers-nearby',
+  SetFavoriteOffers = 'app/set-favorite-offers',
   ChangeSortType = 'sort/change-sort-type',
   RequireAuth = 'user/requireAuthorization',
   RequireLogout = 'user/requireLogout',

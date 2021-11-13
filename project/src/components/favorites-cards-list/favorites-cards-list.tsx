@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import FavoritesCard from '../favorites-card/favorites-card';
-import { getOffers } from '../../store/offers/selectors';
+import { getFavoriteOffers } from '../../store/offers/selectors';
 
 type FavoritesCardsListProps = {
   city: string;
@@ -8,8 +8,8 @@ type FavoritesCardsListProps = {
 
 function FavoritesCardsList(props: FavoritesCardsListProps): JSX.Element | null {
   const city = props.city;
-  const offers = useSelector(getOffers);
-  const currentOffers = offers.filter((offer) => offer.isFavorite && offer.city.name === city);
+  const offers = useSelector(getFavoriteOffers);
+  const currentOffers = offers.filter((offer) => offer.city.name === city);
 
   if (currentOffers.length !== 0) {
     return (

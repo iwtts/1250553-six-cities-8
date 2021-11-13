@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 
-import { ApiRoute, AppRoute, CardType, FavoriteStatus } from '../../const';
-import { adaptOfferDataToClient, getRatingStarsWidth } from '../../utils';
-import { api } from '../..';
+import { AppRoute, CardType } from '../../const';
+import { getRatingStarsWidth } from '../../utils';
+import { togleFavoriteStatus } from '../../store/api-actions';
+import { useDispatch } from 'react-redux';
 
 type CardProps = {
   offer: Offer;
@@ -38,18 +39,12 @@ function Card(props: CardProps): JSX.Element {
     props.onMouseLeave();
   };
 
-  const [isFavoriteStatus, setIsFavoriteStatus] = useState(isFavorite);
+  const [isFavoriteStatus] = useState(isFavorite);
 
-  const handleBookmarkClick = async (offerId: number): Promise<void> => {
-    const favoriteStatus = isFavoriteStatus ? FavoriteStatus.False : FavoriteStatus.True;
-    await api.post(`${ ApiRoute.Favorite }/${ offerId }/${ favoriteStatus }`)
-      .then(({ data }) => {
-        setIsFavoriteStatus(adaptOfferDataToClient(data).isFavorite);
-      });
-  };
+  const dispatch = useDispatch();
 
   const handleClick = () => {
-    handleBookmarkClick(id);
+    dispatch(togleFavoriteStatus(id, isFavoriteStatus));
   };
 
   const getBookmarkButtonClassName = isFavoriteStatus

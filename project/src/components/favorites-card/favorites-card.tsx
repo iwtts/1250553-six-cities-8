@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { api } from '../..';
-import { ApiRoute, FavoriteStatus } from '../../const';
+import { useDispatch } from 'react-redux';
+import { togleFavoriteStatus } from '../../store/api-actions';
 import { Offer } from '../../types/offer';
-import { adaptOfferDataToClient, getRatingStarsWidth } from '../../utils';
+import { getRatingStarsWidth } from '../../utils';
 
 type FavoritesCardProps = {
   offer: Offer;
@@ -12,18 +12,12 @@ function FavoritesCard(props: FavoritesCardProps): JSX.Element {
   const offer = props.offer;
   const {isFavorite, previewImage, price, rating, title, type, id} = offer;
 
-  const [isFavoriteStatus, setIsFavoriteStatus] = useState(isFavorite);
+  const [isFavoriteStatus] = useState(isFavorite);
 
-  const handleBookmarkClick = async (offerId: number): Promise<void> => {
-    const favoriteStatus = isFavoriteStatus ? FavoriteStatus.False : FavoriteStatus.True;
-    await api.post(`${ ApiRoute.Favorite }/${ offerId }/${ favoriteStatus }`)
-      .then(({ data }) => {
-        setIsFavoriteStatus(adaptOfferDataToClient(data).isFavorite);
-      });
-  };
+  const dispatch = useDispatch();
 
   const handleClick = () => {
-    handleBookmarkClick(id);
+    dispatch(togleFavoriteStatus(id, isFavoriteStatus));
   };
 
   return (
