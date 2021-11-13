@@ -93,6 +93,11 @@ enum AuthStatus {
   Unknown = 'UNKNOWN',
 }
 
+enum FavoriteStatus {
+  True = '1',
+  False = '0',
+}
+
 enum CardType {
   Main,
   Property,
@@ -115,6 +120,7 @@ enum ActionType {
   SetOffers = 'app/set-offers-by-city',
   SetReviews = 'app/set-reviews',
   SetNearbyOffers = 'app/set-offers-nearby',
+  SetFavoriteOffers = 'app/set-favorite-offers',
   ChangeSortType = 'sort/change-sort-type',
   RequireAuth = 'user/requireAuthorization',
   RequireLogout = 'user/requireLogout',
@@ -146,6 +152,7 @@ export {
   AppRoute,
   ApiRoute,
   AuthStatus,
+  FavoriteStatus,
   CardType,
   MapType,
   OfferType,

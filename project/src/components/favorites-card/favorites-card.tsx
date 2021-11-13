@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { togleFavoriteStatus } from '../../store/api-actions';
 import { Offer } from '../../types/offer';
 import { getRatingStarsWidth } from '../../utils';
 
@@ -7,7 +10,15 @@ type FavoritesCardProps = {
 
 function FavoritesCard(props: FavoritesCardProps): JSX.Element {
   const offer = props.offer;
-  const {previewImage, price, rating, title, type} = offer;
+  const {isFavorite, previewImage, price, rating, title, type, id} = offer;
+
+  const [isFavoriteStatus] = useState(isFavorite);
+
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(togleFavoriteStatus(id, isFavoriteStatus));
+  };
 
   return (
     <article className="favorites__card place-card">
@@ -22,7 +33,11 @@ function FavoritesCard(props: FavoritesCardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
+          <button
+            className="place-card__bookmark-button place-card__bookmark-button--active button"
+            type="button"
+            onClick={handleClick}
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

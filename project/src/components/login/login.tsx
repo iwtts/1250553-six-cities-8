@@ -17,7 +17,7 @@ function Login(): JSX.Element {
 
   const dispatch = useDispatch();
 
-  const onSubmit = (authData: AuthData) => {
+  const handleAuth = (authData: AuthData) => {
     dispatch(login(authData));
     dispatch(changeUser(authData.login));
   };
@@ -25,7 +25,7 @@ function Login(): JSX.Element {
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     if (loginRef.current !== null && passwordRef.current !== null) {
-      onSubmit({
+      handleAuth({
         login: loginRef.current.value,
         password: passwordRef.current.value,
       });

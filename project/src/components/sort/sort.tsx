@@ -9,9 +9,6 @@ import SortItem from '../sort-item/sort-item';
 function Sort(): JSX.Element {
   const dispatch = useDispatch();
   const currentSortType = useSelector(getCurrentSortType);
-  const onSortTypeChange = (sortType: SortType) => {
-    dispatch(changeSortType(sortType));
-  };
 
   const [isDropdownOpened, setIsDropdownOpened] = useState<boolean>(false);
   const sortTypes = Object.values(SortType);
@@ -20,9 +17,13 @@ function Sort(): JSX.Element {
     setIsDropdownOpened(!isDropdownOpened);
   };
 
+  const handleSortTypeChange = (sortType: SortType) => {
+    dispatch(changeSortType(sortType));
+  };
+
   const handleSortingOptionClick = (sortType: SortType) => {
     if (sortType !== currentSortType) {
-      onSortTypeChange(sortType);
+      handleSortTypeChange(sortType);
     }
     setIsDropdownOpened(false);
   };

@@ -9,6 +9,7 @@ const getCurrentSortType = (state: State): SortType => state[NameSpace.Offers].c
 const getOffers = (state: State): Offer[] => state[NameSpace.Offers].offers;
 const getCityOffers = (state: State): Offer[] => state[NameSpace.Offers].offers.filter((offer: Offer) => offer.city.name === getCurrentCity(state));
 const getNearbyOffers = (state: State): Offer[] => state[NameSpace.Offers].nearbyOffers;
+const getFavoriteOffers = (state: State): Offer[] => state[NameSpace.Offers].favoriteOffers;
 const getCurrentCity = (state: State): string  => state[NameSpace.Offers].currentCity;
 const getReviews = (state: State): Review[] => state[NameSpace.Offers].reviews;
 
@@ -18,6 +19,7 @@ export {
   getOffers,
   getCityOffers,
   getNearbyOffers,
+  getFavoriteOffers,
   getCurrentCity,
   getReviews
 };

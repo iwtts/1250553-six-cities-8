@@ -16,7 +16,7 @@ import { getAuthStatus } from '../../store/user/selectors';
 
 import { CardType, MapType, AuthStatus } from '../../const';
 import { getRatingStarsWidth } from '../../utils';
-import { loadDataNearbyOffers, loadDataOffers, loadDataReviews } from '../../store/api-actions';
+import { loadDataNearbyOffers, loadDataOffers, loadDataReviews, togleFavoriteStatus } from '../../store/api-actions';
 
 function Property(): JSX.Element {
   const offers = useSelector(getOffers);
@@ -26,8 +26,8 @@ function Property(): JSX.Element {
 
   const dispatch = useDispatch();
 
-  const {id} = useParams() as {id: string};
-  const offer = offers.find((item) => item.id.toString() === id);
+  const {id: offerId} = useParams() as {id: string};
+  const offer = offers.find((item) => item.id.toString() === offerId);
 
   const [currentOffer, setSelectedOffer] = useState<Offer | null>(null);
 
@@ -41,15 +41,15 @@ function Property(): JSX.Element {
 
   useEffect(() => {
     dispatch(loadDataOffers);
-    dispatch(loadDataReviews(id));
-    dispatch(loadDataNearbyOffers(id));
-  }, [id, dispatch]);
+    dispatch(loadDataReviews(offerId));
+    dispatch(loadDataNearbyOffers(offerId));
+  }, [offerId, dispatch]);
 
   if (!offer) {
     return <NotFound />;
   }
 
-  const { isFavorite, images, isPremium, title, rating, type, bedrooms, maxAdults, price, goods, host, description } = offer;
+  const { isFavorite, images, isPremium, title, rating, type, bedrooms, maxAdults, price, goods, host, description, id } = offer;
 
   const nearbyPoints = nearbyOffers.map((item) => ({
     latitude: item.location.latitude,
@@ -72,7 +72,9 @@ function Property(): JSX.Element {
     };
   };
 
-  const currentPoint = handleGettingCurrentPoint();
+  const handleClick = () => {
+    dispatch(togleFavoriteStatus(id, isFavorite));
+  };
 
   const getBookmarkButtonClassName = () => {
     if (isFavorite) {
@@ -112,7 +114,11 @@ function Property(): JSX.Element {
                 <h1 className="property__name">
                   {title}
                 </h1>
-                <button className={getBookmarkButtonClassName()} type="button">
+                <button
+                  className={getBookmarkButtonClassName()}
+                  type="button"
+                  onClick={handleClick}
+                >
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -177,7 +183,7 @@ function Property(): JSX.Element {
               <section className="property__reviews reviews">
                 <ReviewsList reviews={reviews} />
                 {authStatus === AuthStatus.Auth &&
-                  <ReviewForm offerId={id}/>}
+                  <ReviewForm offerId={offerId}/>}
               </section>
             </div>
           </div>
@@ -185,7 +191,7 @@ function Property(): JSX.Element {
             type={MapType.Property}
             location={offer.city.location}
             points={nearbyPoints}
-            currentPoint={currentPoint}
+            currentPoint={handleGettingCurrentPoint()}
           />
         </section>
         <div className="container">

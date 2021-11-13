@@ -19,7 +19,7 @@ function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
 
   const dispatch = useDispatch();
 
-  const onCommentPost = (review: Comment) => {
+  const handleCommentPost = (review: Comment) => {
     dispatch(postReview(review, offerId));
   };
 
@@ -29,7 +29,7 @@ function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
 
   const handleFormSubmit = (evt: FormEvent): void => {
     evt.preventDefault();
-    onCommentPost({comment: commentMessage, rating: rating});
+    handleCommentPost({comment: commentMessage, rating: rating});
     setComment('');
     setRating('0');
   };

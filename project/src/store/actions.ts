@@ -23,6 +23,7 @@ const setOffersList = createAction(
   }),
 );
 
+
 const changeSortType = createAction(
   ActionType.ChangeSortType,
   (sortType: SortType) => ({
@@ -55,6 +56,15 @@ const loadNearbyOffers = createAction(
   (nearbyOffers: Offer[]) => ({
     payload: {
       nearbyOffers: nearbyOffers,
+    },
+  }),
+);
+
+const loadFavoriteOffers = createAction(
+  ActionType.SetFavoriteOffers,
+  (favoriteOffers: Offer[]) => ({
+    payload: {
+      favoriteOffers,
     },
   }),
 );
@@ -95,6 +105,7 @@ export {
   loadOffers,
   loadReviews,
   loadNearbyOffers,
+  loadFavoriteOffers,
   requireAuth,
   requireLogout,
   changeUser,

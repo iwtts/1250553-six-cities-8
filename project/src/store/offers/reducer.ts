@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import { loadOffers, loadNearbyOffers, loadReviews, setCity, changeSortType } from '../../store/actions';
+import { loadOffers, loadNearbyOffers, loadReviews, setCity, changeSortType, loadFavoriteOffers } from '../../store/actions';
 import { OffersState } from '../../types/state';
 import { CITIES, SortType } from '../../const';
 
@@ -13,6 +13,7 @@ const initialState: OffersState = {
   cityOffers: [],
   reviews: [],
   nearbyOffers: [],
+  favoriteOffers: [],
   currentSortType: SortType.Popular,
 };
 
@@ -24,6 +25,9 @@ const offersReducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadNearbyOffers, (state, action) => {
       state.nearbyOffers = action.payload.nearbyOffers;
+    })
+    .addCase(loadFavoriteOffers, (state, action) => {
+      state.favoriteOffers = action.payload.favoriteOffers;
     })
     .addCase(setCity, (state, action) => {
       state.currentCity = action.payload.currentCity;
