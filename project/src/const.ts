@@ -59,6 +59,8 @@ const CITIES = {
   },
 };
 
+const INITIAL_CITY = CITIES.Paris.name;
+
 const defaultCustomIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
   iconSize: [40, 40],
@@ -149,6 +151,7 @@ export {
   currentCustomIcon,
   OFFERS_NEARBY_AMOUNT,
   CITIES,
+  INITIAL_CITY,
   AppRoute,
   ApiRoute,
   AuthStatus,

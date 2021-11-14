@@ -2,9 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 
 import { loadOffers, loadNearbyOffers, loadReviews, setCity, changeSortType, loadFavoriteOffers } from '../../store/actions';
 import { OffersState } from '../../types/state';
-import { CITIES, SortType } from '../../const';
-
-const INITIAL_CITY = CITIES.Paris.name;
+import { INITIAL_CITY, SortType } from '../../const';
 
 const initialState: OffersState = {
   isDataLoaded: false,

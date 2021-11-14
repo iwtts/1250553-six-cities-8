@@ -23,7 +23,6 @@ const setOffersList = createAction(
   }),
 );
 
-
 const changeSortType = createAction(
   ActionType.ChangeSortType,
   (sortType: SortType) => ({
