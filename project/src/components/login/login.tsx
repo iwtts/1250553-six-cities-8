@@ -65,6 +65,7 @@ function Login(): JSX.Element {
                   type="password"
                   name="password"
                   placeholder="Password"
+                  pattern="[а-яА-ЯёЁa-zA-Z0-9]+$"
                   required
                 />
               </div>
