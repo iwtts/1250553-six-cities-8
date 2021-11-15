@@ -29,7 +29,14 @@ function useMap(
       instance.addLayer(layer);
 
       setMap(instance);
+
+    } else {
+      map?.setView({
+        lat: location.latitude,
+        lng: location.longitude,
+      }, location.zoom);
     }
+
   }, [mapRef, map, location]);
 
   return map;

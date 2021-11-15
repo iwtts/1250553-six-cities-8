@@ -1,5 +1,5 @@
 import { ThunkActionResult } from '../types/action';
-import { loadOffers, loadNearbyOffers, requireAuth, changeUser, redirectToRouter, loadReviews, loadFavoriteOffers } from './actions';
+import { loadOffers, loadNearbyOffers, requireAuth, redirectToRouter, loadReviews, loadFavoriteOffers } from './actions';
 import { saveToken, Token } from '../services/token';
 import { AuthStatus, ApiRoute, AppRoute, FavoriteStatus } from '../const';
 import { adaptOfferDataToClient, adaptReviewDataToClient } from '../utils';
@@ -38,11 +38,8 @@ const loadDataFavoriteOffers = (): ThunkActionResult => (
 
 const checkAuth = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    await api.get(ApiRoute.Login)
-      .then((response): void => {
-        dispatch(requireAuth(AuthStatus.Auth));
-        dispatch(changeUser(response.data.currentUserEmail));
-      });
+    await api.get(ApiRoute.Login);
+    dispatch(requireAuth(AuthStatus.NoAuth));
   };
 
 const login = ({login: email, password}: AuthData): ThunkActionResult =>
