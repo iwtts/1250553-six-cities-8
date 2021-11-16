@@ -12,8 +12,7 @@ function Navigation(): JSX.Element {
 
   const dispatch = useDispatch();
 
-  const handleNavigationItemClick = (evt: React.MouseEvent<HTMLAnchorElement>, city: string) => {
-    evt.preventDefault();
+  const handleNavigationItemClick = (city: string) => {
     dispatch(setCity(city));
   };
 
@@ -26,7 +25,12 @@ function Navigation(): JSX.Element {
               <Link
                 className={clsx('locations__item-link', 'tabs__item', item === currentCity && 'tabs__item--active')}
                 to={AppRoute.Main}
-                onClick={(evt) => handleNavigationItemClick(evt, item)}
+                onClick={
+                  (evt) => {
+                    evt.preventDefault();
+                    handleNavigationItemClick(item);
+                  }
+                }
               >
                 <span>{item}</span>
               </Link>

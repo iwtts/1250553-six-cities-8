@@ -52,4 +52,18 @@ const adaptReviewDataToClient = (data: DataReview): Review => ({
   },
 });
 
-export { getRatingStarsWidth, adaptOfferDataToClient, adaptReviewDataToClient };
+const updateOffers = (offers: Offer[], updatedOffer: Offer): Offer[] => {
+  const id = offers.findIndex((offer) => offer.id === updatedOffer.id);
+
+  if (id === -1) {
+    return offers;
+  }
+
+  return [
+    ...offers.slice(0, id),
+    updatedOffer,
+    ...offers.slice(id + 1),
+  ];
+};
+
+export { getRatingStarsWidth, adaptOfferDataToClient, adaptReviewDataToClient, updateOffers };

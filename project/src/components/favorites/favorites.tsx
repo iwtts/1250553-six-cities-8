@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getFavoriteOffers } from '../../store/offers/selectors';
 
 import Header from '../header/header';
@@ -6,8 +6,16 @@ import FavoritesCardsList from '../favorites-cards-list/favorites-cards-list';
 import FavoritesEmpty from '../favorites-empty/favorites-empty';
 
 import { CITIES } from '../../const';
+import { loadDataFavoriteOffers } from '../../store/api-actions';
+import { useEffect } from 'react';
 
 function Favorites(): JSX.Element {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadDataFavoriteOffers());
+  });
+
   const offers = useSelector(getFavoriteOffers);
   return (
     <div className="page">

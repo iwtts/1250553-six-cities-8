@@ -72,7 +72,7 @@ function Property(): JSX.Element {
     };
   };
 
-  const handleClick = () => {
+  const handleBookmarkClick = () => {
     dispatch(togleFavoriteStatus(id, isFavorite));
   };
 
@@ -117,7 +117,7 @@ function Property(): JSX.Element {
                 <button
                   className={getBookmarkButtonClassName()}
                   type="button"
-                  onClick={handleClick}
+                  onClick={handleBookmarkClick}
                 >
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>

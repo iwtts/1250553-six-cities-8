@@ -1,5 +1,5 @@
 import { ThunkActionResult } from '../types/action';
-import { loadOffers, loadNearbyOffers, requireAuth, redirectToRouter, loadReviews, loadFavoriteOffers } from './actions';
+import { loadOffers, loadNearbyOffers, requireAuth, redirectToRouter, loadReviews, loadFavoriteOffers, changeUser, setOffer } from './actions';
 import { saveToken, Token } from '../services/token';
 import { AuthStatus, ApiRoute, AppRoute, FavoriteStatus } from '../const';
 import { adaptOfferDataToClient, adaptReviewDataToClient } from '../utils';
@@ -38,8 +38,11 @@ const loadDataFavoriteOffers = (): ThunkActionResult => (
 
 const checkAuth = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    await api.get(ApiRoute.Login);
-    dispatch(requireAuth(AuthStatus.NoAuth));
+    await api.get(ApiRoute.Login)
+      .then(({data}): void => {
+        dispatch(requireAuth(AuthStatus.Auth));
+        dispatch(changeUser(data.email));
+      });
   };
 
 const login = ({login: email, password}: AuthData): ThunkActionResult =>
@@ -61,8 +64,8 @@ const togleFavoriteStatus = (offerId: number, status: boolean): ThunkActionResul
   async (dispatch, _getState, api): Promise<void> => {
     const favoriteStatus = status ? FavoriteStatus.False : FavoriteStatus.True;
     const {data} = await api.post(`${ApiRoute.Favorite}/${offerId}/${favoriteStatus}`, {favoriteOffers: []});
-    const favoriteOffers = data.map((item: DataOffer) => adaptOfferDataToClient(item));
-    dispatch(loadFavoriteOffers(favoriteOffers));
+    const offer = adaptOfferDataToClient(data);
+    dispatch(setOffer(offer));
   };
 
 export { loadDataOffers, loadDataReviews, loadDataNearbyOffers, loadDataFavoriteOffers, checkAuth, login, postReview, togleFavoriteStatus };

@@ -117,6 +117,7 @@ enum OfferType {
 
 enum ActionType {
   SetCity = 'app/set-city',
+  SetOffer = 'app/set-offer',
   SetOffers = 'app/set-offers-by-city',
   SetReviews = 'app/set-reviews',
   SetNearbyOffers = 'app/set-offers-nearby',
