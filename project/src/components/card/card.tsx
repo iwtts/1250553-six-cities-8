@@ -10,8 +10,8 @@ import { getAuthStatus } from '../../store/user/selectors';
 type CardProps = {
   offer: Offer;
   type: CardType;
-  onMouseEnter: (offer: Offer) => void,
-  onMouseLeave: () => void,
+  onMouseEnter?: (offer: Offer) => void,
+  onMouseLeave?: () => void,
 }
 
 const getArticleClassName = (type: CardType): string => {
@@ -46,11 +46,11 @@ function Card(props: CardProps): JSX.Element {
   };
 
   const handleMouseEnter = () => {
-    props.onMouseEnter(props.offer);
+    props.onMouseEnter?.(props.offer);
   };
 
   const handleMouseLeave = () => {
-    props.onMouseLeave();
+    props.onMouseLeave?.();
   };
 
   const getBookmarkButtonClassName = isFavorite
