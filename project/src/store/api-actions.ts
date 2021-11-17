@@ -8,31 +8,51 @@ import { AuthData ,DataOffer, DataReview } from '../types/data';
 
 const loadDataOffers = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get(ApiRoute.Offers);
-    const offers = data.map((item: DataOffer) => adaptOfferDataToClient(item));
-    dispatch(loadOffers(offers));
+    await api.get(ApiRoute.Offers)
+      .then(({data}) => {
+        const offers = data.map((item: DataOffer) => adaptOfferDataToClient(item));
+        dispatch(loadOffers(offers));
+      })
+      .catch(() => {
+        throwError('Error');
+      });
   };
 
 const loadDataReviews = (offerId: string): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get(`${ ApiRoute.Reviews }/${ offerId }`);
-    const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
-    dispatch(loadReviews(reviews));
+    await api.get(`${ ApiRoute.Reviews }/${ offerId }`)
+      .then(({data}) => {
+        const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
+        dispatch(loadReviews(reviews));
+      })
+      .catch(() => {
+        throwError('Error');
+      });
   };
 
 const loadDataNearbyOffers = (id: string): ThunkActionResult => (
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get(`${ ApiRoute.Hotels }/${ id }/nearby`);
-    const offersNearby = data.map((item: DataOffer) => adaptOfferDataToClient(item));
-    dispatch(loadNearbyOffers(offersNearby));
+    await api.get(`${ ApiRoute.Hotels }/${ id }/nearby`)
+      .then(({data}) => {
+        const offersNearby = data.map((item: DataOffer) => adaptOfferDataToClient(item));
+        dispatch(loadNearbyOffers(offersNearby));
+      })
+      .catch(() => {
+        throwError('Error');
+      });
   }
 );
 
 const loadDataFavoriteOffers = (): ThunkActionResult => (
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get(ApiRoute.Favorite);
-    const favoriteOffers = data.map((item: DataOffer) => adaptOfferDataToClient(item));
-    dispatch(loadFavoriteOffers(favoriteOffers));
+    await api.get(ApiRoute.Favorite)
+      .then(({data}) => {
+        const favoriteOffers = data.map((item: DataOffer) => adaptOfferDataToClient(item));
+        dispatch(loadFavoriteOffers(favoriteOffers));
+      })
+      .catch(() => {
+        throwError('Error');
+      });
   }
 );
 
@@ -42,21 +62,29 @@ const checkAuth = (): ThunkActionResult =>
       .then(({data}): void => {
         dispatch(requireAuth(AuthStatus.Auth));
         dispatch(changeUser(data.email));
+      })
+      .catch(() => {
+        throwError('Error');
       });
   };
 
 const login = ({login: email, password}: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const {data: {token}} = await api.post<{token: Token}>(ApiRoute.Login, {email, password});
-    saveToken(token);
-    dispatch(requireAuth(AuthStatus.Auth));
-    dispatch(redirectToRouter(AppRoute.Main));
+    await api.post<{token: Token}>(ApiRoute.Login, {email, password})
+      .then(({data: {token}}) => {
+        saveToken(token);
+        dispatch(requireAuth(AuthStatus.Auth));
+        dispatch(redirectToRouter(AppRoute.Main));
+      })
+      .catch(() => {
+        throwError('Error');
+      });
   };
 
 const postReview = ({comment, rating}: Comment, offerId: string): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     await api.post(`${ApiRoute.Reviews}/${offerId}`, {comment: comment, rating})
-      .then(({ data }) => {
+      .then(({data}) => {
         const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
         dispatch(loadReviews(reviews));
       })
@@ -68,9 +96,14 @@ const postReview = ({comment, rating}: Comment, offerId: string): ThunkActionRes
 const togleFavoriteStatus = (offerId: number, status: boolean): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const favoriteStatus = status ? FavoriteStatus.False : FavoriteStatus.True;
-    const {data} = await api.post(`${ApiRoute.Favorite}/${offerId}/${favoriteStatus}`, {favoriteOffers: []});
-    const offer = adaptOfferDataToClient(data);
-    dispatch(setOffer(offer));
+    await api.post(`${ApiRoute.Favorite}/${offerId}/${favoriteStatus}`, {favoriteOffers: []})
+      .then (({data}) => {
+        const offer = adaptOfferDataToClient(data);
+        dispatch(setOffer(offer));
+      })
+      .catch(() => {
+        throwError('Error');
+      });
   };
 
 export { loadDataOffers, loadDataReviews, loadDataNearbyOffers, loadDataFavoriteOffers, checkAuth, login, postReview, togleFavoriteStatus };
