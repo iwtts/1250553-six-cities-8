@@ -103,6 +103,11 @@ enum CardType {
   Property,
 }
 
+enum HeaderType {
+  Default,
+  Login,
+}
+
 enum MapType {
   Main,
   Property,
@@ -155,6 +160,7 @@ export {
   AuthStatus,
   FavoriteStatus,
   CardType,
+  HeaderType,
   MapType,
   OfferType,
   ActionType,
