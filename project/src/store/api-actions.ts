@@ -2,7 +2,7 @@ import { ThunkActionResult } from '../types/action';
 import { loadOffers, loadNearbyOffers, requireAuth, redirectToRouter, loadReviews, loadFavoriteOffers, changeUser, setOffer } from './actions';
 import { saveToken, Token } from '../services/token';
 import { AuthStatus, ApiRoute, AppRoute, FavoriteStatus } from '../const';
-import { adaptOfferDataToClient, adaptReviewDataToClient } from '../utils';
+import { adaptOfferDataToClient, adaptReviewDataToClient, throwError } from '../utils';
 import { Comment } from '../types/review';
 import { AuthData ,DataOffer, DataReview } from '../types/data';
 
@@ -55,9 +55,14 @@ const login = ({login: email, password}: AuthData): ThunkActionResult =>
 
 const postReview = ({comment, rating}: Comment, offerId: string): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.post(`${ApiRoute.Reviews}/${offerId}`, {comment: comment, rating});
-    const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
-    dispatch(loadReviews(reviews));
+    await api.post(`${ApiRoute.Reviews}/${offerId}`, {comment: comment, rating})
+      .then(({ data }) => {
+        const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
+        dispatch(loadReviews(reviews));
+      })
+      .catch(() => {
+        throwError('Error');
+      });
   };
 
 const togleFavoriteStatus = (offerId: number, status: boolean): ThunkActionResult =>

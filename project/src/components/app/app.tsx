@@ -32,7 +32,7 @@ function App(): JSX.Element {
           <Main />
         </Route>
         <Route exact path={AppRoute.SignIn}>
-          {(authStatus === AuthStatus.NoAuth) ?  <Login /> : <Main />}
+          <Login />
         </Route>
         <PrivateRoute
           exact
