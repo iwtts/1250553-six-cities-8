@@ -2,6 +2,10 @@ import { Icon } from 'leaflet';
 
 const MIN_REVIEW_LENGTH = 50;
 
+const MAX_REVIEW_LENGTH = 300;
+
+const ITINIAL_RATING = '0';
+
 const URL_MARKER_DEFAULT = './img/pin.svg';
 
 const URL_MARKER_CURRENT = './img/pin-active.svg';
@@ -103,6 +107,11 @@ enum CardType {
   Property,
 }
 
+enum HeaderType {
+  Default,
+  Login,
+}
+
 enum MapType {
   Main,
   Property,
@@ -117,6 +126,7 @@ enum OfferType {
 
 enum ActionType {
   SetCity = 'app/set-city',
+  SetOffer = 'app/set-offer',
   SetOffers = 'app/set-offers-by-city',
   SetReviews = 'app/set-reviews',
   SetNearbyOffers = 'app/set-offers-nearby',
@@ -143,6 +153,8 @@ enum NameSpace {
 
 export {
   MIN_REVIEW_LENGTH,
+  MAX_REVIEW_LENGTH,
+  ITINIAL_RATING,
   URL_MARKER_CURRENT,
   URL_MARKER_DEFAULT,
   defaultCustomIcon,
@@ -154,6 +166,7 @@ export {
   AuthStatus,
   FavoriteStatus,
   CardType,
+  HeaderType,
   MapType,
   OfferType,
   ActionType,

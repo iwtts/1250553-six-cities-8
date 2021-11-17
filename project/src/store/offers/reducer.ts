@@ -1,8 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import { loadOffers, loadNearbyOffers, loadReviews, setCity, changeSortType, loadFavoriteOffers } from '../../store/actions';
+import { loadOffers, loadNearbyOffers, loadReviews, setCity, changeSortType, loadFavoriteOffers, setOffer } from '../../store/actions';
 import { OffersState } from '../../types/state';
 import { CITIES, SortType } from '../../const';
+import { updateOffers } from '../../utils';
 
 const INITIAL_CITY = CITIES.Paris.name;
 
@@ -37,6 +38,11 @@ const offersReducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadReviews, (state, action) => {
       state.reviews = action.payload.reviews;
+    })
+    .addCase(setOffer, (state, action) => {
+      state.offers = updateOffers(state.offers, action.payload.updatedOffer);
+      state.nearbyOffers = updateOffers(state.nearbyOffers, action.payload.updatedOffer);
+      state.favoriteOffers = updateOffers(state.favoriteOffers, action.payload.updatedOffer);
     });
 });
 

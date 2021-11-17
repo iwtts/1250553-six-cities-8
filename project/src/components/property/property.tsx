@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
@@ -8,8 +8,6 @@ import ReviewForm from '../review-form/review-form';
 import Map from '../map/map';
 import CardsList from '../cards-list/cards-list';
 import ReviewsList from '../reviews-list/reviews-list';
-
-import { Offer } from '../../types/offer';
 
 import { getOffers, getNearbyOffers, getReviews } from '../../store/offers/selectors';
 import { getAuthStatus } from '../../store/user/selectors';
@@ -29,16 +27,6 @@ function Property(): JSX.Element {
   const {id: offerId} = useParams() as {id: string};
   const offer = offers.find((item) => item.id.toString() === offerId);
 
-  const [currentOffer, setSelectedOffer] = useState<Offer | null>(null);
-
-  const handleOfferMouseEnter = (activeOffer: Offer | null) => {
-    setSelectedOffer(activeOffer);
-  };
-
-  const handleOfferMouseLeave = () => {
-    setSelectedOffer(null);
-  };
-
   useEffect(() => {
     dispatch(loadDataOffers);
     dispatch(loadDataReviews(offerId));
@@ -57,22 +45,13 @@ function Property(): JSX.Element {
     id: item.id,
   }));
 
-  const handleGettingCurrentPoint = () => {
-    if (currentOffer) {
-      return {
-        latitude: currentOffer.location.latitude,
-        longitude: currentOffer.location.longitude,
-        id: currentOffer.id,
-      };
-    }
-    return {
-      latitude: offer.location.latitude,
-      longitude: offer.location.longitude,
-      id: offer.id,
-    };
+  const currentPoint = {
+    latitude: offer.location.latitude,
+    longitude: offer.location.longitude,
+    id: offer.id,
   };
 
-  const handleClick = () => {
+  const handleBookmarkClick = () => {
     dispatch(togleFavoriteStatus(id, isFavorite));
   };
 
@@ -97,11 +76,13 @@ function Property(): JSX.Element {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {images.map((image: string) => (
-                <div className="property__image-wrapper" key={image}>
-                  <img className="property__image" src={image} alt="Interior view" />
-                </div>
-              ))}
+              {images
+                .slice(0, 6)
+                .map((image: string) => (
+                  <div className="property__image-wrapper" key={image}>
+                    <img className="property__image" src={image} alt="Interior view" />
+                  </div>
+                ))}
             </div>
           </div>
           <div className="property__container container">
@@ -117,7 +98,7 @@ function Property(): JSX.Element {
                 <button
                   className={getBookmarkButtonClassName()}
                   type="button"
-                  onClick={handleClick}
+                  onClick={handleBookmarkClick}
                 >
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
@@ -191,7 +172,7 @@ function Property(): JSX.Element {
             type={MapType.Property}
             location={offer.city.location}
             points={nearbyPoints}
-            currentPoint={handleGettingCurrentPoint()}
+            currentPoint={currentPoint}
           />
         </section>
         <div className="container">
@@ -200,8 +181,6 @@ function Property(): JSX.Element {
             <CardsList
               cardType={CardType.Property}
               offers={nearbyOffers}
-              onOfferMouseEnter={handleOfferMouseEnter}
-              onOfferMouseLeave={handleOfferMouseLeave}
             />
           </section>
         </div>

@@ -1,3 +1,6 @@
+import { ReactText } from 'react';
+import { toast } from 'react-toastify';
+
 import { DataOffer, DataReview } from './types/data';
 import { Offer } from './types/offer';
 import { Review } from './types/review';
@@ -52,4 +55,28 @@ const adaptReviewDataToClient = (data: DataReview): Review => ({
   },
 });
 
-export { getRatingStarsWidth, adaptOfferDataToClient, adaptReviewDataToClient };
+const updateOffers = (offers: Offer[], updatedOffer: Offer): Offer[] => {
+  const id = offers.findIndex((offer) => offer.id === updatedOffer.id);
+
+  if (id === -1) {
+    return offers;
+  }
+
+  return [
+    ...offers.slice(0, id),
+    updatedOffer,
+    ...offers.slice(id + 1),
+  ];
+};
+
+const throwError = (message: string): ReactText => toast.error(message, {
+  position: 'bottom-left',
+  autoClose: 5000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+});
+
+export { getRatingStarsWidth, adaptOfferDataToClient, adaptReviewDataToClient, updateOffers, throwError };

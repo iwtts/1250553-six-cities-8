@@ -14,6 +14,15 @@ const setCity = createAction(
   }),
 );
 
+const setOffer = createAction(
+  ActionType.SetOffer,
+  (offer: Offer) => ({
+    payload: {
+      updatedOffer: offer,
+    },
+  }),
+);
+
 const setOffersList = createAction(
   ActionType.SetOffers,
   (offers: Offer[]) => ({
@@ -100,6 +109,7 @@ const redirectToRouter = createAction(
 
 export {
   setCity,
+  setOffer,
   setOffersList,
   changeSortType,
   loadOffers,

@@ -7,8 +7,12 @@ import { AppRoute } from '../../const';
 
 function LoggedUserBar(): JSX.Element {
   const currentUserEmail = useSelector(getUserEmail);
-
   const dispatch = useDispatch();
+
+  const handleSignOutClick = (evt: { preventDefault: () => void; }) => {
+    evt.preventDefault();
+    dispatch(requireLogout());
+  };
 
   return (
     <>
@@ -20,15 +24,13 @@ function LoggedUserBar(): JSX.Element {
         </Link>
       </li>
       <li className="header__nav-item">
-
         <a
           className="header__nav-link"
-          href="/"
-          onClick={dispatch(requireLogout)}
+          href="#"
+          onClick={handleSignOutClick}
         >
           <span className="header__signout">Sign out</span>
         </a>
-
       </li>
     </>
   );

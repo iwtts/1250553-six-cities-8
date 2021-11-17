@@ -6,8 +6,8 @@ import Card from '../card/card';
 type CardsListProps = {
   cardType: CardType;
   offers: Offer[];
-  onOfferMouseEnter: (offer: Offer) => void;
-  onOfferMouseLeave: () => void;
+  onOfferMouseEnter?: (offer: Offer) => void;
+  onOfferMouseLeave?: () => void;
 }
 
 const getArticleClassName = (type: CardType): string => {
@@ -19,7 +19,7 @@ const getArticleClassName = (type: CardType): string => {
 
 function CardsList({cardType, offers, onOfferMouseEnter,  onOfferMouseLeave}: CardsListProps): JSX.Element {
   const handleMouseEnter = (offer: Offer) => {
-    onOfferMouseEnter(offer);
+    onOfferMouseEnter?.(offer);
   };
 
   return (
