@@ -7,8 +7,10 @@ type ReviewProps = {
 
 function ReviewItem(props: ReviewProps): JSX.Element {
   const {user, rating, comment, date} = props.review;
-  const reviewDate= new Date (date);
-  const reviewDateString = reviewDate.toDateString();
+  const reviewDate= new Date(date);
+
+  const dateTimeString = reviewDate.toISOString().slice(0,10);
+  const reviewDateString = new Intl.DateTimeFormat('en-EN', {month: 'long', year: 'numeric' }).format(reviewDate);
 
   return (
     <li className="reviews__item">
@@ -30,7 +32,7 @@ function ReviewItem(props: ReviewProps): JSX.Element {
         <p className="reviews__text">
           {comment}
         </p>
-        <time className="reviews__time" dateTime={reviewDateString}>{reviewDateString}</time>
+        <time className="reviews__time" dateTime={dateTimeString}>{reviewDateString}</time>
       </div>
     </li>
   );
