@@ -2,7 +2,7 @@ import { memo, useEffect, useRef } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { Marker } from 'leaflet';
 
-import useMap from '../../hooks/useMap';
+import useMap from '../../hooks/use-map';
 import { Location } from '../../types/offer';
 import { MapType, currentCustomIcon, defaultCustomIcon } from '../../const';
 
