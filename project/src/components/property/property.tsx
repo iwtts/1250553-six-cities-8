@@ -12,7 +12,7 @@ import ReviewsList from '../reviews-list/reviews-list';
 import { getOffers, getNearbyOffers, getReviews } from '../../store/offers/selectors';
 import { getAuthStatus } from '../../store/user/selectors';
 
-import { CardType, MapType, AuthStatus } from '../../const';
+import { CardType, MapType, AuthStatus, OFFER_PAGE_PHOTOS_TO_SHOW_AMOUNT } from '../../const';
 import { getRatingStarsWidth } from '../../utils';
 import { loadDataNearbyOffers, loadDataOffers, loadDataReviews, togleFavoriteStatus } from '../../store/api-actions';
 
@@ -77,7 +77,7 @@ function Property(): JSX.Element {
           <div className="property__gallery-container container">
             <div className="property__gallery">
               {images
-                .slice(0, 6)
+                .slice(0, OFFER_PAGE_PHOTOS_TO_SHOW_AMOUNT)
                 .map((image: string) => (
                   <div className="property__image-wrapper" key={image}>
                     <img className="property__image" src={image} alt="Interior view" />

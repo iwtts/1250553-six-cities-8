@@ -2,6 +2,8 @@ import { Review } from '../../types/review';
 
 import ReviewItem from '../review/review';
 
+import { REVIEWS_TO_SHOW_AMOUNT } from '../../const';
+
 type ReviewListProps = {
   reviews: Review[];
 }
@@ -14,7 +16,7 @@ function ReviewsList({reviews}: ReviewListProps): JSX.Element {
       <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
       <ul className="reviews__list">
         {sortedReviews
-          .slice(0, 9)
+          .slice(0, REVIEWS_TO_SHOW_AMOUNT)
           .map((review) =>
             (
               <ReviewItem

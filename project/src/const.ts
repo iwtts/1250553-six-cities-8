@@ -12,6 +12,10 @@ const URL_MARKER_CURRENT = './img/pin-active.svg';
 
 const OFFERS_NEARBY_AMOUNT = 3;
 
+const REVIEWS_TO_SHOW_AMOUNT = 10;
+
+const OFFER_PAGE_PHOTOS_TO_SHOW_AMOUNT = 6;
+
 const CITIES = {
   Paris: {
     name: 'Paris',
@@ -160,6 +164,8 @@ export {
   defaultCustomIcon,
   currentCustomIcon,
   OFFERS_NEARBY_AMOUNT,
+  REVIEWS_TO_SHOW_AMOUNT,
+  OFFER_PAGE_PHOTOS_TO_SHOW_AMOUNT,
   CITIES,
   AppRoute,
   ApiRoute,
