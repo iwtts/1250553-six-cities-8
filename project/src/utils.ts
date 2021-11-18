@@ -5,7 +5,7 @@ import { DataOffer, DataReview } from './types/data';
 import { Offer } from './types/offer';
 import { Review } from './types/review';
 
-const getRatingStarsWidth = (rating: number): number => rating * 20;
+const getRatingStarsWidth = (rating: number): number => Math.round(rating) * 20;
 
 const adaptOfferDataToClient = (data: DataOffer): Offer => ({
   bedrooms: data['bedrooms'],
