@@ -7,6 +7,8 @@ import { Review } from './types/review';
 
 const getRatingStarsWidth = (rating: number): number => Math.round(rating) * 20;
 
+const capitalizeFirstLetter = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1);
+
 const adaptOfferDataToClient = (data: DataOffer): Offer => ({
   bedrooms: data['bedrooms'],
   city: {
@@ -39,7 +41,7 @@ const adaptOfferDataToClient = (data: DataOffer): Offer => ({
   price: data['price'],
   rating: data['rating'],
   title: data['title'],
-  type: data['type'],
+  type: capitalizeFirstLetter(data['type']),
 });
 
 const adaptReviewDataToClient = (data: DataReview): Review => ({

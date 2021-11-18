@@ -1,5 +1,3 @@
-import { OfferType } from '../const';
-
 type AuthData = {
   login: string;
   password: string;
@@ -37,7 +35,7 @@ type DataOffer = {
   'price': number,
   'rating': number,
   'title': string,
-  'type': OfferType
+  'type': string,
 }
 
 type DataReview = {

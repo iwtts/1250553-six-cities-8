@@ -121,13 +121,6 @@ enum MapType {
   Property,
 }
 
-enum OfferType {
-  Apartment = 'Apartment',
-  Room = 'Private Room',
-  House = 'House',
-  Hotel = 'Hotel',
-}
-
 enum ActionType {
   SetCity = 'app/set-city',
   SetOffer = 'app/set-offer',
@@ -174,7 +167,6 @@ export {
   CardType,
   HeaderType,
   MapType,
-  OfferType,
   ActionType,
   SortType,
   NameSpace
