@@ -1,7 +1,7 @@
 import { ReactText } from 'react';
 import { toast } from 'react-toastify';
 
-import { DataOffer, DataReview } from './types/data';
+import { User, DataOffer, DataReview, DataUser } from './types/data';
 import { Offer } from './types/offer';
 import { Review } from './types/review';
 
@@ -57,6 +57,16 @@ const adaptReviewDataToClient = (data: DataReview): Review => ({
   },
 });
 
+
+const adaptAuthDataToClient = (data: DataUser): User => ({
+  avatarUrl: data['avatar_url'],
+  email: data['email'],
+  id: data['id'],
+  isPro: data['is_pro'],
+  name: data['name'],
+  token: data['token'],
+});
+
 const updateOffers = (offers: Offer[], updatedOffer: Offer): Offer[] => {
   const id = offers.findIndex((offer) => offer.id === updatedOffer.id);
 
@@ -81,4 +91,4 @@ const throwError = (message: string): ReactText => toast.error(message, {
   progress: undefined,
 });
 
-export { getRatingStarsWidth, adaptOfferDataToClient, adaptReviewDataToClient, updateOffers, throwError };
+export { getRatingStarsWidth, adaptOfferDataToClient, adaptReviewDataToClient, adaptAuthDataToClient, updateOffers, throwError };

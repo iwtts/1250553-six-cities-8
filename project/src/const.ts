@@ -16,6 +16,8 @@ const REVIEWS_TO_SHOW_AMOUNT = 10;
 
 const OFFER_PAGE_PHOTOS_TO_SHOW_AMOUNT = 6;
 
+const AUTH_FAIL_MESSAGE = 'You are not logged in';
+
 const CITIES = {
   Paris: {
     name: 'Paris',
@@ -130,10 +132,10 @@ enum ActionType {
   SetFavoriteOffers = 'app/set-favorite-offers',
   ChangeSortType = 'sort/change-sort-type',
   RequireAuth = 'user/requireAuthorization',
+  SetUser = 'user/set-user',
   RequireLogout = 'user/requireLogout',
-  ChangeUser = 'user/change-user',
   RedirectToRoute = 'user/redirect-to-route',
-  postReview = 'user/post-review',
+  PostReview = 'user/post-review',
 }
 
 enum SortType {
@@ -159,6 +161,7 @@ export {
   OFFERS_NEARBY_AMOUNT,
   REVIEWS_TO_SHOW_AMOUNT,
   OFFER_PAGE_PHOTOS_TO_SHOW_AMOUNT,
+  AUTH_FAIL_MESSAGE,
   CITIES,
   AppRoute,
   ApiRoute,

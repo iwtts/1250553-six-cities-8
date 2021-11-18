@@ -1,6 +1,24 @@
-type AuthData = {
+type UserAuthData = {
   login: string;
   password: string;
+};
+
+type User = {
+  avatarUrl: string;
+  email: string;
+  id: number;
+  isPro: boolean;
+  name: string;
+  token: string;
+} | null;
+
+type DataUser = {
+  'avatar_url': string;
+  'email': string;
+  'id': number;
+  'is_pro': boolean;
+  'name': string;
+  'token': string;
 };
 
 type DataOffer = {
@@ -51,4 +69,4 @@ type DataReview = {
   };
 }
 
-export type { AuthData, DataOffer, DataReview };
+export type { User, UserAuthData, DataOffer, DataReview, DataUser };
