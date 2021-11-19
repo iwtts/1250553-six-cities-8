@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 
 import { ThunkActionResult } from '../types/action';
 import { loadOffers, loadNearbyOffers, requireAuth, redirectToRouter, loadReviews, loadFavoriteOffers, setOffer, requireLogout, setAuthData } from './actions';
-import { dropToken, saveToken, Token } from '../services/token';
+import { dropToken, saveToken } from '../services/token';
 import { AuthStatus, ApiRoute, AppRoute, FavoriteStatus, AUTH_FAIL_MESSAGE, ERROR_MESSAGE } from '../const';
 import { adaptAuthDataToClient, adaptOfferDataToClient, adaptReviewDataToClient } from '../utils';
 import { Comment } from '../types/review';
@@ -23,10 +23,11 @@ const checkAuth = (): ThunkActionResult => (
 
 const login = ({login: email, password}: UserAuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    await api.post<{token: Token}>(ApiRoute.Login, {email, password})
-      .then(({data: {token}}) => {
-        saveToken(token);
+    await api.post(ApiRoute.Login, {email, password})
+      .then(({data}) => {
         dispatch(requireAuth(AuthStatus.Auth));
+        saveToken(data.token);
+        dispatch(setAuthData(adaptAuthDataToClient(data)));
         dispatch(redirectToRouter(AppRoute.Main));
       })
       .catch(() => {
@@ -36,9 +37,13 @@ const login = ({login: email, password}: UserAuthData): ThunkActionResult =>
 
 const logout = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    api.delete(ApiRoute.Logout);
-    dropToken();
-    dispatch(requireLogout());
+    try {
+      api.delete(ApiRoute.Logout);
+      dropToken();
+      dispatch(requireLogout());
+    } catch {
+      toast.error(ERROR_MESSAGE);
+    }
   };
 
 const loadDataOffers = (): ThunkActionResult =>

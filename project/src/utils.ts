@@ -4,7 +4,20 @@ import { Review } from './types/review';
 
 const getRatingStarsWidth = (rating: number): number => Math.round(rating) * 20;
 
-const capitalizeFirstLetter = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1);
+const getOfferTypeString = (type: string): string => {
+  switch (type) {
+    case 'apartment':
+      return 'Apartment';
+    case 'room':
+      return 'Private Room';
+    case 'house':
+      return 'House';
+    case 'hotel':
+      return 'Hotel';
+    default:
+      return 'Unknown';
+  }
+};
 
 const adaptOfferDataToClient = (data: DataOffer): Offer => ({
   bedrooms: data['bedrooms'],
@@ -38,7 +51,7 @@ const adaptOfferDataToClient = (data: DataOffer): Offer => ({
   price: data['price'],
   rating: data['rating'],
   title: data['title'],
-  type: capitalizeFirstLetter(data['type']),
+  type: data['type'],
 });
 
 const adaptReviewDataToClient = (data: DataReview): Review => ({
@@ -78,4 +91,4 @@ const updateOffers = (offers: Offer[], updatedOffer: Offer): Offer[] => {
   ];
 };
 
-export { getRatingStarsWidth, adaptOfferDataToClient, adaptReviewDataToClient, adaptAuthDataToClient, updateOffers };
+export { getRatingStarsWidth, getOfferTypeString, adaptOfferDataToClient, adaptReviewDataToClient, adaptAuthDataToClient, updateOffers };

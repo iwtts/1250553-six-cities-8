@@ -13,7 +13,7 @@ import { getOffers, getNearbyOffers, getReviews } from '../../store/offers/selec
 import { getAuthStatus } from '../../store/user/selectors';
 
 import { CardType, MapType, AuthStatus, OFFER_PAGE_PHOTOS_TO_SHOW_AMOUNT } from '../../const';
-import { getRatingStarsWidth } from '../../utils';
+import { getOfferTypeString, getRatingStarsWidth } from '../../utils';
 import { loadDataNearbyOffers, loadDataOffers, loadDataReviews, togleFavoriteStatus } from '../../store/api-actions';
 
 function Property(): JSX.Element {
@@ -115,7 +115,7 @@ function Property(): JSX.Element {
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                  {type}
+                  {getOfferTypeString(type)}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
                   {bedrooms} Bedrooms

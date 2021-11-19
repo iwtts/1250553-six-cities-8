@@ -10,13 +10,14 @@ import { loadDataFavoriteOffers } from '../../store/api-actions';
 import { useEffect } from 'react';
 
 function Favorites(): JSX.Element {
+  const offers = useSelector(getFavoriteOffers);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadDataFavoriteOffers());
   },[dispatch]);
 
-  const offers = useSelector(getFavoriteOffers);
   return (
     <div className="page">
       <Header />

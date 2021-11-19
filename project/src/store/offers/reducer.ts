@@ -30,20 +30,21 @@ const offersReducer = createReducer(initialState, (builder) => {
     .addCase(loadFavoriteOffers, (state, action) => {
       state.favoriteOffers = action.payload.favoriteOffers;
     })
-    .addCase(setCity, (state, action) => {
-      state.currentCity = action.payload.currentCity;
-    })
-    .addCase(changeSortType, (state, action) => {
-      state.currentSortType = action.payload.currentSortType;
-    })
     .addCase(loadReviews, (state, action) => {
       state.reviews = action.payload.reviews;
     })
     .addCase(setOffer, (state, action) => {
       state.offers = updateOffers(state.offers, action.payload.updatedOffer);
       state.nearbyOffers = updateOffers(state.nearbyOffers, action.payload.updatedOffer);
-      state.favoriteOffers = updateOffers(state.favoriteOffers, action.payload.updatedOffer);
+      state.favoriteOffers = updateOffers(state.favoriteOffers, action.payload.updatedOffer).filter((offer) => offer.isFavorite);
+    })
+    .addCase(setCity, (state, action) => {
+      state.currentCity = action.payload.currentCity;
+    })
+    .addCase(changeSortType, (state, action) => {
+      state.currentSortType = action.payload.currentSortType;
     });
+
 });
 
 export { offersReducer };
