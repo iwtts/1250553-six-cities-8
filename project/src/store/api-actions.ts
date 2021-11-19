@@ -3,8 +3,8 @@ import { toast } from 'react-toastify';
 import { ThunkActionResult } from '../types/action';
 import { loadOffers, loadNearbyOffers, requireAuth, redirectToRouter, loadReviews, loadFavoriteOffers, setOffer, requireLogout, setAuthData } from './actions';
 import { dropToken, saveToken, Token } from '../services/token';
-import { AuthStatus, ApiRoute, AppRoute, FavoriteStatus, AUTH_FAIL_MESSAGE } from '../const';
-import { adaptAuthDataToClient, adaptOfferDataToClient, adaptReviewDataToClient, throwError } from '../utils';
+import { AuthStatus, ApiRoute, AppRoute, FavoriteStatus, AUTH_FAIL_MESSAGE, ERROR_MESSAGE } from '../const';
+import { adaptAuthDataToClient, adaptOfferDataToClient, adaptReviewDataToClient } from '../utils';
 import { Comment } from '../types/review';
 import { DataOffer, DataReview, UserAuthData } from '../types/data';
 
@@ -23,10 +23,15 @@ const checkAuth = (): ThunkActionResult => (
 
 const login = ({login: email, password}: UserAuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const {data: {token}} = await api.post<{token: Token}>(ApiRoute.Login, {email, password});
-    saveToken(token);
-    dispatch(requireAuth(AuthStatus.Auth));
-    dispatch(redirectToRouter(AppRoute.Main));
+    await api.post<{token: Token}>(ApiRoute.Login, {email, password})
+      .then(({data: {token}}) => {
+        saveToken(token);
+        dispatch(requireAuth(AuthStatus.Auth));
+        dispatch(redirectToRouter(AppRoute.Main));
+      })
+      .catch(() => {
+        toast.error(ERROR_MESSAGE);
+      });
   };
 
 const logout = (): ThunkActionResult =>
@@ -44,7 +49,7 @@ const loadDataOffers = (): ThunkActionResult =>
         dispatch(loadOffers(offers));
       })
       .catch(() => {
-        throwError('Error');
+        toast.error(ERROR_MESSAGE);
       });
   };
 
@@ -56,7 +61,7 @@ const loadDataReviews = (offerId: string): ThunkActionResult =>
         dispatch(loadReviews(reviews));
       })
       .catch(() => {
-        throwError('Error');
+        toast.error(ERROR_MESSAGE);
       });
   };
 
@@ -68,7 +73,7 @@ const loadDataNearbyOffers = (id: string): ThunkActionResult => (
         dispatch(loadNearbyOffers(offersNearby));
       })
       .catch(() => {
-        throwError('Error');
+        toast.error(ERROR_MESSAGE);
       });
   }
 );
@@ -81,7 +86,7 @@ const loadDataFavoriteOffers = (): ThunkActionResult => (
         dispatch(loadFavoriteOffers(favoriteOffers));
       })
       .catch(() => {
-        throwError('Error');
+        toast.error(ERROR_MESSAGE);
       });
   }
 );
@@ -94,7 +99,7 @@ const postReview = ({comment, rating}: Comment, offerId: string): ThunkActionRes
         dispatch(loadReviews(reviews));
       })
       .catch(() => {
-        throwError('Error');
+        toast.error(ERROR_MESSAGE);
       });
   };
 
@@ -107,7 +112,7 @@ const togleFavoriteStatus = (offerId: number, status: boolean): ThunkActionResul
         dispatch(setOffer(offer));
       })
       .catch(() => {
-        throwError('Error');
+        toast.error(ERROR_MESSAGE);
       });
   };
 

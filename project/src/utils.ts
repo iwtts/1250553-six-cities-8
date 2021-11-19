@@ -1,6 +1,3 @@
-import { ReactText } from 'react';
-import { toast } from 'react-toastify';
-
 import { User, DataOffer, DataReview, DataUser } from './types/data';
 import { Offer } from './types/offer';
 import { Review } from './types/review';
@@ -81,14 +78,4 @@ const updateOffers = (offers: Offer[], updatedOffer: Offer): Offer[] => {
   ];
 };
 
-const throwError = (message: string): ReactText => toast.error(message, {
-  position: 'bottom-left',
-  autoClose: 5000,
-  hideProgressBar: false,
-  closeOnClick: true,
-  pauseOnHover: true,
-  draggable: true,
-  progress: undefined,
-});
-
-export { getRatingStarsWidth, adaptOfferDataToClient, adaptReviewDataToClient, adaptAuthDataToClient, updateOffers, throwError };
+export { getRatingStarsWidth, adaptOfferDataToClient, adaptReviewDataToClient, adaptAuthDataToClient, updateOffers };

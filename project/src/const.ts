@@ -18,6 +18,8 @@ const OFFER_PAGE_PHOTOS_TO_SHOW_AMOUNT = 6;
 
 const AUTH_FAIL_MESSAGE = 'You are not logged in';
 
+const ERROR_MESSAGE = 'An error occured';
+
 const CITIES = {
   Paris: {
     name: 'Paris',
@@ -162,6 +164,7 @@ export {
   REVIEWS_TO_SHOW_AMOUNT,
   OFFER_PAGE_PHOTOS_TO_SHOW_AMOUNT,
   AUTH_FAIL_MESSAGE,
+  ERROR_MESSAGE,
   CITIES,
   AppRoute,
   ApiRoute,
