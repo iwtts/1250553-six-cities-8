@@ -14,7 +14,7 @@ function Favorites(): JSX.Element {
 
   useEffect(() => {
     dispatch(loadDataFavoriteOffers());
-  });
+  },[dispatch]);
 
   const offers = useSelector(getFavoriteOffers);
   return (
@@ -29,7 +29,12 @@ function Favorites(): JSX.Element {
                 <section className="favorites">
                   <h1 className="favorites__title">Saved listing</h1>
                   <ul className="favorites__list">
-                    {Object.values(CITIES).map((item) => (<FavoritesCardsList key={item.name} city={item.name} />))}
+                    {Object.values(CITIES).map((item) => (
+                      <FavoritesCardsList
+                        key={item.name}
+                        city={item.name}
+                      />
+                    ))}
                   </ul>
                 </section>
               </div>
