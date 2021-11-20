@@ -12,16 +12,17 @@ import ReviewsList from '../reviews-list/reviews-list';
 import { getOffers, getNearbyOffers, getReviews } from '../../store/offers/selectors';
 import { getAuthStatus } from '../../store/user/selectors';
 
-import { CardType, MapType, AuthStatus, OFFER_PAGE_PHOTOS_TO_SHOW_AMOUNT } from '../../const';
+import { CardType, MapType, AuthStatus, OFFER_PAGE_PHOTOS_TO_SHOW_AMOUNT, AppRoute } from '../../const';
 import { getOfferTypeString, getRatingStarsWidth } from '../../utils';
 import { loadDataNearbyOffers, loadDataOffers, loadDataReviews, togleFavoriteStatus } from '../../store/api-actions';
+import { useHistory } from 'react-router-dom';
 
 function Property(): JSX.Element {
   const offers = useSelector(getOffers);
   const reviews = useSelector(getReviews);
   const nearbyOffers = useSelector(getNearbyOffers);
   const authStatus =  useSelector(getAuthStatus);
-
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const {id: offerId} = useParams() as {id: string};
@@ -52,6 +53,11 @@ function Property(): JSX.Element {
   };
 
   const handleBookmarkClick = () => {
+    if (authStatus !== AuthStatus.Auth) {
+      history.push(AppRoute.SignIn);
+      return;
+    }
+
     dispatch(togleFavoriteStatus(id, isFavorite));
   };
 

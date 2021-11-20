@@ -6,7 +6,7 @@ import { dropToken, saveToken } from '../services/token';
 import { AuthStatus, ApiRoute, AppRoute, FavoriteStatus, AUTH_FAIL_MESSAGE, ERROR_MESSAGE } from '../const';
 import { adaptAuthDataToClient, adaptOfferDataToClient, adaptReviewDataToClient } from '../utils';
 import { Comment } from '../types/review';
-import { DataOffer, DataReview, UserAuthData } from '../types/data';
+import { DataOffer, DataReview, DataUser, UserAuthData } from '../types/data';
 
 const checkAuth = (): ThunkActionResult => (
   async (dispatch, _getState, api) => {
@@ -23,7 +23,7 @@ const checkAuth = (): ThunkActionResult => (
 
 const login = ({login: email, password}: UserAuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    await api.post(ApiRoute.Login, {email, password})
+    await api.post<DataUser>(ApiRoute.Login, {email, password})
       .then(({data}) => {
         dispatch(requireAuth(AuthStatus.Auth));
         saveToken(data.token);
