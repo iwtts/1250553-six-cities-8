@@ -10,13 +10,14 @@ import { loadDataFavoriteOffers } from '../../store/api-actions';
 import { useEffect } from 'react';
 
 function Favorites(): JSX.Element {
+  const offers = useSelector(getFavoriteOffers);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadDataFavoriteOffers());
-  });
+  },[dispatch]);
 
-  const offers = useSelector(getFavoriteOffers);
   return (
     <div className="page">
       <Header />
@@ -29,7 +30,12 @@ function Favorites(): JSX.Element {
                 <section className="favorites">
                   <h1 className="favorites__title">Saved listing</h1>
                   <ul className="favorites__list">
-                    {Object.values(CITIES).map((item) => (<FavoritesCardsList key={item.name} city={item.name} />))}
+                    {Object.values(CITIES).map((item) => (
+                      <FavoritesCardsList
+                        key={item.name}
+                        city={item.name}
+                      />
+                    ))}
                   </ul>
                 </section>
               </div>

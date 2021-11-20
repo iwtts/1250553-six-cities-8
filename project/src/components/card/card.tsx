@@ -2,7 +2,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 
 import { AppRoute, AuthStatus, CardType } from '../../const';
-import { getRatingStarsWidth } from '../../utils';
+import { getOfferTypeString, getRatingStarsWidth } from '../../utils';
 import { togleFavoriteStatus } from '../../store/api-actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthStatus } from '../../store/user/selectors';
@@ -53,7 +53,7 @@ function Card(props: CardProps): JSX.Element {
     props.onMouseLeave?.();
   };
 
-  const getBookmarkButtonClassName = isFavorite
+  const getBookmarkButtonClassName = isFavorite && authStatus === AuthStatus.Auth
     ? 'place-card__bookmark-button place-card__bookmark-button--active button'
     : 'place-card__bookmark-button button';
 
@@ -100,7 +100,7 @@ function Card(props: CardProps): JSX.Element {
             {title}
           </Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{getOfferTypeString(type)}</p>
       </div>
     </article>
   );

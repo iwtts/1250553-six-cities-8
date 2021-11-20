@@ -12,6 +12,14 @@ const URL_MARKER_CURRENT = './img/pin-active.svg';
 
 const OFFERS_NEARBY_AMOUNT = 3;
 
+const REVIEWS_TO_SHOW_AMOUNT = 10;
+
+const OFFER_PAGE_PHOTOS_TO_SHOW_AMOUNT = 6;
+
+const AUTH_FAIL_MESSAGE = 'You are not logged in';
+
+const ERROR_MESSAGE = 'An error occured';
+
 const CITIES = {
   Paris: {
     name: 'Paris',
@@ -65,14 +73,14 @@ const CITIES = {
 
 const defaultCustomIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconSize: [27, 39],
+  iconAnchor: [14, 39],
 });
 
 const currentCustomIcon = new Icon({
   iconUrl: URL_MARKER_CURRENT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconSize: [27, 39],
+  iconAnchor: [14, 39],
 });
 
 enum AppRoute {
@@ -117,13 +125,6 @@ enum MapType {
   Property,
 }
 
-enum OfferType {
-  Apartment = 'Apartment',
-  Room = 'Private Room',
-  House = 'House',
-  Hotel = 'Hotel',
-}
-
 enum ActionType {
   SetCity = 'app/set-city',
   SetOffer = 'app/set-offer',
@@ -133,10 +134,10 @@ enum ActionType {
   SetFavoriteOffers = 'app/set-favorite-offers',
   ChangeSortType = 'sort/change-sort-type',
   RequireAuth = 'user/requireAuthorization',
+  SetUser = 'user/set-user',
   RequireLogout = 'user/requireLogout',
-  ChangeUser = 'user/change-user',
   RedirectToRoute = 'user/redirect-to-route',
-  postReview = 'user/post-review',
+  PostReview = 'user/post-review',
 }
 
 enum SortType {
@@ -160,6 +161,10 @@ export {
   defaultCustomIcon,
   currentCustomIcon,
   OFFERS_NEARBY_AMOUNT,
+  REVIEWS_TO_SHOW_AMOUNT,
+  OFFER_PAGE_PHOTOS_TO_SHOW_AMOUNT,
+  AUTH_FAIL_MESSAGE,
+  ERROR_MESSAGE,
   CITIES,
   AppRoute,
   ApiRoute,
@@ -168,7 +173,6 @@ export {
   CardType,
   HeaderType,
   MapType,
-  OfferType,
   ActionType,
   SortType,
   NameSpace

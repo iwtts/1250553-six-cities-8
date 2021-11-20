@@ -2,6 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { Offer } from '../types/offer';
 import { Review } from '../types/review';
+import { User } from '../types/data';
 
 import { ActionType, SortType, AuthStatus, AppRoute } from '../const';
 
@@ -31,7 +32,6 @@ const setOffersList = createAction(
     },
   }),
 );
-
 
 const changeSortType = createAction(
   ActionType.ChangeSortType,
@@ -89,20 +89,20 @@ const requireAuth = createAction(
 
 const requireLogout = createAction(ActionType.RequireLogout);
 
-const changeUser = createAction(
-  ActionType.ChangeUser,
-  (currentUserEmail: string) => ({
-    payload: {
-      currentUserEmail,
-    },
-  }),
-);
-
 const redirectToRouter = createAction(
   ActionType.RedirectToRoute,
   (url: AppRoute) => ({
     payload: {
       url,
+    },
+  }),
+);
+
+const setAuthData = createAction(
+  ActionType.SetUser,
+  (authData: User | null) => ({
+    payload: {
+      authData: authData,
     },
   }),
 );
@@ -118,7 +118,6 @@ export {
   loadFavoriteOffers,
   requireAuth,
   requireLogout,
-  changeUser,
-  redirectToRouter
+  redirectToRouter,
+  setAuthData
 };
-

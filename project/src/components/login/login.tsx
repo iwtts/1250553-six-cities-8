@@ -2,10 +2,9 @@ import { useRef, FormEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useHistory } from 'react-router-dom';
 
-import { AuthData } from '../../types/data';
+import { UserAuthData } from '../../types/data';
 
 import { AppRoute, AuthStatus, HeaderType } from '../../const';
-import { changeUser } from '../../store/actions';
 import { login } from '../../store/api-actions';
 
 import Header from '../header/header';
@@ -18,9 +17,8 @@ function Login(): JSX.Element {
 
   const dispatch = useDispatch();
 
-  const handleAuth = (authData: AuthData) => {
+  const handleAuth = (authData: UserAuthData) => {
     dispatch(login(authData));
-    dispatch(changeUser(authData.login));
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
