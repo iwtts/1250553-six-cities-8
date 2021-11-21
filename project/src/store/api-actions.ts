@@ -96,12 +96,15 @@ const loadDataFavoriteOffers = (): ThunkActionResult => (
   }
 );
 
-const postReview = ({comment, rating}: Comment, offerId: string): ThunkActionResult =>
+const postReview = ({comment, rating}: Comment, offerId: string, clearForm: { (): void; (): void; }): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     await api.post(`${ApiRoute.Reviews}/${offerId}`, {comment: comment, rating})
       .then(({data}) => {
         const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
-        dispatch(loadReviews(reviews));
+        if(data){
+          dispatch(loadReviews(reviews));
+          clearForm();
+        }
       })
       .catch(() => {
         toast.error(ERROR_MESSAGE);
