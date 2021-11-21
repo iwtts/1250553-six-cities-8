@@ -27,20 +27,23 @@ function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
 
   const dispatch = useDispatch();
 
-  const handleCommentPost = (review: Comment) => {
-    setFormDisabledStatus(true);
-    dispatch(postReview(review, offerId));
-  };
-
   const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setRating(evt.target.value);
+  };
+
+  const clearForm = () => {
+    setComment('');
+    setRating(ITINIAL_RATING);
+  };
+
+  const handleCommentPost = (review: Comment) => {
+    setFormDisabledStatus(true);
+    dispatch(postReview(review, offerId, clearForm));
   };
 
   const handleFormSubmit = (evt: FormEvent): void => {
     evt.preventDefault();
     handleCommentPost({comment: commentMessage, rating: rating});
-    setComment('');
-    setRating(ITINIAL_RATING);
     setFormDisabledStatus(false);
   };
 
