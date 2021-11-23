@@ -47,4 +47,4 @@ const offersReducer = createReducer(initialState, (builder) => {
 
 });
 
-export { offersReducer };
+export { initialState, offersReducer };

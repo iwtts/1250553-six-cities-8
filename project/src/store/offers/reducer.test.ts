@@ -1,210 +1,87 @@
-import { offersReducer } from './reducer';
-import { ActionType, CITIES, INITIAL_CITY ,SortType } from '../../const';
-
-import { mockOffers } from '../../mocks/offers';
-import { mockReviews } from '../../mocks/reviews';
-
-const newOffers = mockOffers;
+import { SortType } from '../../const';
+import { getMockOffer, getMockOffers } from '../../mocks/offers';
+import { getMockReviews } from '../../mocks/reviews';
+import { getMockCityName } from '../../mocks/utils';
+import { updateOffers } from '../../utils';
+import { changeSortType, loadFavoriteOffers, loadNearbyOffers, loadOffers, loadReviews, setCity, setOffer } from '../actions';
+import { initialState, offersReducer } from './reducer';
 
 describe('Reducer: offersReducer', () => {
+  it('without additional parameters should return initial state', () => {
+    expect(offersReducer(void 0, {type: 'UNKNOWN_ACTION'}))
+      .toEqual(initialState);
+  });
 
-  it('should load offers', () => {
+  it('should update offers', () => {
+    const mockOffers = getMockOffers();
 
-    const state = {
-      isDataLoaded: false,
-      currentCity: INITIAL_CITY,
-      offers: [],
-      cityOffers: [],
-      reviews: [],
-      nearbyOffers: [],
-      favoriteOffers: [],
-      currentSortType: SortType.Popular,
-    };
-
-    const loadOffers = {
-      type: ActionType.SetOffers,
-      payload: {
-        offers: newOffers,
-      },
-    };
-
-    expect(offersReducer(state, loadOffers))
+    expect(offersReducer(initialState, loadOffers(mockOffers)))
       .toEqual({
+        ...initialState,
         isDataLoaded: true,
-        currentCity: INITIAL_CITY,
-        offers: newOffers,
-        cityOffers: [],
-        reviews: [],
-        nearbyOffers: [],
-        favoriteOffers: [],
-        currentSortType: SortType.Popular,
+        offers: mockOffers,
       });
   });
 
-  it('should load offers nearby', () => {
-    const state = {
-      isDataLoaded: false,
-      currentCity: INITIAL_CITY,
-      offers: [],
-      cityOffers: [],
-      reviews: [],
-      nearbyOffers: [],
-      favoriteOffers: [],
-      currentSortType: SortType.Popular,
-    };
+  it('should update offers nearby', () => {
+    const mockOffers = getMockOffers();
 
-    const loadNearbyOffers = {
-      type: ActionType.SetNearbyOffers,
-      payload: {
-        nearbyOffers: newOffers,
-      },
-    };
-
-    expect(offersReducer(state, loadNearbyOffers))
+    expect(offersReducer(initialState, loadNearbyOffers(mockOffers)))
       .toEqual({
-        isDataLoaded: false,
-        currentCity: INITIAL_CITY,
-        offers: [],
-        cityOffers: [],
-        reviews: [],
-        nearbyOffers: newOffers,
-        favoriteOffers: [],
-        currentSortType: SortType.Popular,
+        ...initialState,
+        nearbyOffers: mockOffers,
       });
   });
 
-  it('should load favorite offers', () => {
-    const state = {
-      isDataLoaded: false,
-      currentCity: INITIAL_CITY,
-      offers: [],
-      cityOffers: [],
-      reviews: [],
-      nearbyOffers: [],
-      favoriteOffers: [],
-      currentSortType: SortType.Popular,
-    };
+  it('should update favorite offers', () => {
+    const mockOffers = getMockOffers();
 
-    const loadFavoriteOffers = {
-      type: ActionType.SetFavoriteOffers,
-      payload: {
-        favoriteOffers: newOffers,
-      },
-    };
-
-    expect(offersReducer(state, loadFavoriteOffers))
+    expect(offersReducer(initialState, loadFavoriteOffers(mockOffers)))
       .toEqual({
-        isDataLoaded: false,
-        currentCity: INITIAL_CITY,
-        offers: [],
-        cityOffers: [],
-        reviews: [],
-        nearbyOffers: [],
-        favoriteOffers: newOffers,
-        currentSortType: SortType.Popular,
+        ...initialState,
+        favoriteOffers: mockOffers,
       });
   });
 
-  it('should set current city', () => {
-    const newCity = CITIES.Amsterdam.name;
+  it('should update reviews', () => {
+    const mockReviews = getMockReviews();
 
-    const state = {
-      isDataLoaded: false,
-      currentCity: INITIAL_CITY,
-      offers: [],
-      cityOffers: [],
-      reviews: [],
-      nearbyOffers: [],
-      favoriteOffers: [],
-      currentSortType: SortType.Popular,
-    };
-
-    const setCurrentCity = {
-      type: ActionType.SetCity,
-      payload: {
-        currentCity: newCity,
-      },
-    };
-
-    expect(offersReducer(state, setCurrentCity))
+    expect(offersReducer(initialState, loadReviews(mockReviews)))
       .toEqual({
-        isDataLoaded: false,
-        currentCity: newCity,
-        offers: [],
-        cityOffers: [],
-        reviews: [],
-        nearbyOffers: [],
-        favoriteOffers: [],
-        currentSortType: SortType.Popular,
+        ...initialState,
+        reviews: mockReviews,
       });
   });
 
-  it('should change sort type', () => {
-    const newSortType = SortType.TopRatedFirst;
+  it('should update all offers after updating one of the offers', () => {
+    const mockOffer = getMockOffer();
 
-    const state = {
-      isDataLoaded: false,
-      currentCity: INITIAL_CITY,
-      offers: [],
-      cityOffers: [],
-      reviews: [],
-      nearbyOffers: [],
-      favoriteOffers: [],
-      currentSortType: SortType.Popular,
-    };
-
-    const changeSortType = {
-      type: ActionType.ChangeSortType,
-      payload: {
-        currentSortType: newSortType,
-      },
-    };
-
-    expect(offersReducer(state, changeSortType))
+    expect(offersReducer(initialState, setOffer(mockOffer)))
       .toEqual({
-        isDataLoaded: false,
-        currentCity: INITIAL_CITY,
-        offers: [],
-        cityOffers: [],
-        reviews: [],
-        nearbyOffers: [],
-        favoriteOffers: [],
-        currentSortType: newSortType,
+        ...initialState,
+        offers: updateOffers(initialState.offers, mockOffer),
+        nearbyOffers: updateOffers(initialState.nearbyOffers, mockOffer),
+        favoriteOffers: updateOffers(initialState.favoriteOffers, mockOffer).filter((offer) => offer.isFavorite),
       });
   });
 
-  it('should load reviews', () => {
-    const newReviews = mockReviews;
+  it('should update current city', () => {
+    const mockCity = getMockCityName();
 
-    const state = {
-      isDataLoaded: false,
-      currentCity: INITIAL_CITY,
-      offers: [],
-      cityOffers: [],
-      reviews: [],
-      nearbyOffers: [],
-      favoriteOffers: [],
-      currentSortType: SortType.Popular,
-    };
-
-    const loadReviews = {
-      type: ActionType.SetReviews,
-      payload: {
-        reviews: newReviews,
-      },
-    };
-
-    expect(offersReducer(state, loadReviews))
+    expect(offersReducer(initialState, setCity(mockCity)))
       .toEqual({
-        isDataLoaded: false,
-        currentCity: INITIAL_CITY,
-        offers: [],
-        cityOffers: [],
-        reviews: newReviews,
-        nearbyOffers: [],
-        favoriteOffers: [],
-        currentSortType: SortType.Popular,
+        ...initialState,
+        currentCity: mockCity,
       });
   });
 
+  it('should update current sort type', () => {
+    const mockSortType = SortType.TopRatedFirst;
+
+    expect(offersReducer(initialState, changeSortType(mockSortType)))
+      .toEqual({
+        ...initialState,
+        currentSortType: mockSortType,
+      });
+  });
 });
