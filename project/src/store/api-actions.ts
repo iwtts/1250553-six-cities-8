@@ -1,71 +1,127 @@
+import { toast } from 'react-toastify';
+
 import { ThunkActionResult } from '../types/action';
-import { loadOffers, loadNearbyOffers, requireAuth, changeUser, redirectToRouter, loadReviews, loadFavoriteOffers } from './actions';
-import { saveToken, Token } from '../services/token';
-import { AuthStatus, ApiRoute, AppRoute, FavoriteStatus } from '../const';
-import { adaptOfferDataToClient, adaptReviewDataToClient } from '../utils';
+import { loadOffers, loadNearbyOffers, requireAuth, redirectToRouter, loadReviews, loadFavoriteOffers, setOffer, requireLogout, setAuthData } from './actions';
+import { dropToken, saveToken } from '../services/token';
+import { AuthStatus, ApiRoute, AppRoute, FavoriteStatus, AUTH_FAIL_MESSAGE, ERROR_MESSAGE } from '../const';
+import { adaptAuthDataToClient, adaptOfferDataToClient, adaptReviewDataToClient } from '../utils';
 import { Comment } from '../types/review';
-import { AuthData ,DataOffer, DataReview } from '../types/data';
+import { DataOffer, DataReview, DataUser, UserAuthData } from '../types/data';
+
+const checkAuth = (): ThunkActionResult => (
+  async (dispatch, _getState, api) => {
+    await api.get(ApiRoute.Login)
+      .then(({data}) => {
+        dispatch(requireAuth(AuthStatus.Auth));
+        dispatch(setAuthData(adaptAuthDataToClient(data)));
+      })
+      .catch(() => {
+        toast.info(AUTH_FAIL_MESSAGE);
+      });
+  }
+);
+
+const login = ({login: email, password}: UserAuthData): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
+    await api.post<DataUser>(ApiRoute.Login, {email, password})
+      .then(({data}) => {
+        dispatch(requireAuth(AuthStatus.Auth));
+        saveToken(data.token);
+        dispatch(setAuthData(adaptAuthDataToClient(data)));
+        dispatch(redirectToRouter(AppRoute.Main));
+      })
+      .catch(() => {
+        toast.error(ERROR_MESSAGE);
+      });
+  };
+
+const logout = (): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
+    try {
+      api.delete(ApiRoute.Logout);
+      dropToken();
+      dispatch(requireLogout());
+    } catch {
+      toast.error(ERROR_MESSAGE);
+    }
+  };
 
 const loadDataOffers = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get(ApiRoute.Offers);
-    const offers = data.map((item: DataOffer) => adaptOfferDataToClient(item));
-    dispatch(loadOffers(offers));
+    await api.get(ApiRoute.Offers)
+      .then(({data}) => {
+        const offers = data.map((item: DataOffer) => adaptOfferDataToClient(item));
+        dispatch(loadOffers(offers));
+      })
+      .catch(() => {
+        toast.error(ERROR_MESSAGE);
+      });
   };
 
 const loadDataReviews = (offerId: string): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get(`${ ApiRoute.Reviews }/${ offerId }`);
-    const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
-    dispatch(loadReviews(reviews));
+    await api.get(`${ ApiRoute.Reviews }/${ offerId }`)
+      .then(({data}) => {
+        const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
+        dispatch(loadReviews(reviews));
+      })
+      .catch(() => {
+        toast.error(ERROR_MESSAGE);
+      });
   };
 
 const loadDataNearbyOffers = (id: string): ThunkActionResult => (
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get(`${ ApiRoute.Hotels }/${ id }/nearby`);
-    const offersNearby = data.map((item: DataOffer) => adaptOfferDataToClient(item));
-    dispatch(loadNearbyOffers(offersNearby));
+    await api.get(`${ ApiRoute.Hotels }/${ id }/nearby`)
+      .then(({data}) => {
+        const offersNearby = data.map((item: DataOffer) => adaptOfferDataToClient(item));
+        dispatch(loadNearbyOffers(offersNearby));
+      })
+      .catch(() => {
+        toast.error(ERROR_MESSAGE);
+      });
   }
 );
 
 const loadDataFavoriteOffers = (): ThunkActionResult => (
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get(ApiRoute.Favorite);
-    const favoriteOffers = data.map((item: DataOffer) => adaptOfferDataToClient(item));
-    dispatch(loadFavoriteOffers(favoriteOffers));
+    await api.get(ApiRoute.Favorite)
+      .then(({data}) => {
+        const favoriteOffers = data.map((item: DataOffer) => adaptOfferDataToClient(item));
+        dispatch(loadFavoriteOffers(favoriteOffers));
+      })
+      .catch(() => {
+        toast.error(ERROR_MESSAGE);
+      });
   }
 );
 
-const checkAuth = (): ThunkActionResult =>
-  async (dispatch, _getState, api) => {
-    await api.get(ApiRoute.Login)
-      .then((response): void => {
-        dispatch(requireAuth(AuthStatus.Auth));
-        dispatch(changeUser(response.data.currentUserEmail));
-      });
-  };
-
-const login = ({login: email, password}: AuthData): ThunkActionResult =>
-  async (dispatch, _getState, api) => {
-    const {data: {token}} = await api.post<{token: Token}>(ApiRoute.Login, {email, password});
-    saveToken(token);
-    dispatch(requireAuth(AuthStatus.Auth));
-    dispatch(redirectToRouter(AppRoute.Main));
-  };
-
-const postReview = ({comment, rating}: Comment, offerId: string): ThunkActionResult =>
+const postReview = ({comment, rating}: Comment, offerId: string, clearForm: { (): void; (): void; }): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.post(`${ApiRoute.Reviews}/${offerId}`, {comment: comment, rating});
-    const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
-    dispatch(loadReviews(reviews));
+    await api.post(`${ApiRoute.Reviews}/${offerId}`, {comment: comment, rating})
+      .then(({data}) => {
+        const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
+        if(data){
+          dispatch(loadReviews(reviews));
+          clearForm();
+        }
+      })
+      .catch(() => {
+        toast.error(ERROR_MESSAGE);
+      });
   };
 
 const togleFavoriteStatus = (offerId: number, status: boolean): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const favoriteStatus = status ? FavoriteStatus.False : FavoriteStatus.True;
-    const {data} = await api.post(`${ApiRoute.Favorite}/${offerId}/${favoriteStatus}`, {favoriteOffers: []});
-    const favoriteOffers = data.map((item: DataOffer) => adaptOfferDataToClient(item));
-    dispatch(loadFavoriteOffers(favoriteOffers));
+    await api.post(`${ApiRoute.Favorite}/${offerId}/${favoriteStatus}`, {favoriteOffers: []})
+      .then (({data}) => {
+        const offer = adaptOfferDataToClient(data);
+        dispatch(setOffer(offer));
+      })
+      .catch(() => {
+        toast.error(ERROR_MESSAGE);
+      });
   };
 
-export { loadDataOffers, loadDataReviews, loadDataNearbyOffers, loadDataFavoriteOffers, checkAuth, login, postReview, togleFavoriteStatus };
+export { loadDataOffers, loadDataReviews, loadDataNearbyOffers, loadDataFavoriteOffers, checkAuth, login, logout, postReview, togleFavoriteStatus };

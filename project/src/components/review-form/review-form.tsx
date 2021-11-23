@@ -1,11 +1,11 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Comment } from '../../types/review';
 
 import { postReview } from '../../store/api-actions';
 
-import { MIN_REVIEW_LENGTH } from '../../const';
+import { MAX_REVIEW_LENGTH, MIN_REVIEW_LENGTH, ITINIAL_RATING } from '../../const';
 
 type ReviewFormProps = {
   offerId: string,
@@ -13,60 +13,73 @@ type ReviewFormProps = {
 
 function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
   const [commentMessage, setComment] = useState('');
-  const [rating, setRating] = useState<string>('0');
+  const [rating, setRating] = useState<string>(ITINIAL_RATING);
 
-  const isInvalid = Boolean(rating === '0' || commentMessage.length < MIN_REVIEW_LENGTH);
+  const [isFormDisabled, setFormDisabledStatus] = useState(true);
+
+  useEffect(() => {
+    if (rating === ITINIAL_RATING || commentMessage.length < MIN_REVIEW_LENGTH || commentMessage.length > MAX_REVIEW_LENGTH) {
+      setFormDisabledStatus(true);
+    } else {
+      setFormDisabledStatus(false);
+    }
+  }, [rating, commentMessage]);
 
   const dispatch = useDispatch();
-
-  const handleCommentPost = (review: Comment) => {
-    dispatch(postReview(review, offerId));
-  };
 
   const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setRating(evt.target.value);
   };
 
+  const clearForm = () => {
+    setComment('');
+    setRating(ITINIAL_RATING);
+  };
+
+  const handleCommentPost = (review: Comment) => {
+    setFormDisabledStatus(true);
+    dispatch(postReview(review, offerId, clearForm));
+  };
+
   const handleFormSubmit = (evt: FormEvent): void => {
     evt.preventDefault();
     handleCommentPost({comment: commentMessage, rating: rating});
-    setComment('');
-    setRating('0');
+    setFormDisabledStatus(false);
   };
 
   return (
     <form className="reviews__form form" onSubmit={handleFormSubmit} method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
-        <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio" onChange={ handleRatingChange } />
+        <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio" onChange={ handleRatingChange } checked={rating === '5'}/>
         <label htmlFor="5-stars" className="reviews__rating-label form__rating-label" title="perfect">
           <svg className="form__star-image" width="37" height="33">
             <use xlinkHref="#icon-star"></use>
           </svg>
         </label>
 
-        <input className="form__rating-input visually-hidden" name="rating" value="4" id="4-stars" type="radio" onChange={ handleRatingChange } />
+        <input className="form__rating-input visually-hidden" name="rating" value="4" id="4-stars" type="radio" onChange={ handleRatingChange } checked={rating === '4'}/>
         <label htmlFor="4-stars" className="reviews__rating-label form__rating-label" title="good">
           <svg className="form__star-image" width="37" height="33">
             <use xlinkHref="#icon-star"></use>
           </svg>
         </label>
 
-        <input className="form__rating-input visually-hidden" name="rating" value="3" id="3-stars" type="radio" onChange={ handleRatingChange } />
+        <input className="form__rating-input visually-hidden" name="rating" value="3" id="3-stars" type="radio" onChange={ handleRatingChange } checked={rating === '3'}/>
         <label htmlFor="3-stars" className="reviews__rating-label form__rating-label" title="not bad">
           <svg className="form__star-image" width="37" height="33">
             <use xlinkHref="#icon-star"></use>
           </svg>
         </label>
 
-        <input className="form__rating-input visually-hidden" name="rating" value="2" id="2-stars" type="radio" onChange={ handleRatingChange } />
+        <input className="form__rating-input visually-hidden" name="rating" value="2" id="2-stars" type="radio" onChange={ handleRatingChange } checked={rating === '2'}/>
         <label htmlFor="2-stars" className="reviews__rating-label form__rating-label" title="badly">
           <svg className="form__star-image" width="37" height="33">
             <use xlinkHref="#icon-star"></use>
           </svg>
         </label>
 
-        <input className="form__rating-input visually-hidden" name="rating" value="1" id="1-star" type="radio" onChange={ handleRatingChange } />
+        <input className="form__rating-input visually-hidden" name="rating" value="1" id="1-star" type="radio" onChange={ handleRatingChange } checked={rating === '1'}/>
         <label htmlFor="1-star" className="reviews__rating-label form__rating-label" title="terribly">
           <svg className="form__star-image" width="37" height="33">
             <use xlinkHref="#icon-star"></use>
@@ -78,7 +91,7 @@ function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">{MIN_REVIEW_LENGTH} characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={isInvalid}>Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={isFormDisabled}>Submit</button>
       </div>
     </form>
   );

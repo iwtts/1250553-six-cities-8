@@ -2,6 +2,8 @@ import { Offer } from '../types/offer';
 import { Review } from './review';
 import { SortType, AuthStatus } from '../const';
 import { RootState } from '../store/root-reducer';
+import { User } from './data';
+
 
 type OffersState = {
   isDataLoaded: boolean,
@@ -16,7 +18,7 @@ type OffersState = {
 
 type UserState = {
   authStatus: AuthStatus,
-  currentUserEmail: string,
+  authData: User | null,
 }
 
 type State = RootState;

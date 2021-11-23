@@ -2,12 +2,16 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { getAuthStatus } from '../../store/user/selectors';
-import { AppRoute, AuthStatus } from '../../const';
+import { AppRoute, AuthStatus, HeaderType } from '../../const';
 
 import LoggedUserBar from '../header-logged-user-bar/logged-user-bar';
 import NotLoggedUserBar from '../header-not-logged-user-bar/not-logged-user-bar';
 
-function Header(): JSX.Element {
+type HeaderProps = {
+  type?: HeaderType,
+}
+
+function Header(props: HeaderProps): JSX.Element {
   const authStatus = useSelector(getAuthStatus);
 
   return (
@@ -19,13 +23,14 @@ function Header(): JSX.Element {
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
             </Link>
           </div>
-          <nav className="header__nav">
-            <ul className="header__nav-list">
-              {authStatus === AuthStatus.Auth
-                ? <LoggedUserBar />
-                : <NotLoggedUserBar />}
-            </ul>
-          </nav>
+          {props.type !== HeaderType.Login &&
+            <nav className="header__nav">
+              <ul className="header__nav-list">
+                {authStatus === AuthStatus.Auth
+                  ? <LoggedUserBar />
+                  : <NotLoggedUserBar />}
+              </ul>
+            </nav>}
         </div>
       </div>
     </header>

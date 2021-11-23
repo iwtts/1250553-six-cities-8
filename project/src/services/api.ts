@@ -17,6 +17,20 @@ const createApi = (onUnauthorized: UnauthorizedCallback): AxiosInstance => {
     timeout: REQUEST_TIMEOUT,
   });
 
+  api.interceptors.response.use(
+    (response: AxiosResponse) => response,
+
+    (error: AxiosError) => {
+      const {response} = error;
+
+      if (response?.status === HttpCode.Unauthorized) {
+        onUnauthorized();
+      }
+
+      return Promise.reject(error);
+    },
+  );
+
   api.interceptors.request.use(
     (config: AxiosRequestConfig) => {
       const token = getToken();
@@ -29,22 +43,7 @@ const createApi = (onUnauthorized: UnauthorizedCallback): AxiosInstance => {
     },
   );
 
-  api.interceptors.response.use(
-    (response: AxiosResponse) => response,
-
-    (error: AxiosError) => {
-      const {response} = error;
-
-      if (response?.status === HttpCode.Unauthorized) {
-        return onUnauthorized();
-      }
-
-      return Promise.reject(error);
-    },
-  );
-
   return api;
 };
 
 export { createApi };
-

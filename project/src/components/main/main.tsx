@@ -9,7 +9,7 @@ import MainEmpty from '../main-empty/main-empty';
 import CardsList from '../cards-list/cards-list';
 import Map from '../map/map';
 
-import { getOffers, getCurrentCity, getCurrentSortType } from '../../store/offers/selectors';
+import { getCurrentCity, getCurrentSortType, getCityOffers } from '../../store/offers/selectors';
 
 import { CITIES, SortType, MapType, CardType } from '../../const';
 
@@ -33,13 +33,12 @@ const getSortedOffers = (currentSortType: string, offers: Offer[]) => {
 };
 
 function Main(): JSX.Element {
-  const offers = useSelector(getOffers);
+  const cityOffers = useSelector(getCityOffers);
   const currentCity = useSelector(getCurrentCity);
   const currentSortType = useSelector(getCurrentSortType);
 
   const city = Object.values(CITIES).find((item) =>  item.name === currentCity);
-  const sortedOffers = getSortedOffers(currentSortType, offers);
-  const currentOffers = sortedOffers.filter((offer: Offer) => offer.city.name === currentCity);
+  const currentOffers = getSortedOffers(currentSortType, cityOffers);
 
   const points = currentOffers.map((item) => ({
     latitude: item.location.latitude,

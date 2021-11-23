@@ -1,8 +1,9 @@
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
 import { togleFavoriteStatus } from '../../store/api-actions';
 import { Offer } from '../../types/offer';
-import { getRatingStarsWidth } from '../../utils';
+import { getOfferTypeString, getRatingStarsWidth } from '../../utils';
 
 type FavoritesCardProps = {
   offer: Offer;
@@ -12,20 +13,18 @@ function FavoritesCard(props: FavoritesCardProps): JSX.Element {
   const offer = props.offer;
   const {isFavorite, previewImage, price, rating, title, type, id} = offer;
 
-  const [isFavoriteStatus] = useState(isFavorite);
-
   const dispatch = useDispatch();
 
-  const handleClick = () => {
-    dispatch(togleFavoriteStatus(id, isFavoriteStatus));
+  const handleBookmarkClick = () => {
+    dispatch(togleFavoriteStatus(id, isFavorite));
   };
 
   return (
     <article className="favorites__card place-card">
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <Link to={`${AppRoute.Room}/${id}`}>
           <img className="place-card__image" src={previewImage} width="150" height="110" alt="Place" />
-        </a>
+        </Link>
       </div>
       <div className="favorites__card-info place-card__info">
         <div className="place-card__price-wrapper">
@@ -36,7 +35,7 @@ function FavoritesCard(props: FavoritesCardProps): JSX.Element {
           <button
             className="place-card__bookmark-button place-card__bookmark-button--active button"
             type="button"
-            onClick={handleClick}
+            onClick={handleBookmarkClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
@@ -53,7 +52,7 @@ function FavoritesCard(props: FavoritesCardProps): JSX.Element {
         <h2 className="place-card__name">
           <a href="#">{title}</a>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{getOfferTypeString(type)}</p>
       </div>
     </article>
   );

@@ -1,5 +1,4 @@
 import { Offer } from '../types/offer';
-import { OfferType } from '../const';
 
 const mockOffers: Offer[] = [
   {
@@ -34,7 +33,7 @@ const mockOffers: Offer[] = [
     price: 120,
     rating: 4.8,
     title: 'Beautiful & luxurious studio at great location',
-    type: OfferType.Apartment,
+    type: 'apartment',
   },
   {
     id: 2,
@@ -68,7 +67,7 @@ const mockOffers: Offer[] = [
     price: 100,
     rating: 4.4,
     title: 'The predicate calculus generates and provides a typical dualism',
-    type: OfferType.Room,
+    type: 'room',
   },
   {
     id: 3,
@@ -102,7 +101,7 @@ const mockOffers: Offer[] = [
     price: 190,
     rating: 4.9,
     title: 'The law of the outside world is not so obvious',
-    type: OfferType.House,
+    type: 'house',
   },
   {
     id: 4,
@@ -136,7 +135,7 @@ const mockOffers: Offer[] = [
     price: 130,
     rating: 4.1,
     title: 'Art meaningfully emphasizes the deductive method',
-    type: OfferType.Hotel,
+    type: 'hotel',
   },
 ];
 

@@ -1,5 +1,3 @@
-import { OfferType } from '../const';
-
 type Location = {
   latitude: number,
   longitude: number,
@@ -32,7 +30,7 @@ type Offer = {
   price: number,
   rating: number,
   title: string,
-  type: OfferType,
+  type: string,
 }
 
 export type { Offer, Location };

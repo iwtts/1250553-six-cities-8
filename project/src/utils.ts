@@ -1,8 +1,23 @@
-import { DataOffer, DataReview } from './types/data';
+import { User, DataOffer, DataReview, DataUser } from './types/data';
 import { Offer } from './types/offer';
 import { Review } from './types/review';
 
-const getRatingStarsWidth = (rating: number): number => rating * 20;
+const getRatingStarsWidth = (rating: number): number => Math.round(rating) * 20;
+
+const getOfferTypeString = (type: string): string => {
+  switch (type) {
+    case 'apartment':
+      return 'Apartment';
+    case 'room':
+      return 'Private Room';
+    case 'house':
+      return 'House';
+    case 'hotel':
+      return 'Hotel';
+    default:
+      return 'Unknown';
+  }
+};
 
 const adaptOfferDataToClient = (data: DataOffer): Offer => ({
   bedrooms: data['bedrooms'],
@@ -52,4 +67,28 @@ const adaptReviewDataToClient = (data: DataReview): Review => ({
   },
 });
 
-export { getRatingStarsWidth, adaptOfferDataToClient, adaptReviewDataToClient };
+
+const adaptAuthDataToClient = (data: DataUser): User => ({
+  avatarUrl: data['avatar_url'],
+  email: data['email'],
+  id: data['id'],
+  isPro: data['is_pro'],
+  name: data['name'],
+  token: data['token'],
+});
+
+const updateOffers = (offers: Offer[], updatedOffer: Offer): Offer[] => {
+  const id = offers.findIndex((offer) => offer.id === updatedOffer.id);
+
+  if (id === -1) {
+    return offers;
+  }
+
+  return [
+    ...offers.slice(0, id),
+    updatedOffer,
+    ...offers.slice(id + 1),
+  ];
+};
+
+export { getRatingStarsWidth, getOfferTypeString, adaptOfferDataToClient, adaptReviewDataToClient, adaptAuthDataToClient, updateOffers };

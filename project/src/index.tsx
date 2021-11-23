@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/app/app';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
+
+import App from './components/app/app';
 
 import { rootReducer } from './store/root-reducer';
 import { redirect } from './store/middlewares/redirect';
 import { requireAuth } from './store/actions';
-import { loadDataOffers, checkAuth, loadDataFavoriteOffers} from './store/api-actions';
+import { loadDataOffers, checkAuth } from './store/api-actions';
 import { createApi } from './services/api';
 import { AuthStatus } from './const';
 
@@ -27,11 +30,11 @@ const store = configureStore({
 
 (store.dispatch)(checkAuth());
 (store.dispatch)(loadDataOffers());
-(store.dispatch)(loadDataFavoriteOffers());
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
+      <ToastContainer />
       <App />
     </Provider>
   </React.StrictMode>,

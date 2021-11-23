@@ -1,14 +1,14 @@
 import { useRef, FormEvent } from 'react';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect, useHistory } from 'react-router-dom';
 
-import { AuthData } from '../../types/data';
+import { UserAuthData } from '../../types/data';
 
-import { AppRoute } from '../../const';
-import { changeUser } from '../../store/actions';
+import { AppRoute, AuthStatus, HeaderType } from '../../const';
 import { login } from '../../store/api-actions';
 
 import Header from '../header/header';
+import { getAuthStatus } from '../../store/user/selectors';
 
 function Login(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
@@ -17,14 +17,13 @@ function Login(): JSX.Element {
 
   const dispatch = useDispatch();
 
-  const handleAuth = (authData: AuthData) => {
+  const handleAuth = (authData: UserAuthData) => {
     dispatch(login(authData));
-    dispatch(changeUser(authData.login));
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    if (loginRef.current !== null && passwordRef.current !== null) {
+    if (loginRef.current && passwordRef.current) {
       handleAuth({
         login: loginRef.current.value,
         password: passwordRef.current.value,
@@ -33,9 +32,15 @@ function Login(): JSX.Element {
     }
   };
 
+  const authStatus = useSelector(getAuthStatus);
+
+  if (authStatus === AuthStatus.Auth) {
+    return <Redirect to={AppRoute.Main} />;
+  }
+
   return (
     <div className="page page--gray page--login">
-      <Header />
+      <Header type={HeaderType.Login}/>
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">
@@ -65,6 +70,8 @@ function Login(): JSX.Element {
                   type="password"
                   name="password"
                   placeholder="Password"
+                  pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{2,}$"
+                  title="password must contain at least one number and one letter"
                   required
                 />
               </div>
