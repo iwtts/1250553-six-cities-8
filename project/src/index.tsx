@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Router as BrowserRouter} from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
 import App from './components/app/app';
+import browserHistory from './browser-history';
 
 import { rootReducer } from './store/root-reducer';
 import { redirect } from './store/middlewares/redirect';
@@ -35,7 +37,9 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ToastContainer />
-      <App />
+      <BrowserRouter history={browserHistory}>
+        <App />
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'));
