@@ -5,13 +5,13 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import { datatype } from 'faker';
 
 import { createApi } from '../services/api';
-import { checkAuth, loadDataFavoriteOffers, loadDataNearbyOffers, loadDataOffers, loadDataReviews, postReview } from './api-actions';
-import { ApiRoute, AuthStatus } from '../const';
+import { checkAuth, loadDataFavoriteOffers, loadDataNearbyOffers, loadDataOffers, loadDataReviews, postReview, togleFavoriteStatus } from './api-actions';
+import { ApiRoute, AuthStatus, FavoriteStatus } from '../const';
 import { State } from '../types/state';
-import { loadFavoriteOffers, loadNearbyOffers, loadOffers, loadReviews, requireAuth, setAuthData } from './actions';
+import { loadFavoriteOffers, loadNearbyOffers, loadOffers, loadReviews, requireAuth, setAuthData, setOffer } from './actions';
 import { getMockDataUserAuthData } from '../mocks/user';
 import { adaptAuthDataToClient, adaptOfferDataToClient, adaptReviewDataToClient } from '../utils';
-import { getMockDataOffers } from '../mocks/offers';
+import { getMockDataOffer, getMockDataOffers } from '../mocks/offers';
 import { DataOffer, DataReview } from '../types/data';
 import { getMockDataReviews } from '../mocks/reviews';
 
@@ -22,6 +22,7 @@ describe('Async actions', () => {
   const middlewares = [thunk.withExtraArgument(api)];
 
   const mockDataUser = getMockDataUserAuthData();
+  const mockDataOffer = getMockDataOffer();
   const mockDataOffers = getMockDataOffers();
   const mockDataReviews = getMockDataReviews();
 
@@ -138,6 +139,25 @@ describe('Async actions', () => {
 
     expect(store.getActions()).toEqual([
       loadReviews(adaptedReviews),
+    ]);
+  });
+
+  it('should dispatch setOffer when POST /favorite/:id/:status', async () => {
+    const store = mockStore();
+    const mockStatus = datatype.boolean();
+    const mockOfferId = datatype.number();
+    const adaptedOffer = adaptOfferDataToClient(mockDataOffer);
+
+    const favoriteStatus = mockStatus ? FavoriteStatus.False : FavoriteStatus.True;
+
+    mockApi
+      .onPost(`${ApiRoute.Favorite}/${mockOfferId}/${favoriteStatus}`)
+      .reply(200, mockDataOffer);
+
+    await store.dispatch(togleFavoriteStatus(mockOfferId, mockStatus));
+
+    expect(store.getActions()).toEqual([
+      setOffer(adaptedOffer),
     ]);
   });
 });
