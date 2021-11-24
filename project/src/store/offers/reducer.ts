@@ -44,6 +44,7 @@ const offersReducer = createReducer(initialState, (builder) => {
     .addCase(changeSortType, (state, action) => {
       state.currentSortType = action.payload.currentSortType;
     });
+
 });
 
 export { initialState, offersReducer };
