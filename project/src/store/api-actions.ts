@@ -16,6 +16,7 @@ const checkAuth = (): ThunkActionResult => (
         dispatch(setAuthData(adaptAuthDataToClient(data)));
       })
       .catch(() => {
+        dispatch(requireAuth(AuthStatus.NoAuth));
         toast.info(AUTH_FAIL_MESSAGE);
       });
   }
@@ -96,14 +97,14 @@ const loadDataFavoriteOffers = (): ThunkActionResult => (
   }
 );
 
-const postReview = ({comment, rating}: Comment, offerId: string, clearForm: { (): void; (): void; }): ThunkActionResult =>
+const postReview = ({comment, rating}: Comment, offerId: string, clearForm?: { (): void; (): void; }): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     await api.post(`${ApiRoute.Reviews}/${offerId}`, {comment: comment, rating})
       .then(({data}) => {
         const reviews = data.map((item: DataReview) => adaptReviewDataToClient(item));
         if(data){
           dispatch(loadReviews(reviews));
-          clearForm();
+          clearForm?.();
         }
       })
       .catch(() => {
