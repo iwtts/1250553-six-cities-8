@@ -13,7 +13,7 @@ function FavoritesCardsList(props: FavoritesCardsListProps): JSX.Element | null 
 
   if (currentOffers.length !== 0) {
     return (
-      <li className="favorites__locations-items">
+      <li className="favorites__locations-items" data-testid="favorites-cards-list">
         <div className="favorites__locations locations locations--current">
           <div className="locations__item">
             <a className="locations__item-link" href="#">
