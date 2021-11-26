@@ -90,7 +90,7 @@ describe('Application Routing', () => {
     history.push(AppRoute.Favorites);
     render(fakeApp);
 
-    expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(/favorites/i);
+    expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(/saved listing/i);
   });
 
   it('should render Property when user navigate to "/offer/id"', () => {
