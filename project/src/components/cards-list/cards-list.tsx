@@ -23,7 +23,7 @@ function CardsList({cardType, offers, onOfferMouseEnter,  onOfferMouseLeave}: Ca
   };
 
   return (
-    <div className={getArticleClassName(cardType)}>
+    <div className={getArticleClassName(cardType)} data-testid="cards-list">
       {offers.map((offer) => (
         <Card
           type={cardType}

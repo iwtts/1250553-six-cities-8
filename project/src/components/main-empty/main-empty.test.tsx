@@ -5,7 +5,7 @@ import MainEmpty from './main-empty';
 
 const history = createMemoryHistory();
 
-describe('Component: FavoritesEmpty', () => {
+describe('Component: MainEmpty', () => {
   it('should render correctly', () => {
     render(
       <Router history={history}>

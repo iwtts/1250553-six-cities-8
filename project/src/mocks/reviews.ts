@@ -31,4 +31,4 @@ const getMockDataReview = (): DataReview => ({
 const getMockReviews = (): Review[] => new Array(datatype.number(10)).fill(null).map(() => getMockReview());
 const getMockDataReviews = (): DataReview[] => new Array(datatype.number(10)).fill(null).map(() => getMockDataReview());
 
-export { getMockReviews, getMockDataReviews };
+export { getMockReview, getMockReviews, getMockDataReviews };

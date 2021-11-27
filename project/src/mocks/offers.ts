@@ -57,7 +57,7 @@ const getMockDataOffer = (): DataOffer => ({
   'type': getMockType(),
 });
 
-const getMockOffers = (): Offer[] => new Array(datatype.number(15)).fill(null).map(() => getMockOffer());
+const getMockOffers = (): Offer[] => new Array(15).fill(null).map(() => getMockOffer());
 const getMockDataOffers = (): DataOffer[] => new Array(datatype.number(15)).fill(null).map(() => getMockDataOffer());
 
 export { getMockOffer, getMockOffers, getMockDataOffer, getMockDataOffers };

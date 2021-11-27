@@ -1,17 +1,18 @@
+import * as Redux from 'react-redux';
 import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { Provider } from 'react-redux';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 
-import App from './app';
+import Header from './header';
 
-import { AppRoute, AuthStatus, SortType } from '../../const';
+import { AuthStatus, SortType } from '../../const';
 import { getMockUserAuthData } from '../../mocks/user';
 import { getMockCityName } from '../../mocks/utils';
 import { getMockOffers } from '../../mocks/offers';
 import { getMockReviews } from '../../mocks/reviews';
 
+const history = createMemoryHistory();
 const mockStore = configureMockStore();
 
 const mockUserData = getMockUserAuthData();
@@ -56,54 +57,28 @@ const noAuthStore = mockStore({
   },
 });
 
-const history = createMemoryHistory();
-const fakeApp = (
-  <Provider store={store}>
-    <Router history={history}>
-      <App />
-    </Router>
-  </Provider>
-);
-
-describe('Application Routing', () => {
-  it('should render Main when user navigate to "/"', () => {
-    store.dispatch = jest.fn();
-    history.push(AppRoute.Main);
-    render(fakeApp);
-
-    expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(/Cities/i);
-  });
-
-  it('should render Login when user navigate to "/login"', () => {
-    history.push('/login');
+describe('Component: Header', () => {
+  it('should render correctly when authStatus "AUTH"', () => {
     render(
-      <Provider store={noAuthStore}>
+      <Redux.Provider store={store}>
         <Router history={history}>
-          <App />
+          <Header />
         </Router>
-      </Provider>);
+      </Redux.Provider>);
 
-    expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(/Sign in/i);
+    expect(screen.getByText(/Sign out/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Sign in/i)).toBeNull();
   });
 
-  it('should render Favorites when user navigate to "/favorites"', () => {
-    history.push(AppRoute.Favorites);
-    render(fakeApp);
+  it('should render correctly when authStatus "NO_AUTH"', () => {
+    render(
+      <Redux.Provider store={noAuthStore}>
+        <Router history={history}>
+          <Header />
+        </Router>
+      </Redux.Provider>);
 
-    expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(/saved listing/i);
-  });
-
-  it('should render Property when user navigate to "/offer/id"', () => {
-    history.push(`${AppRoute.Room}/${mockOffers[0].id}`);
-    render(fakeApp);
-
-    expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(`${mockOffers[0].title}`);
-  });
-
-  it('should render NotFound when user navigate to non-existent route', () => {
-    history.push('/non-existent-route');
-    render(fakeApp);
-
-    expect(screen.getByText(/page not found/i)).toBeInTheDocument();
+    expect(screen.getByText(/Sign in/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Sign out/i)).toBeNull();
   });
 });
