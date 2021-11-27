@@ -62,6 +62,7 @@ function Card(props: CardProps): JSX.Element {
       className={getArticleClassName(props.type)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      data-testid="card"
     >
       {isPremium &&
         <div className="place-card__mark">
@@ -82,6 +83,7 @@ function Card(props: CardProps): JSX.Element {
             className={getBookmarkButtonClassName}
             type="button"
             onClick={handleBookmarkClick}
+            data-testid="bookmark"
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
