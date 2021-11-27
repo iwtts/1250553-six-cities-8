@@ -3,6 +3,7 @@ import { Router } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createMemoryHistory } from 'history';
+import userEvent from '@testing-library/user-event';
 
 import FavoritesCard from './favorites-card';
 
@@ -38,5 +39,25 @@ describe('Component: FavoritesCard', () => {
       </Redux.Provider>);
 
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(`${mockOffer.title}`);
+  });
+
+  it('should dispatch action on bookmark click', () => {
+    const dispatch = jest.fn();
+    const useDispatch = jest.spyOn(Redux, 'useDispatch');
+    useDispatch.mockReturnValue(dispatch);
+    render(
+      <Redux.Provider store={store}>
+        <Router history={history}>
+          <FavoritesCard
+            offer={mockOffer}
+          />
+        </Router>
+      </Redux.Provider>);
+
+    const firstLink = screen.getByTestId('bookmark');
+
+    userEvent.click(firstLink);
+
+    expect(dispatch).toBeCalledTimes(1);
   });
 });

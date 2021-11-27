@@ -40,6 +40,23 @@ const store = mockStore({
   },
 });
 
+const noOffersStore = mockStore({
+  USER: {
+    authStatus: AuthStatus.Auth,
+    authData : mockUserData,
+  },
+  OFFERS: {
+    isDataLoaded: true,
+    currentCity: mockCity,
+    offers: mockOffers,
+    cityOffers: mockCityOffers,
+    reviews: mockReviews,
+    nearbyOffers: mockNearbyOffers,
+    favoriteOffers: [],
+    currentSortType: SortType.Popular,
+  },
+});
+
 describe('Component: Favorites', () => {
 
   it('should render correctly', () => {
@@ -53,5 +70,18 @@ describe('Component: Favorites', () => {
       </Redux.Provider>);
 
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(/Saved listing/i);
+  });
+
+  it('should render correctly if favorite offers length is 0', () => {
+    noOffersStore.dispatch = jest.fn();
+
+    render(
+      <Redux.Provider store={noOffersStore}>
+        <Router history={history}>
+          <Favorites />
+        </Router>
+      </Redux.Provider>);
+
+    expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(/Favorites \(empty\)/i);
   });
 });
