@@ -18,12 +18,12 @@ const mockOffer = getMockOffer();
 const mockAuthData = getMockUserAuthData();
 
 const store = mockStore({
-  DATA: {
-    offer: mockOffer,
-  },
   USER: {
     authStatus: AuthStatus.Auth,
     authData: mockAuthData,
+  },
+  OFFERS: {
+    offer: mockOffer,
   },
 });
 
